@@ -62,11 +62,11 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 
 	private PhysicsWorld mPhysicsWorld;
 
-	// Controls textures
+	/* Controls textures
 	private Texture mOnScreenControlTexture;
 	private TextureRegion mOnScreenControlBaseTextureRegion;
 	private TextureRegion mOnScreenControlKnobTextureRegion;
-	
+	*/
 	// Texture and region for the agent
 	private Texture mAgentTexture;
 	private TextureRegion mAgentTextureRegion;
@@ -109,12 +109,12 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 		
 		this.mRewTexture = new Texture(64, 64, TextureOptions.BILINEAR);
 		this.mRewTextureRegion = TextureRegionFactory.createFromAsset(this.mRewTexture, this, "coin.png", 0, 0);
-		
+		/*
 		this.mOnScreenControlTexture = new Texture(256, 128, TextureOptions.BILINEAR);
 		this.mOnScreenControlBaseTextureRegion = TextureRegionFactory.createFromAsset(this.mOnScreenControlTexture, this, "onscreen_control_base.png", 0, 0);
 		this.mOnScreenControlKnobTextureRegion = TextureRegionFactory.createFromAsset(this.mOnScreenControlTexture, this, "onscreen_control_knob.png", 128, 0);
-
-		this.mEngine.getTextureManager().loadTextures(this.mOnScreenControlTexture, this.mAgentTexture, this.mRewTexture);
+		 */
+		this.mEngine.getTextureManager().loadTextures(/*this.mOnScreenControlTexture, */this.mAgentTexture, this.mRewTexture);
 		
 		// Accelero-support
 		this.enableAccelerometerSensor(this);
@@ -135,7 +135,7 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 		this.initBorders(scene);
 		this.initAgent(scene);
 		this.initRandomLevel(scene);
-		this.initOnScreenControls(scene);
+		//this.initOnScreenControls(scene);
 
 		scene.registerUpdateHandler(this.mPhysicsWorld);
 				
@@ -155,7 +155,7 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
+/*
 	private void initOnScreenControls(final Scene pScene) {
 		final AnalogOnScreenControl analogOnScreenControl = new AnalogOnScreenControl(0, CAMERA_HEIGHT - this.mOnScreenControlBaseTextureRegion.getHeight(), this.mCamera, this.mOnScreenControlBaseTextureRegion, this.mOnScreenControlKnobTextureRegion, 0.1f, new IAnalogOnScreenControlListener() {
 			private Vector2 mVelocityTemp = new Vector2();
@@ -175,7 +175,6 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 
 			@Override
 			public void onControlClick(AnalogOnScreenControl pAnalogOnScreenControl) {
-				/* Nothing. */
 			}
 		});
 		analogOnScreenControl.getControlBase().setAlpha(0.5f);
@@ -186,7 +185,7 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 		
 		pScene.setChildScene(analogOnScreenControl);
 	}
-
+*/
 	private void initAgent(final Scene pScene) {
 		this.mAgent = new Sprite(0, 0, this.mAgentTextureRegion);
 		this.mAgent.setScale(0.45f);
