@@ -105,7 +105,7 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 		TextureRegionFactory.setAssetBasePath("gfx/");
 
 		this.mAgentTexture = new Texture(64, 64, TextureOptions.BILINEAR);
-		this.mAgentTextureRegion = TextureRegionFactory.createFromAsset(this.mAgentTexture, this, "badge.png", 0, 0);
+		this.mAgentTextureRegion = TextureRegionFactory.createFromAsset(this.mAgentTexture, this, "pokese6.png", 0, 0);
 		
 		this.mRewTexture = new Texture(64, 64, TextureOptions.BILINEAR);
 		this.mRewTextureRegion = TextureRegionFactory.createFromAsset(this.mRewTexture, this, "coin.png", 0, 0);
