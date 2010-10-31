@@ -1,6 +1,7 @@
 package is.nord.dutchess;
 
 import org.anddev.andengine.engine.Engine;
+
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.camera.hud.controls.AnalogOnScreenControl;
 import org.anddev.andengine.engine.camera.hud.controls.BaseOnScreenControl;
@@ -27,11 +28,13 @@ import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
-import org.anddev.andengine.sensor.accelerometer.AccelerometerData;
-import org.anddev.andengine.sensor.accelerometer.IAccelerometerListener;
 import org.anddev.andengine.ui.activity.BaseGameActivity;
 import org.anddev.andengine.util.MathUtils;
+import org.anddev.andengine.sensor.accelerometer.AccelerometerData;
+import org.anddev.andengine.sensor.accelerometer.IAccelerometerListener;
 
+
+import android.hardware.SensorManager;
 import android.widget.Toast;
 
 import com.badlogic.gdx.math.Vector2;
@@ -42,7 +45,7 @@ import java.util.Random;
 /**
  * @author Gunnarr Baldursson & co
  */
-public class CodenameDutchess  extends BaseGameActivity implements IAccelerometerListener{
+public class CodenameDutchess extends BaseGameActivity implements IAccelerometerListener {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -112,6 +115,10 @@ public class CodenameDutchess  extends BaseGameActivity implements IAcceleromete
 		this.mOnScreenControlKnobTextureRegion = TextureRegionFactory.createFromAsset(this.mOnScreenControlTexture, this, "onscreen_control_knob.png", 128, 0);
 
 		this.mEngine.getTextureManager().loadTextures(this.mOnScreenControlTexture, this.mAgentTexture, this.mRewTexture);
+		
+		// Accelero-support
+		this.enableAccelerometerSensor(this);
+
 	}
 
 	@Override
@@ -121,12 +128,14 @@ public class CodenameDutchess  extends BaseGameActivity implements IAcceleromete
 		scene = new Scene(4);
 		scene.setBackground(new ColorBackground(0, 0, 0));
 
-		this.mPhysicsWorld = new FixedStepPhysicsWorld(30, new Vector2(0, 0), false, 8, 1);
-
+		//this.mPhysicsWorld = new FixedStepPhysicsWorld(30, new Vector2(0, 0), false, 8, 1);
+		// 
+		this.mPhysicsWorld = new PhysicsWorld(new Vector2(0, SensorManager.GRAVITY_EARTH), false);
+		
 		this.initBorders(scene);
 		this.initAgent(scene);
 		this.initRandomLevel(scene);
-		//this.initOnScreenControls(scene);
+		this.initOnScreenControls(scene);
 
 		scene.registerUpdateHandler(this.mPhysicsWorld);
 				
@@ -137,54 +146,55 @@ public class CodenameDutchess  extends BaseGameActivity implements IAcceleromete
 	public void onLoadComplete() {
 
 	}
+	
+	@Override
+	public void onAccelerometerChanged(AccelerometerData pAccelerometerData) {
+        this.mPhysicsWorld.setGravity(new Vector2(pAccelerometerData.getY(), pAccelerometerData.getX()));		
+	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
 
-//	private void initOnScreenControls(final Scene pScene) {
-//		final AnalogOnScreenControl analogOnScreenControl = new AnalogOnScreenControl(0, CAMERA_HEIGHT - this.mOnScreenControlBaseTextureRegion.getHeight(), this.mCamera, this.mOnScreenControlBaseTextureRegion, this.mOnScreenControlKnobTextureRegion, 0.1f, new IAnalogOnScreenControlListener() {
-//			private Vector2 mVelocityTemp = new Vector2();
-//
-//			@Override
-//			public void onControlChange(final BaseOnScreenControl pBaseOnScreenControl, final float pValueX, final float pValueY) {
-//				this.mVelocityTemp.set(pValueX * 5, pValueY * 5);
-//				
-//				final Body tankBody = CodenameDutchess.this.mAgentBody;
-//				tankBody.setLinearVelocity(this.mVelocityTemp);
-//				
-//				final float rotationInRad = (float)Math.atan2(-pValueX, pValueY);
-//				tankBody.setTransform(tankBody.getWorldCenter(), rotationInRad);
-//				
-//				CodenameDutchess.this.mAgent.setRotation(MathUtils.radToDeg(rotationInRad));
-//			}
-//
-//			@Override
-//			public void onControlClick(AnalogOnScreenControl pAnalogOnScreenControl) {
-//				/* Nothing. */
-//			}
-//		});
-//		analogOnScreenControl.getControlBase().setAlpha(0.5f);
-//		analogOnScreenControl.getControlBase().setScaleCenter(0, 128);
-//		analogOnScreenControl.getControlBase().setScale(0.75f);
-//		analogOnScreenControl.getControlKnob().setScale(0.75f);
-//		analogOnScreenControl.refreshControlKnobPosition();
-//		
-//		pScene.setChildScene(analogOnScreenControl);
-//	}
-	
+	private void initOnScreenControls(final Scene pScene) {
+		final AnalogOnScreenControl analogOnScreenControl = new AnalogOnScreenControl(0, CAMERA_HEIGHT - this.mOnScreenControlBaseTextureRegion.getHeight(), this.mCamera, this.mOnScreenControlBaseTextureRegion, this.mOnScreenControlKnobTextureRegion, 0.1f, new IAnalogOnScreenControlListener() {
+			private Vector2 mVelocityTemp = new Vector2();
+
+			@Override
+			public void onControlChange(final BaseOnScreenControl pBaseOnScreenControl, final float pValueX, final float pValueY) {
+				this.mVelocityTemp.set(pValueX * 5, pValueY * 5);
+				
+				final Body tankBody = CodenameDutchess.this.mAgentBody;
+				tankBody.setLinearVelocity(this.mVelocityTemp);
+				
+				final float rotationInRad = (float)Math.atan2(-pValueX, pValueY);
+				tankBody.setTransform(tankBody.getWorldCenter(), rotationInRad);
+				
+				CodenameDutchess.this.mAgent.setRotation(MathUtils.radToDeg(rotationInRad));
+			}
+
+			@Override
+			public void onControlClick(AnalogOnScreenControl pAnalogOnScreenControl) {
+				/* Nothing. */
+			}
+		});
+		analogOnScreenControl.getControlBase().setAlpha(0.5f);
+		analogOnScreenControl.getControlBase().setScaleCenter(0, 128);
+		analogOnScreenControl.getControlBase().setScale(0.75f);
+		analogOnScreenControl.getControlKnob().setScale(0.75f);
+		analogOnScreenControl.refreshControlKnobPosition();
+		
+		pScene.setChildScene(analogOnScreenControl);
+	}
 
 	private void initAgent(final Scene pScene) {
-		this.mAgent = new Sprite(0, 5, this.mAgentTextureRegion);
+		this.mAgent = new Sprite(0, 0, this.mAgentTextureRegion);
 		this.mAgent.setScale(0.45f);
 		final FixtureDef carFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f);
 		this.mAgentBody = PhysicsFactory.createBoxBody(this.mPhysicsWorld, this.mAgent, BodyType.DynamicBody, carFixtureDef);
-		//We need to bind the agent and agent body to a new physicsworld with some gravity constant or maybe we can connect
-		// the agent to onAccelerometerChanged() implemented function instead
 		this.mPhysicsWorld.registerPhysicsConnector(new PhysicsConnector(this.mAgent, this.mAgentBody, true, false, true, false));
 		pScene.getTopLayer().addEntity(this.mAgent);
 	}
-	
 	
 	
 	private void initBorders(final Scene pScene) {
@@ -204,11 +214,6 @@ public class CodenameDutchess  extends BaseGameActivity implements IAcceleromete
 		bottomLayer.addEntity(topOuter);
 		bottomLayer.addEntity(leftOuter);
 		bottomLayer.addEntity(rightOuter);
-	}
-	
-	@Override
-	public void onAccelerometerChanged(final AccelerometerData pAccelerometerData) {
-		this.mPhysicsWorld.setGravity(new Vector2(pAccelerometerData.getY(), pAccelerometerData.getX()));
 	}
 
 	private void initRandomLevel(final Scene pScene) {
@@ -276,13 +281,9 @@ public class CodenameDutchess  extends BaseGameActivity implements IAcceleromete
 			@Override
 			public void onUpdate(final float pSecondsElapsed) {
 				for (int i=0; i<10; i++) {
-					if(lines[i].collidesWith(CodenameDutchess.this.mAgent) && lines[i].getRed() == 0.5) {
+					if(lines[i].collidesWith(CodenameDutchess.this.mAgent) && lines[i].getRed() == 0.5)
 						lines[i].setColor(1, 0, 0);
-						CodenameDutchess.this.scene.reset();
-					}
-						
 				}
-				
 				
 				for (int i=0; i<6; i++) {
 					if(rewards[i].collidesWith(CodenameDutchess.this.mAgent)) {
