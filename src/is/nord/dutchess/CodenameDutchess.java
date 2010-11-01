@@ -78,7 +78,7 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 	private TextureRegion mRewTextureRegion;
 	
 	// Traps, lines and the endgoal, rewards
-	final Rectangle[] lines = new Rectangle[10];
+	final Shape[] lines = new Rectangle[10];
 	private Sprite[] rewards = new Sprite[6];
 	private Rectangle endRect;
 
@@ -188,7 +188,7 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 */
 	private void initAgent(final Scene pScene) {
 		this.mAgent = new Sprite(0, 0, this.mAgentTextureRegion);
-		this.mAgent.setScale(0.45f);
+		this.mAgent.setScale(0.65f);
 		final FixtureDef carFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f);
 		this.mAgentBody = PhysicsFactory.createBoxBody(this.mPhysicsWorld, this.mAgent, BodyType.DynamicBody, carFixtureDef);
 		this.mPhysicsWorld.registerPhysicsConnector(new PhysicsConnector(this.mAgent, this.mAgentBody, true, false, true, false));
@@ -240,6 +240,8 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 				PhysicsFactory.createBoxBody(this.mPhysicsWorld, lines[i], BodyType.StaticBody, wallFixtureDef); 
 			} else {
 				lines[i].setColor( 0.5f, 0.7f, 0.1f);
+				//lines[i].setScaleX(1.5f);
+				lines[i].setRotation(0.5f);
 			}
 		}
 		
