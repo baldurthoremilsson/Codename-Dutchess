@@ -1,0 +1,100 @@
+#Author: Lettfeti
+#Prims Algorithm
+
+#We should definitely try to port this to Java Code
+#Found a 'tutorial' which uses a similar technique, now in Randomaze pck
+
+
+NORTH = 0
+SOUTH = 1
+EAST = 2
+WEST = 3
+class DLine:
+    def __init__(self, points, **kwds):
+        self.destroyed = False
+        self.line = line(points, **kwds)
+    def destroy(self):
+        self.destroyed = True
+    def __repr__(self):
+        if not self.destroyed:
+            return str(self.line)
+    def show(self):
+        self.line.show()
+    
+    def get_line(self):
+        return self.line
+        
+class Cell:
+    def __init__(self, north = None, south = None, east = None, west = None):
+        self.sides = [north, south, east, west]
+        self.visited = False
+    def destroy(self, side):
+        self.sides[side].destroy()
+       
+    def get_side(self,side):
+        return self.sides[side]
+        
+    def set_side(self, side, val):
+        self.sides[side] = val
+        
+    def draw(self):
+        return sum( s.get_line() for s in self.sides if not s.destroyed )
+        
+        
+def draw(maze):
+    return sum( map( lambda y: sum( map( lambda x: x.draw(), y ) ), maze ) )
+    
+def shuffled(lst):
+    t = lst[::]
+    shuffle(t)
+    return t
+    
+sides = [NORTH, EAST, SOUTH, WEST]
+def mazify(maze, row, col):
+    for s in shuffled(sides):
+        maze[row][col].visited = true
+        if s == SOUTH: 
+            if row == 0:
+                continue               
+            elif not maze[row - 1][col].visited:
+                maze[row][col].get_side(SOUTH).destroy()
+                mazify(maze, row - 1, col)
+        elif s == WEST:
+            if col == 0:
+                continue
+            elif not maze[row][col - 1].visited:
+                maze[row][col].get_side(WEST).destroy()
+                mazify(maze, row, col - 1)
+        elif s == NORTH:
+            if row == len(maze) - 1:
+                continue
+            elif not maze[row + 1][col].visited:
+                maze[row][col].get_side(NORTH).destroy()
+                mazify(maze, row + 1, col)
+        elif s == EAST:
+            if col == len(maze[0]) - 1:
+                continue
+            elif not maze[row][col + 1].visited:
+                maze[row][col].get_side(EAST).destroy()
+                mazify(maze, row, col + 1)
+                
+maze = []
+for i in range(20):
+    l = []
+    maze.append(l)
+    for j in range(20):
+        c = Cell(i, j)
+        if i == 0:
+            c.set_side(SOUTH, DLine([(j,0),(j+1,0)]))
+        else:
+            c.set_side(SOUTH, maze[i-1][j].get_side(NORTH))
+        if j == 0:
+            c.set_side(WEST, DLine([(0,i), (0,i+1)]))
+        else:
+            c.set_side(WEST, maze[i][j-1].get_side(EAST))
+        c.set_side(EAST, DLine([(j+1,i),(j+1,i+1)]))
+        c.set_side(NORTH, DLine([(j,i+1),(j+1,i+1)]))
+        l.append(c)
+        
+mazify(maze, 3,3)
+show(draw(maze), aspect_ratio = 1)

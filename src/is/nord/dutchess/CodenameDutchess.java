@@ -43,7 +43,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import java.util.Random;
 /**
- * @author Gunnarr Baldursson & co
+ * @author Hopur eitt
  */
 public class CodenameDutchess extends BaseGameActivity implements IAccelerometerListener {
 	// ===========================================================
