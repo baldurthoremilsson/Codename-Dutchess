@@ -1,5 +1,7 @@
 package is.nord.dutchess;
 
+import org.anddev.andengine.audio.music.Music;
+import org.anddev.andengine.audio.music.MusicFactory;
 import org.anddev.andengine.engine.Engine;
 
 import org.anddev.andengine.engine.camera.Camera;
@@ -29,6 +31,7 @@ import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
 import org.anddev.andengine.ui.activity.BaseGameActivity;
+import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.sensor.accelerometer.AccelerometerData;
 import org.anddev.andengine.sensor.accelerometer.IAccelerometerListener;
@@ -41,6 +44,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+
+import java.io.IOException;
 import java.util.Random;
 /**
  * @author Hopur eitt
@@ -59,6 +64,8 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 	// ===========================================================
 	private Camera mCamera;
 	private Scene scene;
+	
+	private Music mMusic;
 
 	private PhysicsWorld mPhysicsWorld;
 
@@ -97,7 +104,7 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 	@Override
 	public Engine onLoadEngine() {
 		this.mCamera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
-		return new Engine(new EngineOptions(true, ScreenOrientation.LANDSCAPE, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), this.mCamera));
+		return new Engine(new EngineOptions(true, ScreenOrientation.LANDSCAPE, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), this.mCamera).setNeedsMusic(true));
 	}
 
 	@Override
@@ -115,6 +122,20 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 		this.mOnScreenControlKnobTextureRegion = TextureRegionFactory.createFromAsset(this.mOnScreenControlTexture, this, "onscreen_control_knob.png", 128, 0);
 		 */
 		this.mEngine.getTextureManager().loadTextures(/*this.mOnScreenControlTexture, */this.mAgentTexture, this.mRewTexture);
+		
+		MusicFactory.setAssetBasePath("mfx/");
+		
+			try {
+				this.mMusic = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "Acid_techno.ogg");
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			this.mMusic.setLooping(true);
+		
 		
 		// Accelero-support
 		this.enableAccelerometerSensor(this);
@@ -136,8 +157,10 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 		this.initAgent(scene);
 		this.initRandomLevel(scene);
 		//this.initOnScreenControls(scene);
+		
 
 		scene.registerUpdateHandler(this.mPhysicsWorld);
+		this.mMusic.play();
 				
 		return scene;
 	}
