@@ -69,16 +69,15 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 
 	private PhysicsWorld mPhysicsWorld;
 
-	/* Controls textures
-	private Texture mOnScreenControlTexture;
-	private TextureRegion mOnScreenControlBaseTextureRegion;
-	private TextureRegion mOnScreenControlKnobTextureRegion;
-	*/
 	// Texture and region for the agent
 	private Texture mAgentTexture;
 	private TextureRegion mAgentTextureRegion;
 	private Sprite mAgent;
 	private Body mAgentBody;
+	
+	// Test wood texture
+	private Texture mWoodTexture;
+	private TextureRegion mWoodTextureRegion;
 	
 	// Texture and region for the rewards to be collected
 	private Texture mRewTexture;
@@ -89,17 +88,6 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 	private Sprite[] rewards = new Sprite[6];
 	private Rectangle endRect;
 
-	// ===========================================================
-	// Constructors
-	// ===========================================================
-
-	// ===========================================================
-	// Getter & Setter
-	// ==========================================================
-
-	// ===========================================================
-	// Methods for/from SuperClass/Interfaces
-	// ===========================================================
 
 	@Override
 	public Engine onLoadEngine() {
@@ -116,12 +104,12 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 		
 		this.mRewTexture = new Texture(64, 64, TextureOptions.BILINEAR);
 		this.mRewTextureRegion = TextureRegionFactory.createFromAsset(this.mRewTexture, this, "coin.png", 0, 0);
-		/*
-		this.mOnScreenControlTexture = new Texture(256, 128, TextureOptions.BILINEAR);
-		this.mOnScreenControlBaseTextureRegion = TextureRegionFactory.createFromAsset(this.mOnScreenControlTexture, this, "onscreen_control_base.png", 0, 0);
-		this.mOnScreenControlKnobTextureRegion = TextureRegionFactory.createFromAsset(this.mOnScreenControlTexture, this, "onscreen_control_knob.png", 128, 0);
-		 */
-		this.mEngine.getTextureManager().loadTextures(/*this.mOnScreenControlTexture, */this.mAgentTexture, this.mRewTexture);
+		
+		// Wood
+		this.mWoodTexture = new Texture(64, 8, TextureOptions.REPEATING);
+		this.mWoodTextureRegion = TextureRegionFactory.createFromAsset(this.mWoodTexture, this, "wood_small.png", 0, 0);
+		
+		this.mEngine.getTextureManager().loadTextures(this.mAgentTexture, this.mRewTexture, this.mWoodTexture);
 		
 		MusicFactory.setAssetBasePath("mfx/");
 		
@@ -155,12 +143,10 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 		
 		this.initBorders(scene);
 		this.initAgent(scene);
-		this.initRandomLevel(scene);
-		//this.initOnScreenControls(scene);
-		
+		//this.initRandomLevel(scene);		
 
 		scene.registerUpdateHandler(this.mPhysicsWorld);
-		this.mMusic.play();
+		//this.mMusic.play();
 				
 		return scene;
 	}
@@ -178,37 +164,7 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 	// ===========================================================
 	// Methods
 	// ===========================================================
-/*
-	private void initOnScreenControls(final Scene pScene) {
-		final AnalogOnScreenControl analogOnScreenControl = new AnalogOnScreenControl(0, CAMERA_HEIGHT - this.mOnScreenControlBaseTextureRegion.getHeight(), this.mCamera, this.mOnScreenControlBaseTextureRegion, this.mOnScreenControlKnobTextureRegion, 0.1f, new IAnalogOnScreenControlListener() {
-			private Vector2 mVelocityTemp = new Vector2();
 
-			@Override
-			public void onControlChange(final BaseOnScreenControl pBaseOnScreenControl, final float pValueX, final float pValueY) {
-				this.mVelocityTemp.set(pValueX * 5, pValueY * 5);
-				
-				final Body tankBody = CodenameDutchess.this.mAgentBody;
-				tankBody.setLinearVelocity(this.mVelocityTemp);
-				
-				final float rotationInRad = (float)Math.atan2(-pValueX, pValueY);
-				tankBody.setTransform(tankBody.getWorldCenter(), rotationInRad);
-				
-				CodenameDutchess.this.mAgent.setRotation(MathUtils.radToDeg(rotationInRad));
-			}
-
-			@Override
-			public void onControlClick(AnalogOnScreenControl pAnalogOnScreenControl) {
-			}
-		});
-		analogOnScreenControl.getControlBase().setAlpha(0.5f);
-		analogOnScreenControl.getControlBase().setScaleCenter(0, 128);
-		analogOnScreenControl.getControlBase().setScale(0.75f);
-		analogOnScreenControl.getControlKnob().setScale(0.75f);
-		analogOnScreenControl.refreshControlKnobPosition();
-		
-		pScene.setChildScene(analogOnScreenControl);
-	}
-*/
 	private void initAgent(final Scene pScene) {
 		this.mAgent = new Sprite(0, 0, this.mAgentTextureRegion);
 		this.mAgent.setScale(0.65f);
@@ -224,6 +180,9 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 		final Shape topOuter = new Rectangle(0, 0, CAMERA_WIDTH, 2);
 		final Shape leftOuter = new Rectangle(0, 0, 2, CAMERA_HEIGHT);
 		final Shape rightOuter = new Rectangle(CAMERA_WIDTH - 2, 0, 2, CAMERA_HEIGHT);
+		
+		final WallSprite wallie = new WallSprite(10, 100, this.mWoodTextureRegion, this.mPhysicsWorld);
+		
 
 		final FixtureDef wallFixtureDef = PhysicsFactory.createFixtureDef(0, 0.5f, 0.5f);
 		PhysicsFactory.createBoxBody(this.mPhysicsWorld, bottomOuter, BodyType.StaticBody, wallFixtureDef);
@@ -231,11 +190,15 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 		PhysicsFactory.createBoxBody(this.mPhysicsWorld, leftOuter, BodyType.StaticBody, wallFixtureDef);
 		PhysicsFactory.createBoxBody(this.mPhysicsWorld, rightOuter, BodyType.StaticBody, wallFixtureDef);
 		
+		//PhysicsFactory.createBoxBody(this.mPhysicsWorld, wallie, BodyType.StaticBody, wallFixtureDef);
+		
 		final ILayer bottomLayer = pScene.getTopLayer();
 		bottomLayer.addEntity(bottomOuter);
 		bottomLayer.addEntity(topOuter);
 		bottomLayer.addEntity(leftOuter);
 		bottomLayer.addEntity(rightOuter);
+		
+		bottomLayer.addEntity(wallie);
 	}
 
 	private void initRandomLevel(final Scene pScene) {
@@ -294,9 +257,12 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 			rewards[i].setScale(0.9f);
 			pScene.getTopLayer().addEntity(rewards[i]);			
 		}
+		
+		// Let's spawn our test texture
+		//WallSprite wallie = new WallSprite(0, 0, this.mWoodTextureRegion, this.mPhysicsWorld);
 
 		
-		/* The actual collision-checking. */
+		/* The actual collision-checking. This could perhaps be done outside of this function? */
 		pScene.registerUpdateHandler(new IUpdateHandler() {
 
 			@Override
@@ -324,13 +290,4 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 	}
 	
 	public static int randomNumber(int min, int max) { return min + (new Random()).nextInt(max-min); }
-
-
-	
-	
-	
-	
-	// ===========================================================
-	// Inner and Anonymous Classes
-	// ===========================================================
 }
