@@ -26,6 +26,8 @@ import org.anddev.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 import org.anddev.andengine.extension.physics.box2d.PhysicsConnector;
 import org.anddev.andengine.extension.physics.box2d.PhysicsFactory;
 import org.anddev.andengine.extension.physics.box2d.PhysicsWorld;
+import org.anddev.andengine.opengl.font.Font;
+import org.anddev.andengine.opengl.font.FontFactory;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
@@ -37,7 +39,9 @@ import org.anddev.andengine.sensor.accelerometer.AccelerometerData;
 import org.anddev.andengine.sensor.accelerometer.IAccelerometerListener;
 
 
+import android.graphics.Color;
 import android.hardware.SensorManager;
+import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.badlogic.gdx.math.Vector2;
@@ -49,6 +53,8 @@ import java.io.IOException;
 import java.util.Random;
 /**
  * @author Hopur eitt
+ * FIXME: Using font texture doesn't work
+ * FIXME: Repeating sprites for the wood bitte 
  */
 public class CodenameDutchess extends BaseGameActivity implements IAccelerometerListener {
 	// ===========================================================
@@ -79,6 +85,10 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 	private Texture mWoodTexture;
 	private TextureRegion mWoodTextureRegion;
 	
+	// Font texture
+	private Texture mFontTexture;
+	private Font mFont;
+	
 	// Texture and region for the rewards to be collected
 	private Texture mRewTexture;
 	private TextureRegion mRewTextureRegion;
@@ -88,6 +98,8 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 	private Sprite[] rewards = new Sprite[6];
 	private Rectangle endRect;
 
+	SceneFactory sf;
+	
 
 	@Override
 	public Engine onLoadEngine() {
@@ -97,20 +109,28 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 
 	@Override
 	public void onLoadResources() {
-		TextureRegionFactory.setAssetBasePath("gfx/");
+		/* Load Font/Textures. */
+		this.mFontTexture = new Texture(256, 256, TextureOptions.BILINEAR);
 
+		FontFactory.setAssetBasePath("font/");
+		this.mFont = FontFactory.createFromAsset(this.mFontTexture, this, "Plok.tff", 48, true, Color.WHITE);
+		this.mEngine.getTextureManager().loadTexture(this.mFontTexture);
+		this.mEngine.getFontManager().loadFont(this.mFont);
+		
+		/* Load Sprite Textures */
+		TextureRegionFactory.setAssetBasePath("gfx/");
+		// Agent
 		this.mAgentTexture = new Texture(64, 64, TextureOptions.BILINEAR);
-		this.mAgentTextureRegion = TextureRegionFactory.createFromAsset(this.mAgentTexture, this, "pokese6.png", 0, 0);
-		
+		this.mAgentTextureRegion = TextureRegionFactory.createFromAsset(this.mAgentTexture, this, "pokese6.png", 0, 0);	
 		this.mRewTexture = new Texture(64, 64, TextureOptions.BILINEAR);
-		this.mRewTextureRegion = TextureRegionFactory.createFromAsset(this.mRewTexture, this, "coin.png", 0, 0);
-		
+		this.mRewTextureRegion = TextureRegionFactory.createFromAsset(this.mRewTexture, this, "coin.png", 0, 0);	
 		// Wood
 		this.mWoodTexture = new Texture(64, 8, TextureOptions.REPEATING);
 		this.mWoodTextureRegion = TextureRegionFactory.createFromAsset(this.mWoodTexture, this, "wood_small.png", 0, 0);
 		
 		this.mEngine.getTextureManager().loadTextures(this.mAgentTexture, this.mRewTexture, this.mWoodTexture);
 		
+		/* Game Music */	
 		MusicFactory.setAssetBasePath("mfx/");
 		
 			try {
@@ -134,21 +154,28 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 	public Scene onLoadScene() {
 		this.mEngine.registerUpdateHandler(new FPSLogger());
 
-		scene = new Scene(4);
-		scene.setBackground(new ColorBackground(0, 0, 0));
+		scene = new Scene(1);
+		//scene.setBackground(new ColorBackground(0, 0, 0));
+		scene.setBackground(new ColorBackground(0.09804f, 0.6274f, 0.8784f));
+
 
 		//this.mPhysicsWorld = new FixedStepPhysicsWorld(30, new Vector2(0, 0), false, 8, 1);
 		// 
 		this.mPhysicsWorld = new PhysicsWorld(new Vector2(0, SensorManager.GRAVITY_EARTH), false);
 		
-		this.initBorders(scene);
-		this.initAgent(scene);
+		//this.initBorders(scene);
+		//this.initAgent(scene);
 		//this.initRandomLevel(scene);		
 
 		scene.registerUpdateHandler(this.mPhysicsWorld);
-		//this.mMusic.play();
+		this.mMusic.play();
 				
-		return scene;
+		sf = new SceneFactory(this.mCamera, this.mFont, scene);
+		//scene.setChildScene(sf.createMenuScene(), false, true, true);
+
+		//scene = sf.createWelcomeScene();
+		
+		return sf.createWelcomeScene();
 	}
 
 	@Override
@@ -160,9 +187,26 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 	public void onAccelerometerChanged(AccelerometerData pAccelerometerData) {
         this.mPhysicsWorld.setGravity(new Vector2(pAccelerometerData.getY(), pAccelerometerData.getX()));		
 	}
+	
+	public boolean onKeyDown(final int pKeyCode, final KeyEvent pEvent) {
+		if(pKeyCode == KeyEvent.KEYCODE_MENU && pEvent.getAction() == KeyEvent.ACTION_DOWN) {
+			if(this.scene.hasChildScene()) {
+				/* Remove the menu and reset it. */
+				this.scene.back();
+			} else {
+				/* Attach the menu. */
+				this.scene.setChildScene(this.sf.createMenuScene(), false, true, true);
+			}
+			return true;
+		} else {
+			return false;//super.onKeyDown(pKeyCode, pEvent);
+		}
+	}
 
+	
+	
 	// ===========================================================
-	// Methods
+	// Methods which should belong to some scene factory class
 	// ===========================================================
 
 	private void initAgent(final Scene pScene) {
