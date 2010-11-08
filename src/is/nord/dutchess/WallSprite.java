@@ -18,7 +18,7 @@ import static org.anddev.andengine.extension.physics.box2d.util.constants.Physic
  * @author gunnarr
  *
  */
-public class WallSprite extends Sprite {		
+public class WallSprite extends Sprite implements GameObject {		
 		
 	/**
 	 * @param pX is of type float and is the X-coordinate where we want to place our object
