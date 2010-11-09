@@ -114,7 +114,7 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 		this.mFontTexture = new Texture(256, 256, TextureOptions.BILINEAR);
 
 		FontFactory.setAssetBasePath("font/");
-		this.mFont = FontFactory.createFromAsset(this.mFontTexture, this, "Plok.tff", 48, true, Color.WHITE);
+		this.mFont = FontFactory.createFromAsset(this.mFontTexture, this, "UnrealTournament.ttf", 48, true, Color.WHITE);
 		this.mEngine.getTextureManager().loadTexture(this.mFontTexture);
 		this.mEngine.getFontManager().loadFont(this.mFont);
 		

@@ -1,5 +1,7 @@
 package is.nord.dutchess;
 
+import java.util.Random;
+
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.entity.layer.ILayer;
@@ -130,7 +132,22 @@ public class SceneFactory implements IOnMenuItemClickListener {
 		this.gor.getPhysicsWorld().registerPhysicsConnector(new PhysicsConnector(agent, agentBody, true, false, true, false));
 		this.activeScene.getTopLayer().addEntity(agent);
 		
-		
+		// Distribute rewards over the level
+		Sprite[] rewards;
+		Sprite coin = new Sprite(SceneFactory.randomNumber(0, (int)this.camera.getWidth()), 
+				SceneFactory.randomNumber(0, (int)this.camera.getHeight()), 
+				this.gor.getCoinTextureRegion());
+		/*
+		for(int i=0; i<6; i++)
+		{
+			rewards[i] = new Sprite(SceneFactory.randomNumber(0, (int)this.camera.getWidth()), 
+					SceneFactory.randomNumber(0, (int)this.camera.getHeight()), 
+					this.gor.getCoinTextureRegion());
+			
+			rewards[i].setScale(0.9f);
+			this.activeScene.getTopLayer().addEntity(rewards[i]);			
+		}*/
+		this.activeScene.getTopLayer().addEntity(coin);
 		this.activeScene.reset();
 	}
 	
@@ -189,5 +206,8 @@ public class SceneFactory implements IOnMenuItemClickListener {
 			return false;//super.onKeyDown(pKeyCode, pEvent);
 		}
 	}
+	
+	public static int randomNumber(int min, int max) { return min + (new Random()).nextInt(max-min); }
+
 
 }
