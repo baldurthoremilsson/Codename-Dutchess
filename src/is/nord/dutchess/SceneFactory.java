@@ -83,6 +83,7 @@ public class SceneFactory implements IOnMenuItemClickListener {
 					if (coin.collidesWith(agent))
 					{
 						activeScene.getTopLayer().removeEntity(coin);
+						coins.remove(coins.indexOf(coin));
 						am.getCoinSound().play();
 						gm.incmScore();
 					}
@@ -90,7 +91,7 @@ public class SceneFactory implements IOnMenuItemClickListener {
 			}
 		});	
 		
-		this.am.getGameMusic().play();
+		//this.am.getGameMusic().play();
 	}
 
 	/*
@@ -142,6 +143,7 @@ public class SceneFactory implements IOnMenuItemClickListener {
 	 */
 	public void createDemoScene()
 	{
+		this.clearScene();
 		/* make the frame */
 		this.initBorders();
 		/* Spawn the agent. ACTHUNG: the agent will be objectified. This codeblock also shows how GameObjectRegistry is used */
@@ -154,6 +156,7 @@ public class SceneFactory implements IOnMenuItemClickListener {
 		this.activeScene.getTopLayer().addEntity(agent);
 		
 		// Create the coins, must be randomized better
+		coins.clear();	
 		CoinSprite coin;
 		for(int i=0; i<3; i++)
 		{
@@ -166,14 +169,27 @@ public class SceneFactory implements IOnMenuItemClickListener {
 		}
 		
 		// Spawn the coins
-		//for(int i=0; i<coins.size(); i++)
-		//while(coin_itr.hasNext())
 		for( CoinSprite coinsprite : coins)
 		{
 			this.activeScene.getTopLayer().addEntity(coinsprite);			
 		}
 		
 		this.activeScene.reset();
+	}
+	
+	/*
+	 * Usage:	this.clearScene();
+	 * Pre:		this.activeScene is of type Scene and holds a scene
+	 * Post:	this.activeScene has been cleared of all objects, except background
+	 */
+	private void clearScene()
+	{
+		if (this.activeScene.hasChildScene())
+			this.activeScene.clearChildScene();
+		this.activeScene.getTopLayer().clear();	
+		this.coins.clear();
+		this.walls.clear();
+		
 	}
 	
 	/*
@@ -198,7 +214,7 @@ public class SceneFactory implements IOnMenuItemClickListener {
 		bottomLayer.addEntity(topOuter);
 		bottomLayer.addEntity(leftOuter);
 		bottomLayer.addEntity(rightOuter);	
-		
+				
 		//final WallSprite wallie = new WallSprite(10, 100, this.mWoodTextureRegion, this.gor.getPhysicsWorld());	
 		//PhysicsFactory.createBoxBody(this.gor.getPhysicsWorld(), wallie, BodyType.StaticBody, wallFixtureDef);
 		//bottomLayer.addEntity(wallie);

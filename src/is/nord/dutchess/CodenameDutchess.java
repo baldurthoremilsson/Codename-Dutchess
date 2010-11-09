@@ -40,6 +40,8 @@ import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.sensor.accelerometer.AccelerometerData;
 import org.anddev.andengine.sensor.accelerometer.IAccelerometerListener;
 
+import android.util.Log;
+
 
 import android.graphics.Color;
 import android.hardware.SensorManager;
@@ -106,8 +108,11 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 	GameManager gm;
 	AudioManager am;
 	
+	private static String TAG = "bleee";
+	
 	@Override
 	public Engine onLoadEngine() {
+		Log.d(TAG, "Asdf");
 		this.mCamera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
 		return new Engine(new EngineOptions(true, ScreenOrientation.LANDSCAPE, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), this.mCamera).setNeedsMusic(true).setNeedsSound(true));
 	}
