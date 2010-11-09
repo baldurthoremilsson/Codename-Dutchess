@@ -2,6 +2,8 @@ package is.nord.dutchess;
 
 import org.anddev.andengine.audio.music.Music;
 import org.anddev.andengine.audio.music.MusicFactory;
+import org.anddev.andengine.audio.sound.Sound;
+import org.anddev.andengine.audio.sound.SoundFactory;
 import org.anddev.andengine.engine.Engine;
 
 import org.anddev.andengine.engine.camera.Camera;
@@ -72,6 +74,8 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 	private Scene scene;
 	
 	private Music mMusic;
+	private Music mZelda;
+	private Sound mCoinSound;
 
 	private PhysicsWorld mPhysicsWorld;
 
@@ -136,7 +140,9 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 		
 			try {
 				//Last one seems to start? how about creating playlist?
-				this.mMusic = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "zelda.ogg");				
+				this.mMusic = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "Acid_techno.ogg");
+				this.mZelda = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "zelda.ogg");
+				this.mCoinSound = SoundFactory.createSoundFromAsset(this.getSoundManager(), this, "smb_coin.ogg");
 				//this.mMusic = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "Acid_techno.ogg");
 			} catch (IllegalStateException e) {
 				// TODO Auto-generated catch block
@@ -170,7 +176,7 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 		scene.registerUpdateHandler(this.mPhysicsWorld);
 		
 		//Stop playing
-		//this.mMusic.play();
+		this.mZelda.play();
 				
 		sf = new SceneFactory(this.mCamera, this.mFont, this.scene, this.gor);
 		return sf.createWelcomeScene();
@@ -191,9 +197,11 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 			if(this.scene.hasChildScene()) {
 				/* Remove the menu and reset it. */
 				this.scene.back();
+				
 			} else {
 				/* Attach the menu. */
 				this.scene.setChildScene(this.sf.createMenuScene(), false, true, true);
+				
 			}
 			return true;
 		} else {
