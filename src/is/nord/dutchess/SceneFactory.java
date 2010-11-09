@@ -43,6 +43,12 @@ public class SceneFactory implements IOnMenuItemClickListener {
 	
 	private GameObjectRegistry gor;
 	
+	// game objects
+	CoinSprite[] coins;
+	WallSprite[] walls;
+	AgentSprite agent;
+	
+	
 	private static final int MENU_NEWGAME = 0;
 	private static final int MENU_QUIT = MENU_NEWGAME + 1;
 	
@@ -126,8 +132,8 @@ public class SceneFactory implements IOnMenuItemClickListener {
 		/* make the frame */
 		this.initBorders();
 		/* Spawn the agent. ACTHUNG: the agent will be objectified. This codeblock also shows how GameObjectRegistry is used */
-		final Sprite agent = new Sprite(0, 0, this.gor.getAgentTextureRegion());
-		agent.setScale(0.65f);
+		agent = new AgentSprite(0, 0, this.gor.getAgentTextureRegion());
+		//agent.setScale(0.65f);
 		// fixturedef for physics. Can hopefully be enhanced to make ball heavier. 
 		final FixtureDef carFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f);
 		Body agentBody = PhysicsFactory.createBoxBody(this.gor.getPhysicsWorld(), agent, BodyType.DynamicBody, carFixtureDef);
@@ -135,21 +141,32 @@ public class SceneFactory implements IOnMenuItemClickListener {
 		this.activeScene.getTopLayer().addEntity(agent);
 		
 		// Distribute rewards over the level
-		Sprite[] rewards;
-		Sprite coin = new Sprite(SceneFactory.randomNumber(0, (int)this.camera.getWidth()), 
-				SceneFactory.randomNumber(0, (int)this.camera.getHeight()), 
-				this.gor.getCoinTextureRegion());
+		CoinSprite[] rewards = new CoinSprite[6];
+		//Sprite coin = new Sprite(SceneFactory.randomNumber(0, (int)this.camera.getWidth()), 
+				//SceneFactory.randomNumber(0, (int)this.camera.getHeight()), 
+				//this.gor.getCoinTextureRegion());
 		/*
 		for(int i=0; i<6; i++)
 		{
-			rewards[i] = new Sprite(SceneFactory.randomNumber(0, (int)this.camera.getWidth()), 
-					SceneFactory.randomNumber(0, (int)this.camera.getHeight()), 
+			rewards[i] = new CoinSprite(SceneFactory.randomNumber(0, 480), 
+					SceneFactory.randomNumber(0, 320),
+					20,
+					20,
 					this.gor.getCoinTextureRegion());
 			
-			rewards[i].setScale(0.9f);
+			rewards[i].setScale(0.1f);
 			this.activeScene.getTopLayer().addEntity(rewards[i]);			
-		}*/
-		this.activeScene.getTopLayer().addEntity(coin);
+		} */
+		CoinSprite test;
+		for(int i=0; i<3; i++)
+		{
+			test = new CoinSprite(SceneFactory.randomNumber(0, 480), 
+					SceneFactory.randomNumber(0, 320),
+					20,
+					20,
+					this.gor.getCoinTextureRegion());
+			this.activeScene.getTopLayer().addEntity(test);			
+		}
 		this.activeScene.reset();
 	}
 	
