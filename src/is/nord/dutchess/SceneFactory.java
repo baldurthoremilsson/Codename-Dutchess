@@ -1,7 +1,6 @@
 package is.nord.dutchess;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Random;
 
 import org.anddev.andengine.engine.camera.Camera;
