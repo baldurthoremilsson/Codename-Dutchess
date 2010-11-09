@@ -16,6 +16,7 @@ import org.anddev.andengine.extension.physics.box2d.PhysicsConnector;
 import org.anddev.andengine.extension.physics.box2d.PhysicsFactory;
 import org.anddev.andengine.opengl.font.Font;
 
+import android.text.style.BackgroundColorSpan;
 import android.view.KeyEvent;
 
 import com.badlogic.gdx.physics.box2d.Body;
@@ -92,8 +93,9 @@ public class SceneFactory implements IOnMenuItemClickListener {
 		menuScene.addMenuItem(new ColoredTextMenuItem(MENU_NEWGAME, this.font, "NEW GAME", 1.0f,0.0f,0.0f, 0.0f,0.0f,0.0f));
 		menuScene.addMenuItem(new ColoredTextMenuItem(MENU_QUIT, this.font, "QUIT", 1.0f,0.0f,0.0f, 0.0f,0.0f,0.0f));
 		menuScene.buildAnimations();
+		
 
-		menuScene.setBackgroundEnabled(false);
+		menuScene.setBackgroundEnabled(true);
 
 		menuScene.setOnMenuItemClickListener(this);
 		return menuScene;
