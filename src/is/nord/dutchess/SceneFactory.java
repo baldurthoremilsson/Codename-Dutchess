@@ -79,8 +79,6 @@ public class SceneFactory implements IOnMenuItemClickListener {
 			@Override
 			public void onUpdate(final float pSecondsElapsed) {
 				// invoke onCollision() on game objects here
-				//Iterator<CoinSprite> coin_itr = coins.iterator();
-				//while(coin_itr.hasNext())
 				for(CoinSprite coin : coins)
 				{
 					if (coin.collidesWith(agent))
@@ -91,7 +89,9 @@ public class SceneFactory implements IOnMenuItemClickListener {
 					}
 				}
 			}
-		});		
+		});	
+		
+		this.am.getGameMusic().play();
 	}
 
 	/*

@@ -74,7 +74,7 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 	
 	private Music mMusic;
 	private Music mZelda;
-	private Sound mCoinSound;
+	private Music mCoinSound;
 
 	private PhysicsWorld mPhysicsWorld;
 
@@ -106,11 +106,10 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 	GameManager gm;
 	AudioManager am;
 	
-
 	@Override
 	public Engine onLoadEngine() {
 		this.mCamera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
-		return new Engine(new EngineOptions(true, ScreenOrientation.LANDSCAPE, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), this.mCamera).setNeedsMusic(true));
+		return new Engine(new EngineOptions(true, ScreenOrientation.LANDSCAPE, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), this.mCamera).setNeedsMusic(true).setNeedsSound(true));
 	}
 
 	@Override
@@ -144,7 +143,8 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 				//Last one seems to start? how about creating playlist?
 				this.mMusic = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "Acid_techno.ogg");
 				this.mZelda = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "zelda.ogg");
-				this.mCoinSound = SoundFactory.createSoundFromAsset(this.getSoundManager(), this, "smb_coin.ogg");
+				this.mCoinSound = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "smb_coin.ogg");
+				//this.mCoinSound = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "munch.ogg");
 				//this.mMusic = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "Acid_techno.ogg");
 			} catch (IllegalStateException e) {
 				// TODO Auto-generated catch block
@@ -152,9 +152,7 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-			//this.mMusic.setLooping(true);
-	
+			}	
 		
 		// Accelero-support
 		this.enableAccelerometerSensor(this);

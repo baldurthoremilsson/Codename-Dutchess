@@ -13,7 +13,7 @@ import org.anddev.andengine.audio.sound.Sound;
  */
 public class AudioManager 
 {
-	private Sound coinSound;
+	private Music coinSound;
 	private Music gameMusic;
 	
 	/* Usage:	AudioManager am = new AudioManager(coinSound, gameMusic);
@@ -21,7 +21,7 @@ public class AudioManager
 	 * 			gameMusic is of type Music and is the in-game music.
 	 * Post:	am is a AudioManager object
 	 */
-	public AudioManager(Sound coinSound, Music gameMusic)
+	public AudioManager(Music coinSound, Music gameMusic)
 	{
 		this.coinSound = coinSound;
 		this.gameMusic = gameMusic;
@@ -32,7 +32,7 @@ public class AudioManager
 	 * Pre:		am is a AudioManager object
 	 * Post:	s holds the coin sound 
 	 */
-	public Sound getCoinSound()
+	public Music getCoinSound()
 	{
 		return this.coinSound;
 	}
