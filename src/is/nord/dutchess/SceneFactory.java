@@ -1,5 +1,7 @@
 package is.nord.dutchess;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 import org.anddev.andengine.engine.camera.Camera;
@@ -31,6 +33,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
  *
  * This class is constructs and manages scenes both for game play and menus. A part of that registering the scene to an 
  * update handler and implementing it's onUpdate method.  
+ * 
+ * FIXME: Coins don't always spawn in the frame. 
  *
  */
 
@@ -40,14 +44,14 @@ public class SceneFactory implements IOnMenuItemClickListener {
 	private Scene activeScene;
 	private Camera camera;
 	private Font font;
-	
 	private GameObjectRegistry gor;
+	private GameManager gm;
+	private AudioManager am;
 	
-	// game objects
-	CoinSprite[] coins;
-	WallSprite[] walls;
+	// Game objects
 	AgentSprite agent;
-	
+	ArrayList<CoinSprite> coins = new ArrayList<CoinSprite>();
+	ArrayList<WallSprite> walls = new ArrayList<WallSprite>();
 	
 	private static final int MENU_NEWGAME = 0;
 	private static final int MENU_QUIT = MENU_NEWGAME + 1;
@@ -57,13 +61,15 @@ public class SceneFactory implements IOnMenuItemClickListener {
 	 * Pre:		camera is of type Camera, font of type Font, and scene of type Scene, and all three have been set up
 	 * Post:	sf is a SceenFactory object based on the parameters
 	 */
-	public SceneFactory(Camera camera, Font font, Scene scene, GameObjectRegistry gor)
+	public SceneFactory(Camera camera, Font font, Scene scene, GameObjectRegistry gor, final GameManager gm, final AudioManager am)
 	{
 		this.camera = camera;
 		this.font = font;
 		this.activeScene = scene;
 		
 		this.gor = gor;
+		this.gm = gm;
+		this.am = am;
 		
 		this.activeScene.registerUpdateHandler(new IUpdateHandler() {
 
@@ -73,11 +79,19 @@ public class SceneFactory implements IOnMenuItemClickListener {
 			@Override
 			public void onUpdate(final float pSecondsElapsed) {
 				// invoke onCollision() on game objects here
+				//Iterator<CoinSprite> coin_itr = coins.iterator();
+				//while(coin_itr.hasNext())
+				for(CoinSprite coin : coins)
+				{
+					if (coin.collidesWith(agent))
+					{
+						activeScene.getTopLayer().removeEntity(coin);
+						am.getCoinSound().play();
+						gm.incmScore();
+					}
+				}
 			}
-		});
-		
-		//this.initBorders();
-		
+		});		
 	}
 
 	/*
@@ -140,33 +154,26 @@ public class SceneFactory implements IOnMenuItemClickListener {
 		this.gor.getPhysicsWorld().registerPhysicsConnector(new PhysicsConnector(agent, agentBody, true, false, true, false));
 		this.activeScene.getTopLayer().addEntity(agent);
 		
-		// Distribute rewards over the level
-		CoinSprite[] rewards = new CoinSprite[6];
-		//Sprite coin = new Sprite(SceneFactory.randomNumber(0, (int)this.camera.getWidth()), 
-				//SceneFactory.randomNumber(0, (int)this.camera.getHeight()), 
-				//this.gor.getCoinTextureRegion());
-		/*
-		for(int i=0; i<6; i++)
-		{
-			rewards[i] = new CoinSprite(SceneFactory.randomNumber(0, 480), 
-					SceneFactory.randomNumber(0, 320),
-					20,
-					20,
-					this.gor.getCoinTextureRegion());
-			
-			rewards[i].setScale(0.1f);
-			this.activeScene.getTopLayer().addEntity(rewards[i]);			
-		} */
-		CoinSprite test;
+		// Create the coins, must be randomized better
+		CoinSprite coin;
 		for(int i=0; i<3; i++)
 		{
-			test = new CoinSprite(SceneFactory.randomNumber(0, 480), 
+			coin = new CoinSprite(SceneFactory.randomNumber(0, 480), 
 					SceneFactory.randomNumber(0, 320),
 					20,
 					20,
 					this.gor.getCoinTextureRegion());
-			this.activeScene.getTopLayer().addEntity(test);			
+			this.coins.add(coin);
 		}
+		
+		// Spawn the coins
+		//for(int i=0; i<coins.size(); i++)
+		//while(coin_itr.hasNext())
+		for( CoinSprite coinsprite : coins)
+		{
+			this.activeScene.getTopLayer().addEntity(coinsprite);			
+		}
+		
 		this.activeScene.reset();
 	}
 	

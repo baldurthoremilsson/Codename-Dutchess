@@ -55,7 +55,6 @@ import java.io.IOException;
 import java.util.Random;
 /**
  * @author Hopur eitt
- * FIXME: Using font texture doesn't work
  * FIXME: Repeating sprites for the wood bitte 
  */
 public class CodenameDutchess extends BaseGameActivity implements IAccelerometerListener {
@@ -104,6 +103,8 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 
 	SceneFactory sf;
 	GameObjectRegistry gor;
+	GameManager gm;
+	AudioManager am;
 	
 
 	@Override
@@ -134,6 +135,7 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 		this.mWoodTextureRegion = TextureRegionFactory.createFromAsset(this.mWoodTexture, this, "wood_small.png", 0, 0);
 		
 		this.mEngine.getTextureManager().loadTextures(this.mAgentTexture, this.mRewTexture, this.mWoodTexture);
+		
 		
 		/* Game Music */	
 		MusicFactory.setAssetBasePath("mfx/");
@@ -166,7 +168,10 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 		scene = new Scene(1);
 		scene.setBackground(new ColorBackground(0.09804f, 0.6274f, 0.8784f));
 		this.mPhysicsWorld = new PhysicsWorld(new Vector2(0, SensorManager.GRAVITY_JUPITER), false);
+		
 		this.gor = new GameObjectRegistry(this.mPhysicsWorld);
+		this.gm = new GameManager(0,0);
+		this.am = new AudioManager(this.mCoinSound, this.mZelda);
 		
 		// Append our textures and stuff to our game object registry
 		this.gor.setAgentTextureRegion(this.mAgentTextureRegion);
@@ -174,11 +179,8 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 		this.gor.setWallTextureRegion(this.mWoodTextureRegion);
 				
 		scene.registerUpdateHandler(this.mPhysicsWorld);
-		
-		//Stop playing
-		this.mZelda.play();
-				
-		sf = new SceneFactory(this.mCamera, this.mFont, this.scene, this.gor);
+					
+		sf = new SceneFactory(this.mCamera, this.mFont, this.scene, this.gor, this.gm, this.am);
 		return sf.createWelcomeScene();
 	}
 

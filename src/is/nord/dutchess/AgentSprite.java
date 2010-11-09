@@ -1,5 +1,6 @@
 package is.nord.dutchess;
 
+import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 
@@ -17,12 +18,12 @@ public class AgentSprite extends Sprite
 	}
 	
 	/*
-	 * Usage:	c.onCollision();
-	 * Pre:		c is a CoinSprite object
-	 * Post:	the collision has been handled in a coinly-manner
+	 * Usage:	c.onCollision(activeScene);
+	 * Pre:		c is a CoinSprite object, activeScene is of type scene.
+	 * Post:	the collision has been handled in a coinly-manner, which affects activeScene
+	 * UGLY:	Passing the active scene to this function is Fugly.
 	 */
-	public void onCollision()
+	public void onCollision(Scene activeScene)
 	{
-		
 	}
 }

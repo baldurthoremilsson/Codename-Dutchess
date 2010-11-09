@@ -2,7 +2,7 @@ package is.nord.dutchess;
 
 //GameManager
 
-/*
+/**
  * @author lettfeti
  * Handles scores 
  * Handles levels
@@ -23,6 +23,11 @@ public class GameManager {
 	public void setmScore(Integer mScore) {
 		this.mScore = mScore;
 	}
+	
+	public void incmScore() {
+		this.mScore++;
+	}
+	
 	public Integer getmLevel() {
 		return mLevel;
 	}
