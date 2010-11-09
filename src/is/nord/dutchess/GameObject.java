@@ -23,5 +23,6 @@ public interface GameObject {
 	 * Post:	a Body has been created according to shapeObject, and assigned to it.
 	 */
 	public void createBody(PhysicsWorld pPhysicsWorld);
+	
 
 }

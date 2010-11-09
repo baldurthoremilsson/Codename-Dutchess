@@ -1,6 +1,7 @@
 package is.nord.dutchess;
 
 import org.anddev.andengine.engine.camera.Camera;
+import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.background.ColorBackground;
 import org.anddev.andengine.entity.scene.menu.MenuScene;
@@ -15,7 +16,8 @@ import android.view.KeyEvent;
  * 
  * @author gunnarr
  *
- * This class is meant to construct and manage scenes both for game play and menus.
+ * This class is constructs and manages scenes both for game play and menus. A part of that registering the scene to an 
+ * update handler and implementing it's onUpdate method.  
  *
  */
 
@@ -23,17 +25,38 @@ public class SceneFactory implements IOnMenuItemClickListener {
 
 	// Local variables
 	private Scene activeScene;
-	private Camera mCamera; // CONSTRUCTOR SPECIFIED
-	private Font mFont; // CONSTRUCTOR SPECIFIED
+	private Camera mCamera;
+	private Font mFont;
+	
+	private GameObjectRegistry mGor;
 	
 	private static final int MENU_NEWGAME = 0;
 	private static final int MENU_QUIT = MENU_NEWGAME + 1;
 	
-	public SceneFactory(Camera camera, Font font, Scene scene)
+	/*
+	 * Usage:	SceneFactory sf = new SceneFactory(camera, font, scene);
+	 * Pre:		camera is of type Camera, font of type Font, and scene of type Scene, and all three have been set up
+	 * Post:	sf is a SceenFactory object based on the parameters
+	 */
+	public SceneFactory(Camera camera, Font font, Scene scene, GameObjectRegistry gor)
 	{
 		this.mCamera = camera;
 		this.mFont = font;
 		this.activeScene = scene;
+		
+		this.mGor = gor;
+		
+		this.activeScene.registerUpdateHandler(new IUpdateHandler() {
+
+			@Override
+			public void reset() { }
+
+			@Override
+			public void onUpdate(final float pSecondsElapsed) {
+				// invoke onCollision() on game objects here
+			}
+		});
+		
 	}
 
 	/*

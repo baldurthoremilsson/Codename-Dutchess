@@ -99,6 +99,7 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 	private Rectangle endRect;
 
 	SceneFactory sf;
+	GameObjectRegistry gor;
 	
 
 	@Override
@@ -155,26 +156,19 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 		this.mEngine.registerUpdateHandler(new FPSLogger());
 
 		scene = new Scene(1);
-		//scene.setBackground(new ColorBackground(0, 0, 0));
 		scene.setBackground(new ColorBackground(0.09804f, 0.6274f, 0.8784f));
-
-
-		//this.mPhysicsWorld = new FixedStepPhysicsWorld(30, new Vector2(0, 0), false, 8, 1);
-		// 
 		this.mPhysicsWorld = new PhysicsWorld(new Vector2(0, SensorManager.GRAVITY_EARTH), false);
+		this.gor = new GameObjectRegistry(this.mPhysicsWorld);
 		
-		//this.initBorders(scene);
-		//this.initAgent(scene);
-		//this.initRandomLevel(scene);		
-
+		// Append our textures and stuff to our game object registry
+		this.gor.setAgentTextureRegion(this.mAgentTextureRegion);
+		this.gor.setCoinTextureRegion(this.mRewTextureRegion);
+		this.gor.setWallTextureRegion(this.mWoodTextureRegion);
+				
 		scene.registerUpdateHandler(this.mPhysicsWorld);
 		this.mMusic.play();
 				
-		sf = new SceneFactory(this.mCamera, this.mFont, scene);
-		//scene.setChildScene(sf.createMenuScene(), false, true, true);
-
-		//scene = sf.createWelcomeScene();
-		
+		sf = new SceneFactory(this.mCamera, this.mFont, this.scene, this.gor);
 		return sf.createWelcomeScene();
 	}
 
@@ -203,7 +197,6 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 		}
 	}
 
-	
 	
 	// ===========================================================
 	// Methods which should belong to some scene factory class
@@ -305,31 +298,7 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 		// Let's spawn our test texture
 		//WallSprite wallie = new WallSprite(0, 0, this.mWoodTextureRegion, this.mPhysicsWorld);
 
-		
-		/* The actual collision-checking. This could perhaps be done outside of this function? */
-		pScene.registerUpdateHandler(new IUpdateHandler() {
-
-			@Override
-			public void reset() { }
-
-			@Override
-			public void onUpdate(final float pSecondsElapsed) {
-				for (int i=0; i<10; i++) {
-					if(lines[i].collidesWith(CodenameDutchess.this.mAgent) && lines[i].getRed() == 0.5)
-						lines[i].setColor(1, 0, 0);
-				}
-				
-				for (int i=0; i<6; i++) {
-					if(rewards[i].collidesWith(CodenameDutchess.this.mAgent)) {
-						CodenameDutchess.this.scene.getTopLayer().removeEntity(rewards[i]);
-					}
-				}
-				
-				if(CodenameDutchess.this.endRect.collidesWith(CodenameDutchess.this.mAgent)) {
-					CodenameDutchess.this.endRect.setColor(0, 1, 0);
-				}
-			}
-		});
+		// Collision has been outsourced to SceneFactory! 
 		
 	}
 	
