@@ -166,7 +166,7 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 		this.gor.setWallTextureRegion(this.mWoodTextureRegion);
 				
 		scene.registerUpdateHandler(this.mPhysicsWorld);
-		//this.mMusic.play();
+		this.mMusic.play();
 				
 		sf = new SceneFactory(this.mCamera, this.mFont, this.scene, this.gor);
 		return sf.createWelcomeScene();

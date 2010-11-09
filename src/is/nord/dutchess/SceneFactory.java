@@ -95,7 +95,7 @@ public class SceneFactory implements IOnMenuItemClickListener {
 		menuScene.buildAnimations();
 		
 
-		menuScene.setBackgroundEnabled(true);
+		menuScene.setBackgroundEnabled(false);
 
 		menuScene.setOnMenuItemClickListener(this);
 		return menuScene;
