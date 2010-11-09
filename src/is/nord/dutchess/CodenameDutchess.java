@@ -135,7 +135,9 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 		MusicFactory.setAssetBasePath("mfx/");
 		
 			try {
-				this.mMusic = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "zelda.ogg");
+				//Last one seems to start? how about creating playlist?
+				this.mMusic = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "zelda.ogg");				
+				//this.mMusic = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "Acid_techno.ogg");
 			} catch (IllegalStateException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -143,8 +145,8 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			this.mMusic.setLooping(true);
-		
+			//this.mMusic.setLooping(true);
+	
 		
 		// Accelero-support
 		this.enableAccelerometerSensor(this);
@@ -157,7 +159,7 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 
 		scene = new Scene(1);
 		scene.setBackground(new ColorBackground(0.09804f, 0.6274f, 0.8784f));
-		this.mPhysicsWorld = new PhysicsWorld(new Vector2(0, SensorManager.GRAVITY_EARTH), false);
+		this.mPhysicsWorld = new PhysicsWorld(new Vector2(0, SensorManager.GRAVITY_JUPITER), false);
 		this.gor = new GameObjectRegistry(this.mPhysicsWorld);
 		
 		// Append our textures and stuff to our game object registry
