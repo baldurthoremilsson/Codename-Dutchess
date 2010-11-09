@@ -12,7 +12,7 @@ import com.badlogic.gdx.physics.box2d.Body;
  *	This class holds information regarding each game object which is required for the object's construction. 
  */
 public class GameObjectRegistry {
-	private PhysicsWorld phisycs;
+	private PhysicsWorld physicsworld;
 	
 	private TextureRegion agentTextureRegion;
 	private TextureRegion wallTextureRegion;
@@ -27,7 +27,7 @@ public class GameObjectRegistry {
 	 */
 	public GameObjectRegistry(PhysicsWorld physicsEngine)
 	{
-		this.phisycs = physicsEngine;
+		this.physicsworld = physicsEngine;
 	}
 	
 	/* Setters */
@@ -71,6 +71,11 @@ public class GameObjectRegistry {
 	{
 		return this.agentBody;
 		
+	}
+	
+	public PhysicsWorld getPhysicsWorld()
+	{
+		return this.physicsworld;
 	}
 
 }

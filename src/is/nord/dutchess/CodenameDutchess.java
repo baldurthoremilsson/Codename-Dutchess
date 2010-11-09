@@ -166,7 +166,7 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 		this.gor.setWallTextureRegion(this.mWoodTextureRegion);
 				
 		scene.registerUpdateHandler(this.mPhysicsWorld);
-		this.mMusic.play();
+		//this.mMusic.play();
 				
 		sf = new SceneFactory(this.mCamera, this.mFont, this.scene, this.gor);
 		return sf.createWelcomeScene();
@@ -211,32 +211,6 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 		pScene.getTopLayer().addEntity(this.mAgent);
 	}
 	
-	
-	private void initBorders(final Scene pScene) {
-		final Shape bottomOuter = new Rectangle(0, CAMERA_HEIGHT - 2, CAMERA_WIDTH, 2);
-		final Shape topOuter = new Rectangle(0, 0, CAMERA_WIDTH, 2);
-		final Shape leftOuter = new Rectangle(0, 0, 2, CAMERA_HEIGHT);
-		final Shape rightOuter = new Rectangle(CAMERA_WIDTH - 2, 0, 2, CAMERA_HEIGHT);
-		
-		final WallSprite wallie = new WallSprite(10, 100, this.mWoodTextureRegion, this.mPhysicsWorld);
-		
-
-		final FixtureDef wallFixtureDef = PhysicsFactory.createFixtureDef(0, 0.5f, 0.5f);
-		PhysicsFactory.createBoxBody(this.mPhysicsWorld, bottomOuter, BodyType.StaticBody, wallFixtureDef);
-		PhysicsFactory.createBoxBody(this.mPhysicsWorld, topOuter, BodyType.StaticBody, wallFixtureDef);
-		PhysicsFactory.createBoxBody(this.mPhysicsWorld, leftOuter, BodyType.StaticBody, wallFixtureDef);
-		PhysicsFactory.createBoxBody(this.mPhysicsWorld, rightOuter, BodyType.StaticBody, wallFixtureDef);
-		
-		//PhysicsFactory.createBoxBody(this.mPhysicsWorld, wallie, BodyType.StaticBody, wallFixtureDef);
-		
-		final ILayer bottomLayer = pScene.getTopLayer();
-		bottomLayer.addEntity(bottomOuter);
-		bottomLayer.addEntity(topOuter);
-		bottomLayer.addEntity(leftOuter);
-		bottomLayer.addEntity(rightOuter);
-		
-		bottomLayer.addEntity(wallie);
-	}
 
 	private void initRandomLevel(final Scene pScene) {
 		Random gaur = new Random();
