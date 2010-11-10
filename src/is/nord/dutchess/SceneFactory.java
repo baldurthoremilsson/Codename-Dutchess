@@ -1,6 +1,8 @@
 package is.nord.dutchess;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 import org.anddev.andengine.engine.camera.Camera;
@@ -14,12 +16,11 @@ import org.anddev.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener
 import org.anddev.andengine.entity.scene.menu.item.ColoredTextMenuItem;
 import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
 import org.anddev.andengine.entity.shape.Shape;
-import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.extension.physics.box2d.PhysicsConnector;
 import org.anddev.andengine.extension.physics.box2d.PhysicsFactory;
 import org.anddev.andengine.opengl.font.Font;
 
-import android.text.style.BackgroundColorSpan;
+import android.util.Log;
 import android.view.KeyEvent;
 
 import com.badlogic.gdx.physics.box2d.Body;
@@ -49,11 +50,15 @@ public class SceneFactory implements IOnMenuItemClickListener {
 	
 	// Game objects
 	AgentSprite agent;
+	Body agentBody;
 	ArrayList<CoinSprite> coins = new ArrayList<CoinSprite>();
+	//ArrayList coins = Collections.synchronizedList(new ArrayList<CoinSprite>());
 	ArrayList<WallSprite> walls = new ArrayList<WallSprite>();
 	
 	private static final int MENU_NEWGAME = 0;
 	private static final int MENU_QUIT = MENU_NEWGAME + 1;
+	private static String COINS = "coins concurrency exception";
+
 	
 	/*
 	 * Usage:	SceneFactory sf = new SceneFactory(camera, font, scene);
@@ -80,10 +85,11 @@ public class SceneFactory implements IOnMenuItemClickListener {
 				// invoke onCollision() on game objects here
 				for(CoinSprite coin : coins)
 				{
-					if (coin.collidesWith(agent))
+					if (coin.collidesWith(agent) && coin.isEnabled())
 					{
+						coin.disable();
 						activeScene.getTopLayer().removeEntity(coin);
-						coins.remove(coins.indexOf(coin));
+						//coins.remove(coins.indexOf(coin));		
 						am.getCoinSound().play();
 						gm.incmScore();
 					}
@@ -91,7 +97,7 @@ public class SceneFactory implements IOnMenuItemClickListener {
 			}
 		});	
 		
-		//this.am.getGameMusic().play();
+		this.am.getGameMusic().play();
 	}
 
 	/*
@@ -143,7 +149,7 @@ public class SceneFactory implements IOnMenuItemClickListener {
 	 */
 	public void createDemoScene()
 	{
-		this.clearScene();
+		//this.clearScene();
 		/* make the frame */
 		this.initBorders();
 		/* Spawn the agent. ACTHUNG: the agent will be objectified. This codeblock also shows how GameObjectRegistry is used */
@@ -151,12 +157,12 @@ public class SceneFactory implements IOnMenuItemClickListener {
 		//agent.setScale(0.65f);
 		// fixturedef for physics. Can hopefully be enhanced to make ball heavier. 
 		final FixtureDef carFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f);
-		Body agentBody = PhysicsFactory.createBoxBody(this.gor.getPhysicsWorld(), agent, BodyType.DynamicBody, carFixtureDef);
+		agentBody = PhysicsFactory.createBoxBody(this.gor.getPhysicsWorld(), agent, BodyType.DynamicBody, carFixtureDef);
 		this.gor.getPhysicsWorld().registerPhysicsConnector(new PhysicsConnector(agent, agentBody, true, false, true, false));
 		this.activeScene.getTopLayer().addEntity(agent);
 		
 		// Create the coins, must be randomized better
-		coins.clear();	
+		//coins.clear();	
 		CoinSprite coin;
 		for(int i=0; i<3; i++)
 		{
@@ -189,6 +195,10 @@ public class SceneFactory implements IOnMenuItemClickListener {
 		this.activeScene.getTopLayer().clear();	
 		this.coins.clear();
 		this.walls.clear();
+		this.gor.getPhysicsWorld().clearPhysicsConnectors();
+		//this.activeScene.reset();
+		//this.activeScene = new Scene(1);
+		//this.agentBody = null;
 		
 	}
 	
