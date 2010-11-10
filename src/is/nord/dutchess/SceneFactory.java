@@ -52,7 +52,7 @@ public class SceneFactory implements IOnMenuItemClickListener {
 	AgentSprite agent;
 	Body agentBody;
 	ArrayList<CoinSprite> coins = new ArrayList<CoinSprite>();
-	//ArrayList coins = Collections.synchronizedList(new ArrayList<CoinSprite>());
+	//List <CoinSprite>coins = Collections.synchronizedList(new ArrayList<CoinSprite>());
 	ArrayList<WallSprite> walls = new ArrayList<WallSprite>();
 	
 	private static final int MENU_NEWGAME = 0;
@@ -178,6 +178,16 @@ public class SceneFactory implements IOnMenuItemClickListener {
 		for( CoinSprite coinsprite : coins)
 		{
 			this.activeScene.getTopLayer().addEntity(coinsprite);			
+		}
+		
+		WallSprite wallie;
+		for(int i=0; i<5; i++)
+		{
+			wallie = new WallSprite(SceneFactory.randomNumber(0, 480), 
+					SceneFactory.randomNumber(0, 320), 
+					this.gor.getWallTextureRegion(), 
+					this.gor.getPhysicsWorld());
+			this.activeScene.getTopLayer().addEntity(wallie);
 		}
 		
 		this.activeScene.reset();
