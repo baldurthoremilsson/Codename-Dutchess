@@ -149,7 +149,6 @@ public class SceneFactory implements IOnMenuItemClickListener {
 	 */
 	public void createDemoScene()
 	{
-		//this.clearScene();
 		/* make the frame */
 		this.initBorders();
 		/* Spawn the agent. ACTHUNG: the agent will be objectified. This codeblock also shows how GameObjectRegistry is used */
@@ -162,9 +161,8 @@ public class SceneFactory implements IOnMenuItemClickListener {
 		this.activeScene.getTopLayer().addEntity(agent);
 		
 		// Create the coins, must be randomized better
-		//coins.clear();	
 		CoinSprite coin;
-		for(int i=0; i<3; i++)
+		for(int i=0; i<6; i++)
 		{
 			coin = new CoinSprite(SceneFactory.randomNumber(0, 480), 
 					SceneFactory.randomNumber(0, 320),
@@ -206,7 +204,7 @@ public class SceneFactory implements IOnMenuItemClickListener {
 		this.coins.clear();
 		this.walls.clear();
 		this.gor.getPhysicsWorld().clearPhysicsConnectors();
-		//this.activeScene.reset();
+		this.activeScene.reset();
 		//this.activeScene = new Scene(1);
 		//this.agentBody = null;
 		

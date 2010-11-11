@@ -143,7 +143,7 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 		
 			try {
 				//Last one seems to start? how about creating playlist?
-				this.mMusic = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "Acid_techno.ogg");
+				this.mMusic = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "unreal.ogg");
 				this.mZelda = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "zelda.ogg");
 				this.mCoinSound = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "smb_coin.ogg");
 				//this.mCoinSound = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "munch.ogg");
@@ -171,7 +171,7 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 		
 		this.gor = new GameObjectRegistry(this.mPhysicsWorld);
 		this.gm = new GameManager(0,0);
-		this.am = new AudioManager(this.mCoinSound, this.mZelda);
+		this.am = new AudioManager(this.mCoinSound, this.mMusic);
 		
 		// Append our textures and stuff to our game object registry
 		this.gor.setAgentTextureRegion(this.mAgentTextureRegion);
