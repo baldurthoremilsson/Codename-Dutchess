@@ -5,7 +5,7 @@ import org.anddev.andengine.audio.sound.Sound;
 
 /**
  * 
- * @author gunnarr
+ * @author Hopur Eitt
  * 
  * This class manages music for the levels and sound effects
  * 

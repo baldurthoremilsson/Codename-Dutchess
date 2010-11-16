@@ -30,6 +30,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 /**
  * 
  * @author gunnarr
+ * @changes lettfeti
  *
  * This class is constructs and manages scenes both for game play and menus. A part of that registering the scene to an 
  * update handler and implementing it's onUpdate method.  
@@ -52,7 +53,7 @@ public class SceneFactory implements IOnMenuItemClickListener {
 	AgentSprite agent;
 	Body agentBody;
 	ArrayList<CoinSprite> coins = new ArrayList<CoinSprite>();
-	//List <CoinSprite>coins = Collections.synchronizedList(new ArrayList<CoinSprite>());
+	//List <CoinSprite> coins = Collections.synchronizedList(new ArrayList<CoinSprite>());
 	ArrayList<WallSprite> walls = new ArrayList<WallSprite>();
 	
 	private static final int MENU_NEWGAME = 0;
