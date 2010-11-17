@@ -203,12 +203,18 @@ public class SceneFactory implements IOnMenuItemClickListener {
 	private void clearScene()
 	{
 		if (this.activeScene.hasChildScene())
+		{
 			this.activeScene.clearChildScene();
+		}
 		this.activeScene.getTopLayer().clear();	
+		this.activeScene.getTopLayer().reset();
+		this.activeScene.clearUpdateHandlers();
 		this.coins.clear();
 		this.walls.clear();
 		this.gor.getPhysicsWorld().clearPhysicsConnectors();
 		this.activeScene.reset();
+		
+		
 		//this.activeScene = new Scene(1);
 		//this.agentBody = null;
 		
