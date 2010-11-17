@@ -165,8 +165,8 @@ public class SceneFactory implements IOnMenuItemClickListener {
 		CoinSprite coin;
 		for(int i=0; i<6; i++)
 		{
-			coin = new CoinSprite(SceneFactory.randomNumber(0, 480), 
-					SceneFactory.randomNumber(0, 320),
+			coin = new CoinSprite(SceneFactory.randomNumber(10, 480-20), 
+					SceneFactory.randomNumber(10, 320-20),
 					20,
 					20,
 					this.gor.getCoinTextureRegion());
@@ -182,8 +182,8 @@ public class SceneFactory implements IOnMenuItemClickListener {
 		WallSprite wallie;
 		for(int i=0; i<5; i++)
 		{
-			wallie = new WallSprite(SceneFactory.randomNumber(0, 480), 
-					SceneFactory.randomNumber(0, 320), 
+			wallie = new WallSprite(SceneFactory.randomNumber(10, 480-20), 
+					SceneFactory.randomNumber(10, 320-20), 
 					this.gor.getWallTextureRegion(), 
 					this.gor.getPhysicsWorld());
 			this.activeScene.getTopLayer().addEntity(wallie);
