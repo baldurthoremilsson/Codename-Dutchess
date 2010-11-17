@@ -4,7 +4,7 @@ import org.anddev.andengine.extension.physics.box2d.PhysicsWorld;
 
 /**
  * 
- * @author gunnarr
+ * @author bjorn
  * This interface is meant to define the mutual methods each game object needs to implement.
  *
  */
