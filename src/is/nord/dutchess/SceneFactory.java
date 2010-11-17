@@ -246,7 +246,9 @@ public class SceneFactory implements IOnMenuItemClickListener {
 		switch(pMenuItem.getID()) 
 		{
 			case MENU_QUIT: System.exit(0); // Should also be activity finish something
-			case MENU_NEWGAME: this.createDemoScene();
+			case MENU_NEWGAME: 
+				this.clearScene();
+				this.createDemoScene();
 			return true;
 		}
 		return false;
