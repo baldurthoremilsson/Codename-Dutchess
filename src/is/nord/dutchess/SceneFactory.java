@@ -39,7 +39,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
  *
  */
 
-public class SceneFactory implements IOnMenuItemClickListener {
+public class SceneFactory {
 
 	// Local variables
 	private Scene activeScene;
@@ -55,8 +55,6 @@ public class SceneFactory implements IOnMenuItemClickListener {
 	List<CoinSprite> coins = new ArrayList<CoinSprite>();
 	List<WallSprite> walls = new ArrayList<WallSprite>();
 	
-	private static final int MENU_NEWGAME = 0;
-	private static final int MENU_QUIT = MENU_NEWGAME + 1;
 	private static String COINS = "coins concurrency exception";
 
 	
@@ -99,6 +97,20 @@ public class SceneFactory implements IOnMenuItemClickListener {
 		
 		this.am.getGameMusic().play();
 	}
+	
+	public Scene createStartScene(IOnMenuItemClickListener listener) {
+		final MenuScene menuScene = new MenuScene(this.camera);
+
+		menuScene.addMenuItem(new ColoredTextMenuItem(CodenameDutchess.MENU_MAIN_NEWGAME, this.font, "NEW GAME", 1.0f,0.0f,0.0f, 0.0f,0.0f,0.0f));
+		menuScene.addMenuItem(new ColoredTextMenuItem(CodenameDutchess.MENU_MAIN_QUIT, this.font, "QUIT", 1.0f,0.0f,0.0f, 0.0f,0.0f,0.0f));
+		menuScene.buildAnimations();
+		
+
+		menuScene.setBackgroundEnabled(false);
+
+		menuScene.setOnMenuItemClickListener(listener);
+		return menuScene;
+	}
 
 	/*
 	 * Usage:	gameScene = sf.getGameScene();
@@ -107,37 +119,6 @@ public class SceneFactory implements IOnMenuItemClickListener {
 	 */
 	public Scene getGameScene()
 	{
-		return this.activeScene;
-	}
-
-	/*
-	 * Usage:	menuScene = sf.createMenuScene()
-	 * Pre:		sf is a SceneFactory object
-	 * Post:	menuScene holds the main gamemenu 
-	 */
-	public MenuScene createMenuScene() {
-		final MenuScene menuScene = new MenuScene(this.camera);
-
-		menuScene.addMenuItem(new ColoredTextMenuItem(MENU_NEWGAME, this.font, "NEW GAME", 1.0f,0.0f,0.0f, 0.0f,0.0f,0.0f));
-		menuScene.addMenuItem(new ColoredTextMenuItem(MENU_QUIT, this.font, "QUIT", 1.0f,0.0f,0.0f, 0.0f,0.0f,0.0f));
-		menuScene.buildAnimations();
-		
-
-		menuScene.setBackgroundEnabled(false);
-
-		menuScene.setOnMenuItemClickListener(this);
-		return menuScene;
-	}
-	
-	/*
-	 * Usage:	welcomeScene = sf.createWelcomeScene();
-	 * Pre:		sf is a SceneFactory object
-	 * Post:	welcomeScene holds the initial scene loaded when the game is started
-	 */
-	public Scene createWelcomeScene()
-	{
-		this.activeScene.setBackground(new ColorBackground(0.09804f, 0.6274f, 0.8784f));
-		this.activeScene.setChildScene(this.createMenuScene(), false, true, true);
 		return this.activeScene;
 	}
 	
@@ -211,7 +192,6 @@ public class SceneFactory implements IOnMenuItemClickListener {
 		this.activeScene.reset();
 		//this.activeScene = new Scene(1);
 		//this.agentBody = null;
-		
 	}
 	
 	/*
@@ -242,35 +222,21 @@ public class SceneFactory implements IOnMenuItemClickListener {
 		//bottomLayer.addEntity(wallie);
 	}
 	
-	
-	@Override
-	public boolean onMenuItemClicked(MenuScene pMenuScene, IMenuItem pMenuItem, float pMenuItemLocalX, float pMenuItemLocalY) 
-	{
-		switch(pMenuItem.getID()) 
-		{
-			case MENU_QUIT: System.exit(0); // Should also be activity finish something
-			case MENU_NEWGAME: 
-				this.clearScene();
-				this.createDemoScene();
-			return true;
-		}
-		return false;
-	}
-	
+	/*
 	public boolean onKeyDown(final int pKeyCode, final KeyEvent pEvent) {
 		if(pKeyCode == KeyEvent.KEYCODE_MENU && pEvent.getAction() == KeyEvent.ACTION_DOWN) {
 			if(this.activeScene.hasChildScene()) {
-				/* Remove the menu and reset it. */
+				// Remove the menu and reset it.
 				this.activeScene.back();
 			} else {
-				/* Attach the menu. */
+				// Attach the menu.
 				this.activeScene.setChildScene(this.createMenuScene(), false, true, true);
 			}
 			return true;
 		} else {
 			return false;//super.onKeyDown(pKeyCode, pEvent);
 		}
-	}
+	}*/
 	
 	public static int randomNumber(int min, int max) { return min + (new Random()).nextInt(max-min); }
 

@@ -16,6 +16,10 @@ import org.anddev.andengine.engine.options.EngineOptions.ScreenOrientation;
 import org.anddev.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.anddev.andengine.entity.layer.ILayer;
 import org.anddev.andengine.entity.primitive.Rectangle;
+import org.anddev.andengine.entity.scene.CameraScene;
+import org.anddev.andengine.entity.scene.menu.MenuScene;
+import org.anddev.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
+import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.background.ColorBackground;
 import org.anddev.andengine.entity.shape.Shape;
@@ -59,12 +63,15 @@ import java.util.Random;
  * @author Hopur eitt
  * FIXME: Repeating sprites for the wood bitte 
  */
-public class CodenameDutchess extends BaseGameActivity implements IAccelerometerListener {
+public class CodenameDutchess extends BaseGameActivity implements IAccelerometerListener, IOnMenuItemClickListener {
 	// ===========================================================
 	// Constants
 	// ===========================================================
 	private static final int CAMERA_WIDTH = 480;
 	private static final int CAMERA_HEIGHT = 320;
+
+	public static final int MENU_MAIN_NEWGAME = 0;
+	public static final int MENU_MAIN_QUIT = 1;
 
 
 
@@ -181,7 +188,8 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 		scene.registerUpdateHandler(this.mPhysicsWorld);
 					
 		sf = new SceneFactory(this.mCamera, this.mFont, this.scene, this.gor, this.gm, this.am);
-		return sf.createWelcomeScene();
+		//return sf.createWelcomeScene();
+		return sf.createStartScene(this);
 	}
 
 	@Override
@@ -194,14 +202,15 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
         this.mPhysicsWorld.setGravity(new Vector2(pAccelerometerData.getY(), pAccelerometerData.getX()));		
 	}
 	
+	/*
 	public boolean onKeyDown(final int pKeyCode, final KeyEvent pEvent) {
 		if(pKeyCode == KeyEvent.KEYCODE_MENU && pEvent.getAction() == KeyEvent.ACTION_DOWN) {
 			if(this.scene.hasChildScene()) {
-				/* Remove the menu and reset it. */
+				// Remove the menu and reset it.
 				this.scene.back();
 				
 			} else {
-				/* Attach the menu. */
+				// Attach the menu.
 				this.scene.setChildScene(this.sf.createMenuScene(), false, true, true);
 				
 			}
@@ -210,7 +219,7 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 			return false;//super.onKeyDown(pKeyCode, pEvent);
 		}
 	}
-
+	*/
 	
 	// ===========================================================
 	// Methods which should belong to some scene factory class
@@ -291,4 +300,18 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 //	}
 	
 	public static int randomNumber(int min, int max) { return min + (new Random()).nextInt(max-min); }
+
+	@Override
+	public boolean onMenuItemClicked(MenuScene pMenuScene, IMenuItem pMenuItem, float pMenuItemLocalX, float pMenuItemLocalY) {
+		switch(pMenuItem.getID()) 
+		{
+			case MENU_MAIN_QUIT:
+				System.exit(0); // Should also be activity finish something
+				return true;
+			case MENU_MAIN_NEWGAME: 
+				
+				return true;
+		}
+		return false;
+	}
 }
