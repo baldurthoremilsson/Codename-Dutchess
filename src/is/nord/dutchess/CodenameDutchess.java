@@ -144,7 +144,7 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 		this.mRewTextureRegion = TextureRegionFactory.createFromAsset(this.mRewTexture, this, "coin.png", 0, 0);	
 		// Wood
 		this.mWoodTexture = new Texture(64, 8, TextureOptions.REPEATING);
-		this.mWoodTextureRegion = TextureRegionFactory.createFromAsset(this.mWoodTexture, this, "wood_small.png", 0, 0);
+		this.mWoodTextureRegion = TextureRegionFactory.createFromAsset(this.mWoodTexture, this, "wood_small_v.png", 0, 0);
 		
 		this.mEngine.getTextureManager().loadTextures(this.mAgentTexture, this.mRewTexture, this.mWoodTexture);
 		
@@ -157,6 +157,7 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 				this.mMusic = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "unreal.ogg");
 				this.mZelda = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "zelda.ogg");
 				this.mCoinSound = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "smb_coin.ogg");
+
 				//this.mCoinSound = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "munch.ogg");
 				//this.mMusic = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "Acid_techno.ogg");
 			} catch (IllegalStateException e) {

@@ -20,6 +20,8 @@ import org.anddev.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener
 import org.anddev.andengine.entity.scene.menu.item.ColoredTextMenuItem;
 import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
 import org.anddev.andengine.entity.shape.Shape;
+import org.anddev.andengine.entity.shape.modifier.RotationModifier;
+import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.entity.text.ChangeableText;
 import org.anddev.andengine.entity.text.Text;
 import org.anddev.andengine.extension.physics.box2d.PhysicsConnector;
@@ -103,12 +105,13 @@ public class SceneFactory implements IOnMenuItemClickListener {
 						am.getCoinSound().play();
 						gm.incmScore();
 						mScoreText.setText(gm.getmScore().toString());
+						
 					}
 				}
 			}
 		});	
 		
-		this.am.getPlayList().get(0).play();
+		this.am.getPlayList().get(1).play();
 	}
 
 	/*
@@ -135,6 +138,7 @@ public class SceneFactory implements IOnMenuItemClickListener {
 		menuScene.setBackgroundEnabled(false);
 
 		menuScene.setOnMenuItemClickListener(this);
+		
 		return menuScene;
 	}
 	
@@ -203,13 +207,14 @@ public class SceneFactory implements IOnMenuItemClickListener {
 			this.activeScene.getTopLayer().addEntity(coinsprite);			
 		}
 		
-		WallSprite wallie;
-		for(int i=0; i<5; i++)
+		Sprite wallie;
+		for(int i=0; i<25; i++)
 		{
-			wallie = new WallSprite(SceneFactory.randomNumber(10, 480-20), 
-					SceneFactory.randomNumber(10, 320-20), 
+			wallie = new WallSprite(SceneFactory.randomNumber(10, 480*2-20), 
+					SceneFactory.randomNumber(10, 320*2-20), 
 					this.gor.getWallTextureRegion(), 
 					this.gor.getPhysicsWorld());
+			wallie.addShapeModifier(new RotationModifier(6, 0, 90));
 			this.activeScene.getTopLayer().addEntity(wallie);
 		}
 		
@@ -292,6 +297,12 @@ public class SceneFactory implements IOnMenuItemClickListener {
 		} else {
 			return false;//super.onKeyDown(pKeyCode, pEvent);
 		}
+	}
+	
+	public Scene getLevel(int n)
+	{
+		this.initBorders();
+		return null;
 	}
 	
 	public static int randomNumber(int min, int max) { return min + (new Random()).nextInt(max-min); }
