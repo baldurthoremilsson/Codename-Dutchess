@@ -150,63 +150,62 @@ public class SceneFactory {
 		scene.registerUpdateHandler(physicsWorld);
 		/* make the frame */
 		initBorders(scene, this.camera, physicsWorld);
-		return scene;
-//		
+		/* Spawn the agent. ACTHUNG: the agent will be objectified. This codeblock also shows how GameObjectRegistry is used */
+		agent = new AgentSprite(0, 0, this.gor.getAgentTextureRegion());
+		//agent.setScale(0.65f);
+		// fixturedef for physics. Can hopefully be enhanced to make ball heavier. 
+		final FixtureDef carFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f);
+		agentBody = PhysicsFactory.createBoxBody(physicsWorld, agent, BodyType.DynamicBody, carFixtureDef);
+		physicsWorld.registerPhysicsConnector(new PhysicsConnector(agent, agentBody, true, false, true, false));
+		scene.getTopLayer().addEntity(agent);
+		//Camera follows agent body (need to adjust how)
+		//this.camera.setCenter(agent.getX(), agent.getY()-50);
+		this.camera.setChaseShape(agent);
 		
-//		/* Spawn the agent. ACTHUNG: the agent will be objectified. This codeblock also shows how GameObjectRegistry is used */
-//		agent = new AgentSprite(0, 0, this.gor.getAgentTextureRegion());
-//		//agent.setScale(0.65f);
-//		// fixturedef for physics. Can hopefully be enhanced to make ball heavier. 
-//		final FixtureDef carFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f);
-//		agentBody = PhysicsFactory.createBoxBody(this.gor.getPhysicsWorld(), agent, BodyType.DynamicBody, carFixtureDef);
-//		this.gor.getPhysicsWorld().registerPhysicsConnector(new PhysicsConnector(agent, agentBody, true, false, true, false));
-//		this.activeScene.getTopLayer().addEntity(agent);
-//		//Camera follows agent body (need to adjust how)
-//		//this.camera.setCenter(agent.getX(), agent.getY()-50);
-//		this.camera.setChaseShape(agent);
-//		
-//		
-//		this.mScoreText = new ChangeableText(5, 5, this.font, gm.getmScore().toString());
-//		this.mScoreText.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-//		this.mScoreText.setAlpha(0.5f);
-//		//this.mScoreText.setText("0");
-//		HUD hud = new HUD();
-//		hud.getTopLayer().addEntity(this.mScoreText);
-//		//hud.centerShapeInCamera(agent);
-//		this.camera.setHUD(hud);
-//		
-//
-//		
-//		
-//		// Create the coins, must be randomized better
-//		CoinSprite coin;
-//		for(int i=0; i<6; i++)
-//		{
-//			coin = new CoinSprite(SceneFactory.randomNumber(10, 480-20), 
-//					SceneFactory.randomNumber(10, 320-20),
-//					20,
-//					20,
-//					this.gor.getCoinTextureRegion());
-//			this.coins.add(coin);
-//		}
-//		
-//		// Spawn the coins
-//		for( CoinSprite coinsprite : coins)
-//		{
-//			this.activeScene.getTopLayer().addEntity(coinsprite);			
-//		}
-//		
-//		Sprite wallie;
-//		for(int i=0; i<25; i++)
-//		{
-//			wallie = new WallSprite(SceneFactory.randomNumber(10, 480*2-20), 
-//					SceneFactory.randomNumber(10, 320*2-20), 
-//					this.gor.getWallTextureRegion(), 
-//					this.gor.getPhysicsWorld());
-//			wallie.addShapeModifier(new RotationModifier(6, 0, 90));
-//			this.activeScene.getTopLayer().addEntity(wallie);
-//		}
-//		
+		this.mScoreText = new ChangeableText(5, 5, this.font, gm.getmScore().toString());
+		this.mScoreText.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+		this.mScoreText.setAlpha(0.5f);
+		HUD hud = new HUD();
+		hud.getTopLayer().addEntity(this.mScoreText);
+		//hud.centerShapeInCamera(agent);
+		this.camera.setHUD(hud);
+		
+		// Create the coins, must be randomized better
+		CoinSprite coin;
+		List<CoinSprite> xCoins = new ArrayList<CoinSprite>();
+		for(int i=0; i<10; i++)
+		{
+			coin = new CoinSprite(SceneFactory.randomNumber(10, 480-20), 
+					SceneFactory.randomNumber(10, 320-20),
+					20,
+					20,
+					this.gor.getCoinTextureRegion());
+			xCoins.add(coin);
+		}
+		
+		// Spawn the coins
+		for( CoinSprite coinsprite : xCoins)
+		{
+			scene.getTopLayer().addEntity(coinsprite);			
+		}
+		
+		Sprite wallie;
+		List<WallSprite> xWalls = new ArrayList<WallSprite>();
+		Random rand = new Random();
+		for(int i=0; i<25; i++)
+		{
+			wallie = new WallSprite(SceneFactory.randomNumber(10, 480*2-20), 
+					SceneFactory.randomNumber(10, 320*2-20), 
+					this.gor.getWallTextureRegion(), 
+					physicsWorld);
+			wallie.addShapeModifier(new RotationModifier(1, 90, rand.nextBoolean() ? 90 : 0));
+			scene.getTopLayer().addEntity(wallie);
+		}
+	
+		
+		return scene;
+
+	
 //		this.activeScene.reset();
 //		return this.activeScene;
 	}
