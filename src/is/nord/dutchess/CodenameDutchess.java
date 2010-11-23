@@ -23,6 +23,7 @@ import org.anddev.andengine.entity.shape.modifier.LoopShapeModifier;
 import org.anddev.andengine.entity.shape.modifier.ParallelShapeModifier;
 import org.anddev.andengine.entity.shape.modifier.RotationModifier;
 import org.anddev.andengine.entity.sprite.Sprite;
+import org.anddev.andengine.entity.text.ChangeableText;
 import org.anddev.andengine.entity.util.FPSLogger;
 import org.anddev.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 import org.anddev.andengine.extension.physics.box2d.PhysicsConnector;
@@ -55,6 +56,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 import java.io.IOException;
 import java.util.Random;
+
+import javax.microedition.khronos.opengles.GL10;
 /**
  * @author Hopur eitt
  * FIXME: Repeating sprites for the wood bitte 
@@ -107,6 +110,8 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 	GameObjectRegistry gor;
 	GameManager gm;
 	AudioManager am;
+	
+	private ChangeableText mScoreText;
 		
 	@Override
 	public Engine onLoadEngine() {
@@ -171,7 +176,10 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 		
 		this.gor = new GameObjectRegistry(this.mPhysicsWorld);
 		this.gm = new GameManager(0,0);
-		this.am = new AudioManager(this.mCoinSound, this.mMusic);
+		this.am = new AudioManager(this.mCoinSound);
+		this.am.addToPlayList(mMusic);
+		this.am.addToPlayList(mZelda);
+		
 		
 		// Append our textures and stuff to our game object registry
 		this.gor.setAgentTextureRegion(this.mAgentTextureRegion);
