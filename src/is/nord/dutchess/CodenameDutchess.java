@@ -309,7 +309,7 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 				System.exit(0); // Should also be activity finish something
 				return true;
 			case MENU_MAIN_NEWGAME: 
-				
+				// this.mEngine.getScene().setChildScene(pChildScene) SceneFactory.getLevelScene(1);
 				return true;
 		}
 		return false;

@@ -101,12 +101,9 @@ public class SceneFactory {
 	public Scene createStartScene(IOnMenuItemClickListener listener) {
 		final MenuScene menuScene = new MenuScene(this.camera);
 
-		menuScene.addMenuItem(new ColoredTextMenuItem(CodenameDutchess.MENU_MAIN_NEWGAME, this.font, "NEW GAME", 1.0f,0.0f,0.0f, 0.0f,0.0f,0.0f));
-		menuScene.addMenuItem(new ColoredTextMenuItem(CodenameDutchess.MENU_MAIN_QUIT, this.font, "QUIT", 1.0f,0.0f,0.0f, 0.0f,0.0f,0.0f));
+		menuScene.addMenuItem(new ColoredTextMenuItem(CodenameDutchess.MENU_MAIN_NEWGAME, this.font, "NEW GAME", 1.0f,0.7f,0.7f, 0.7f,0.7f,0.7f));
+		menuScene.addMenuItem(new ColoredTextMenuItem(CodenameDutchess.MENU_MAIN_QUIT, this.font, "QUIT", 1.0f,0.7f,0.7f, 0.7f,0.7f,0.7f));
 		menuScene.buildAnimations();
-		
-
-		menuScene.setBackgroundEnabled(false);
 
 		menuScene.setOnMenuItemClickListener(listener);
 		return menuScene;
