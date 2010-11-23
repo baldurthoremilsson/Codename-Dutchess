@@ -1,9 +1,8 @@
 package is.nord.dutchess;
 
-import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 
-public class CoinSprite extends Sprite 
+public class CoinSprite extends GameObject
 {
 	private boolean isEnabled;
 	
@@ -26,6 +25,7 @@ public class CoinSprite extends Sprite
 	 * Pre:		c is a CoinSprite object
 	 * Post:	the collision has been handled in a coinly-manner
 	 */
+	@Override
 	public void onCollision()
 	{
 		

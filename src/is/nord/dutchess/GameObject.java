@@ -1,6 +1,8 @@
 package is.nord.dutchess;
 
-import org.anddev.andengine.extension.physics.box2d.PhysicsWorld;
+import org.anddev.andengine.entity.sprite.Sprite;
+import org.anddev.andengine.opengl.texture.region.TextureRegion;
+import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
 
 /**
  * 
@@ -9,20 +11,21 @@ import org.anddev.andengine.extension.physics.box2d.PhysicsWorld;
  *
  */
 
-public interface GameObject {
-	/**
-	 * Usage:	shapeObject.onCollision();
-	 * Pre:		there has been a collision between two shapeObjects
-	 * Post: 	the collision has been handled in a proper manner depending on shapeObject.
-	 */
-	public void onCollision();
-	
-	/**
-	 * Usage:	shapeObject.createBody();
-	 * Pre:		shapeObject has been instansiated		
-	 * Post:	a Body has been created according to shapeObject, and assigned to it.
-	 */
-	public void createBody(PhysicsWorld pPhysicsWorld);
-	
+public abstract class GameObject extends Sprite implements ICollidable {
 
+	public GameObject(final float pX, final float pY, final TextureRegion pTextureRegion) {
+		super(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion);
+	}
+
+	public GameObject(final float pX, final float pY, final float pWidth, final float pHeight, final TextureRegion pTextureRegion) {
+		super(pX, pY, pWidth, pHeight, pTextureRegion);
+	}
+
+	public GameObject(final float pX, final float pY, final TextureRegion pTextureRegion, final RectangleVertexBuffer pRectangleVertexBuffer) {
+		super(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pRectangleVertexBuffer);
+	}
+
+	public GameObject(final float pX, final float pY, final float pWidth, final float pHeight, final TextureRegion pTextureRegion, final RectangleVertexBuffer pRectangleVertexBuffer) {
+		super(pX, pY, pWidth, pHeight, pTextureRegion, pRectangleVertexBuffer);
+	}
 }

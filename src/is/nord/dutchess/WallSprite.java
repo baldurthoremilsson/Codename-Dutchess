@@ -18,7 +18,7 @@ import static org.anddev.andengine.extension.physics.box2d.util.constants.Physic
  * @author gunnarr
  *
  */
-public class WallSprite extends Sprite implements GameObject
+public class WallSprite extends GameObject
 {		
 		
 	/**
@@ -32,6 +32,7 @@ public class WallSprite extends Sprite implements GameObject
 		createBody(pPhysicsWorld);
 	}
 	
+	@Override
 	public void onCollision()
 	{
 		// Well, the wall isn't supposed to do anything on collision..for now.
