@@ -52,9 +52,8 @@ public class SceneFactory implements IOnMenuItemClickListener {
 	// Game objects
 	AgentSprite agent;
 	Body agentBody;
-	ArrayList<CoinSprite> coins = new ArrayList<CoinSprite>();
-	//List <CoinSprite> coins = Collections.synchronizedList(new ArrayList<CoinSprite>());
-	ArrayList<WallSprite> walls = new ArrayList<WallSprite>();
+	List<CoinSprite> coins = new ArrayList<CoinSprite>();
+	List<WallSprite> walls = new ArrayList<WallSprite>();
 	
 	private static final int MENU_NEWGAME = 0;
 	private static final int MENU_QUIT = MENU_NEWGAME + 1;
@@ -160,6 +159,10 @@ public class SceneFactory implements IOnMenuItemClickListener {
 		agentBody = PhysicsFactory.createBoxBody(this.gor.getPhysicsWorld(), agent, BodyType.DynamicBody, carFixtureDef);
 		this.gor.getPhysicsWorld().registerPhysicsConnector(new PhysicsConnector(agent, agentBody, true, false, true, false));
 		this.activeScene.getTopLayer().addEntity(agent);
+		//Camera follows agent body (need to adjust how)
+		this.camera.setCenter(agent.getX(), agent.getY()-50);
+		this.camera.setChaseShape(agent);
+		
 		
 		// Create the coins, must be randomized better
 		CoinSprite coin;
@@ -200,12 +203,18 @@ public class SceneFactory implements IOnMenuItemClickListener {
 	private void clearScene()
 	{
 		if (this.activeScene.hasChildScene())
+		{
 			this.activeScene.clearChildScene();
+		}
 		this.activeScene.getTopLayer().clear();	
+		this.activeScene.getTopLayer().reset();
+		this.activeScene.clearUpdateHandlers();
 		this.coins.clear();
 		this.walls.clear();
 		this.gor.getPhysicsWorld().clearPhysicsConnectors();
 		this.activeScene.reset();
+		
+		
 		//this.activeScene = new Scene(1);
 		//this.agentBody = null;
 		
@@ -217,10 +226,10 @@ public class SceneFactory implements IOnMenuItemClickListener {
 	 * Post:	The game level's borders have been initialized to form a frame
 	 */
 	private void initBorders() {
-		final Shape bottomOuter = new Rectangle(0, this.camera.getHeight() - 2, this.camera.getWidth(), 2);
-		final Shape topOuter = new Rectangle(0, 0, this.camera.getWidth(), 2);
-		final Shape leftOuter = new Rectangle(0, 0, 2, this.camera.getHeight());
-		final Shape rightOuter = new Rectangle(this.camera.getWidth() - 2, 0, 2, this.camera.getHeight());
+		final Shape bottomOuter = new Rectangle(0, this.camera.getHeight()*2 - 2, this.camera.getWidth()*2, 2);
+		final Shape topOuter = new Rectangle(0, 0, this.camera.getWidth()*2, 2);
+		final Shape leftOuter = new Rectangle(0, 0, 2, this.camera.getHeight()*2);
+		final Shape rightOuter = new Rectangle(this.camera.getWidth()*2 - 2, 0, 2, this.camera.getHeight()*2);
 		
 		final FixtureDef wallFixtureDef = PhysicsFactory.createFixtureDef(0, 0.5f, 0.5f);
 		PhysicsFactory.createBoxBody(this.gor.getPhysicsWorld(), bottomOuter, BodyType.StaticBody, wallFixtureDef);
