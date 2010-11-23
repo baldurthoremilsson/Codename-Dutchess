@@ -146,13 +146,13 @@ public class SceneFactory {
 		Log.d(CodenameDutchess.DEBUG_TAG, "fail");
 		Scene scene = new Scene(1);
 		scene.setBackground(new ColorBackground(0.09804f, 0.6274f, 0.8784f));
-		PhysicsWorld mPhysicsWorld = new PhysicsWorld(new Vector2(0, SensorManager.GRAVITY_JUPITER), false);
-	
-		scene.registerUpdateHandler(mPhysicsWorld);
-		
+		PhysicsWorld physicsWorld = new PhysicsWorld(new Vector2(0, SensorManager.GRAVITY_JUPITER), false);
+		scene.registerUpdateHandler(physicsWorld);
+		/* make the frame */
+		initBorders(scene, this.camera, physicsWorld);
 		return scene;
-//		/* make the frame */
-//		this.initBorders();
+//		
+		
 //		/* Spawn the agent. ACTHUNG: the agent will be objectified. This codeblock also shows how GameObjectRegistry is used */
 //		agent = new AgentSprite(0, 0, this.gor.getAgentTextureRegion());
 //		//agent.setScale(0.65f);
@@ -234,19 +234,19 @@ public class SceneFactory {
 	 * Pre:		this is a sf object
 	 * Post:	The game level's borders have been initialized to form a frame
 	 */
-	private void initBorders() {
-		final Shape bottomOuter = new Rectangle(0, this.camera.getHeight()*2 - 2, this.camera.getWidth()*2, 2);
-		final Shape topOuter = new Rectangle(0, 0, this.camera.getWidth()*2, 2);
-		final Shape leftOuter = new Rectangle(0, 0, 2, this.camera.getHeight()*2);
-		final Shape rightOuter = new Rectangle(this.camera.getWidth()*2 - 2, 0, 2, this.camera.getHeight()*2);
+	private void initBorders(Scene scene, Camera camera, PhysicsWorld physicsWorld) {
+		final Shape bottomOuter = new Rectangle(0, camera.getHeight()*2 - 2, camera.getWidth()*2, 2);
+		final Shape topOuter = new Rectangle(0, 0, camera.getWidth()*2, 2);
+		final Shape leftOuter = new Rectangle(0, 0, 2, camera.getHeight()*2);
+		final Shape rightOuter = new Rectangle(camera.getWidth()*2 - 2, 0, 2, camera.getHeight()*2);
 		
 		final FixtureDef wallFixtureDef = PhysicsFactory.createFixtureDef(0, 0.5f, 0.5f);
-		PhysicsFactory.createBoxBody(this.gor.getPhysicsWorld(), bottomOuter, BodyType.StaticBody, wallFixtureDef);
-		PhysicsFactory.createBoxBody(this.gor.getPhysicsWorld(), topOuter, BodyType.StaticBody, wallFixtureDef);
-		PhysicsFactory.createBoxBody(this.gor.getPhysicsWorld(), leftOuter, BodyType.StaticBody, wallFixtureDef);
-		PhysicsFactory.createBoxBody(this.gor.getPhysicsWorld(), rightOuter, BodyType.StaticBody, wallFixtureDef);
+		PhysicsFactory.createBoxBody(physicsWorld, bottomOuter, BodyType.StaticBody, wallFixtureDef);
+		PhysicsFactory.createBoxBody(physicsWorld, topOuter, BodyType.StaticBody, wallFixtureDef);
+		PhysicsFactory.createBoxBody(physicsWorld, leftOuter, BodyType.StaticBody, wallFixtureDef);
+		PhysicsFactory.createBoxBody(physicsWorld, rightOuter, BodyType.StaticBody, wallFixtureDef);
 		
-		final ILayer bottomLayer = this.activeScene.getTopLayer();
+		final ILayer bottomLayer = scene.getTopLayer();
 		bottomLayer.addEntity(bottomOuter);
 		bottomLayer.addEntity(topOuter);
 		bottomLayer.addEntity(leftOuter);
@@ -273,11 +273,6 @@ public class SceneFactory {
 		}
 	}*/
 	
-	public Scene getLevel(int n)
-	{
-		this.initBorders();
-		return null;
-	}
 	
 	public static int randomNumber(int min, int max) { return min + (new Random()).nextInt(max-min); }
 
