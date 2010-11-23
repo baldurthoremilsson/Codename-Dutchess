@@ -1,10 +1,9 @@
 package is.nord.dutchess;
 
 import org.anddev.andengine.entity.scene.Scene;
-import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 
-public class AgentSprite extends Sprite 
+public class AgentSprite extends GameObject
 {
 	// Let there be two constructors! In case we want to play around with the sprite's height and width.
 	public AgentSprite(final float pX, final float pY, final TextureRegion pTextureRegion) 
@@ -25,5 +24,11 @@ public class AgentSprite extends Sprite
 	 */
 	public void onCollision(Scene activeScene)
 	{
+	}
+
+	@Override
+	public void onCollision() {
+		// TODO Auto-generated method stub
+		
 	}
 }
