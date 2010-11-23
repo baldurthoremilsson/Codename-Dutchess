@@ -5,7 +5,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import javax.microedition.khronos.opengles.GL10;
+
+import org.anddev.andengine.audio.music.MusicManager;
 import org.anddev.andengine.engine.camera.Camera;
+import org.anddev.andengine.engine.camera.hud.HUD;
 import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.entity.layer.ILayer;
 import org.anddev.andengine.entity.primitive.Rectangle;
@@ -16,6 +20,8 @@ import org.anddev.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener
 import org.anddev.andengine.entity.scene.menu.item.ColoredTextMenuItem;
 import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
 import org.anddev.andengine.entity.shape.Shape;
+import org.anddev.andengine.entity.text.ChangeableText;
+import org.anddev.andengine.entity.text.Text;
 import org.anddev.andengine.extension.physics.box2d.PhysicsConnector;
 import org.anddev.andengine.extension.physics.box2d.PhysicsFactory;
 import org.anddev.andengine.opengl.font.Font;
@@ -49,6 +55,8 @@ public class SceneFactory {
 	private GameManager gm;
 	private AudioManager am;
 	
+	private ChangeableText mScoreText;
+	
 	// Game objects
 	AgentSprite agent;
 	Body agentBody;
@@ -72,6 +80,8 @@ public class SceneFactory {
 		this.gor = gor;
 		this.gm = gm;
 		this.am = am;
+		gm.setmScore(0);
+		//Text t = new Text(2, 2, this.font, "1234567890");
 		
 		this.activeScene.registerUpdateHandler(new IUpdateHandler() {
 
@@ -90,22 +100,22 @@ public class SceneFactory {
 						//coins.remove(coins.indexOf(coin));		
 						am.getCoinSound().play();
 						gm.incmScore();
+						mScoreText.setText(gm.getmScore().toString());
 					}
 				}
 			}
 		});	
 		
-		this.am.getGameMusic().play();
+		this.am.getPlayList().get(0).play();
 	}
 	
 	public Scene createStartScene(IOnMenuItemClickListener listener) {
-		final MenuScene menuScene = new MenuScene(this.camera);
-
+		MenuScene menuScene = new MenuScene(this.camera);
 		menuScene.addMenuItem(new ColoredTextMenuItem(CodenameDutchess.MENU_MAIN_NEWGAME, this.font, "NEW GAME", 1.0f,0.7f,0.7f, 0.7f,0.7f,0.7f));
 		menuScene.addMenuItem(new ColoredTextMenuItem(CodenameDutchess.MENU_MAIN_QUIT, this.font, "QUIT", 1.0f,0.7f,0.7f, 0.7f,0.7f,0.7f));
 		menuScene.buildAnimations();
-
 		menuScene.setOnMenuItemClickListener(listener);
+		
 		return menuScene;
 	}
 
@@ -138,8 +148,20 @@ public class SceneFactory {
 		this.gor.getPhysicsWorld().registerPhysicsConnector(new PhysicsConnector(agent, agentBody, true, false, true, false));
 		this.activeScene.getTopLayer().addEntity(agent);
 		//Camera follows agent body (need to adjust how)
-		this.camera.setCenter(agent.getX(), agent.getY()-50);
+		//this.camera.setCenter(agent.getX(), agent.getY()-50);
 		this.camera.setChaseShape(agent);
+		
+		
+		this.mScoreText = new ChangeableText(5, 5, this.font, gm.getmScore().toString());
+		this.mScoreText.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+		this.mScoreText.setAlpha(0.5f);
+		//this.mScoreText.setText("0");
+		HUD hud = new HUD();
+		hud.getTopLayer().addEntity(this.mScoreText);
+		//hud.centerShapeInCamera(agent);
+		this.camera.setHUD(hud);
+		
+
 		
 		
 		// Create the coins, must be randomized better

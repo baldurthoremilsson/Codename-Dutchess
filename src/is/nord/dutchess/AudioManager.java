@@ -1,5 +1,8 @@
 package is.nord.dutchess;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.anddev.andengine.audio.music.Music;
 import org.anddev.andengine.audio.sound.Sound;
 
@@ -15,6 +18,8 @@ public class AudioManager
 {
 	private Music coinSound;
 	private Music gameMusic;
+	private Music currMusic;
+	private List<Music> mPlayList;
 	
 	/* Usage:	AudioManager am = new AudioManager(coinSound, gameMusic);
 	 * Pre:		coinSound is of type Sound and is the sound for agent-coin collision
@@ -27,6 +32,27 @@ public class AudioManager
 		this.gameMusic = gameMusic;
 	}
 	
+	public AudioManager()
+	{
+		mPlayList = new ArrayList<Music>();
+	}
+	
+	public AudioManager(Music coin)
+	{
+		this.coinSound = coin;
+		mPlayList = new ArrayList<Music>();
+	}
+	
+	public void addToPlayList(Music music)
+	{
+		this.mPlayList.add(music);
+	}
+	
+	public List<Music> getPlayList()
+	{
+		return mPlayList;
+	}
+	
 	/*
 	 * Usage:	s=am.getCoinSound();
 	 * Pre:		am is a AudioManager object
@@ -35,6 +61,11 @@ public class AudioManager
 	public Music getCoinSound()
 	{
 		return this.coinSound;
+	}
+	
+	public void setCoinSound(Music coinSound)
+	{
+		this.coinSound = coinSound;
 	}
 	
 	/*
