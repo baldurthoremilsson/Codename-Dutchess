@@ -21,6 +21,7 @@ import org.anddev.andengine.entity.scene.menu.item.ColoredTextMenuItem;
 import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.entity.text.ChangeableText;
+import org.anddev.andengine.entity.text.Text;
 import org.anddev.andengine.extension.physics.box2d.PhysicsConnector;
 import org.anddev.andengine.extension.physics.box2d.PhysicsFactory;
 import org.anddev.andengine.opengl.font.Font;
@@ -82,6 +83,7 @@ public class SceneFactory implements IOnMenuItemClickListener {
 		this.gm = gm;
 		this.am = am;
 		gm.setmScore(0);
+		//Text t = new Text(2, 2, this.font, "1234567890");
 		
 		this.activeScene.registerUpdateHandler(new IUpdateHandler() {
 
@@ -130,8 +132,6 @@ public class SceneFactory implements IOnMenuItemClickListener {
 		menuScene.addMenuItem(new ColoredTextMenuItem(MENU_NEWGAME, this.font, "NEW GAME", 1.0f,0.0f,0.0f, 0.0f,0.0f,0.0f));
 		menuScene.addMenuItem(new ColoredTextMenuItem(MENU_QUIT, this.font, "QUIT", 1.0f,0.0f,0.0f, 0.0f,0.0f,0.0f));
 		menuScene.buildAnimations();
-		
-
 		menuScene.setBackgroundEnabled(false);
 
 		menuScene.setOnMenuItemClickListener(this);
@@ -173,9 +173,10 @@ public class SceneFactory implements IOnMenuItemClickListener {
 		this.camera.setChaseShape(agent);
 		
 		
-		this.mScoreText = new ChangeableText(5, 5, this.font, this.gm.getmScore().toString());
+		this.mScoreText = new ChangeableText(5, 5, this.font, gm.getmScore().toString());
 		this.mScoreText.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		this.mScoreText.setAlpha(0.5f);
+		//this.mScoreText.setText("0");
 		HUD hud = new HUD();
 		hud.getTopLayer().addEntity(this.mScoreText);
 		//hud.centerShapeInCamera(agent);
@@ -270,6 +271,7 @@ public class SceneFactory implements IOnMenuItemClickListener {
 		{
 			case MENU_QUIT: System.exit(0); // Should also be activity finish something
 			case MENU_NEWGAME: 
+				this.gm.setmScore(0);
 				this.clearScene();
 				this.createDemoScene();
 			return true;

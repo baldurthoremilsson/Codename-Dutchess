@@ -96,6 +96,8 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 	// Font texture
 	private Texture mFontTexture;
 	private Font mFont;
+	private Texture altFontTexture;
+	private Font altFont;
 	
 	// Texture and region for the rewards to be collected
 	private Texture mRewTexture;
@@ -115,8 +117,8 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 		
 	@Override
 	public Engine onLoadEngine() {
-		this.mCamera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
-		return new Engine(new EngineOptions(true, ScreenOrientation.LANDSCAPE, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), this.mCamera).setNeedsMusic(true).setNeedsSound(true));
+		this.mCamera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT); 
+		return new Engine(new EngineOptions(true, ScreenOrientation.LANDSCAPE, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), this.mCamera).setNeedsMusic(true));
 	}
 
 	@Override
@@ -125,9 +127,13 @@ public class CodenameDutchess extends BaseGameActivity implements IAccelerometer
 		this.mFontTexture = new Texture(256, 256, TextureOptions.BILINEAR);
 
 		FontFactory.setAssetBasePath("font/");
-		this.mFont = FontFactory.createFromAsset(this.mFontTexture, this, "UnrealTournament.ttf", 48, true, Color.WHITE);
+		this.mFont = FontFactory.createFromAsset(this.mFontTexture, this, "Plok.ttf", 48, true, Color.WHITE);
 		this.mEngine.getTextureManager().loadTexture(this.mFontTexture);
+		//this.altFont = FontFactory.createFromAsset(this.altFontTexture, this, "Plok.ttf", 20, true, Color.WHITE);
+		//this.mEngine.getTextureManager().loadTexture(this.altFontTexture);
+		
 		this.mEngine.getFontManager().loadFont(this.mFont);
+		//this.mEngine.getFontManager().loadFont(this.altFont);
 		
 		/* Load Sprite Textures */
 		TextureRegionFactory.setAssetBasePath("gfx/");
