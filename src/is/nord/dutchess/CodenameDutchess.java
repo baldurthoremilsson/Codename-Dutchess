@@ -6,6 +6,7 @@ import org.anddev.andengine.audio.sound.Sound;
 import org.anddev.andengine.audio.sound.SoundFactory;
 import org.anddev.andengine.engine.Engine;
 
+import org.anddev.andengine.engine.camera.BoundCamera;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.camera.hud.controls.AnalogOnScreenControl;
 import org.anddev.andengine.engine.camera.hud.controls.BaseOnScreenControl;
@@ -81,6 +82,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 	// Fields
 	// ===========================================================
 	private Camera mCamera;
+	private BoundCamera mBoundChaseCamera;
 	private Scene scene;
 
 	private Music mMusic;
@@ -124,9 +126,10 @@ public class CodenameDutchess extends BaseGameActivity implements
 	@Override
 	public Engine onLoadEngine() {
 		this.mCamera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
+		this.mBoundChaseCamera = new BoundCamera(0,0,CAMERA_WIDTH,CAMERA_HEIGHT,0,CAMERA_WIDTH*2,0,CAMERA_HEIGHT*2);
 		return new Engine(new EngineOptions(true, ScreenOrientation.LANDSCAPE,
 				new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT),
-				this.mCamera).setNeedsMusic(true));
+				this.mBoundChaseCamera).setNeedsMusic(true));
 	}
 
 	@Override
@@ -210,7 +213,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 		this.gor.setCoinTextureRegion(this.mRewTextureRegion);
 		this.gor.setWallTextureRegion(this.mWoodTextureRegion);
 
-		sf = new SceneFactory(this.mCamera, this.mFont, this.scene, this.gor,
+		sf = new SceneFactory(this.mBoundChaseCamera, this.mFont, this.scene, this.gor,
 				this.gm, this.am);
 		// return sf.createWelcomeScene();
 		return sf.createStartScene(this);

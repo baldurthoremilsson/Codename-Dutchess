@@ -8,6 +8,7 @@ import java.util.Random;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.audio.music.MusicManager;
+import org.anddev.andengine.engine.camera.BoundCamera;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.camera.hud.HUD;
 import org.anddev.andengine.engine.handler.IUpdateHandler;
@@ -55,6 +56,7 @@ public class SceneFactory {
 	// Local variables
 	private Scene activeScene;
 	private Camera camera;
+	private BoundCamera bCamera;
 	private Font font;
 	private GameObjectRegistry gor;
 	private GameManager gm;
@@ -76,9 +78,10 @@ public class SceneFactory {
 	 * Pre:		camera is of type Camera, font of type Font, and scene of type Scene, and all three have been set up
 	 * Post:	sf is a SceenFactory object based on the parameters
 	 */
-	public SceneFactory(Camera camera, Font font, Scene scene, GameObjectRegistry gor, final GameManager gm, final AudioManager am)
+	public SceneFactory(BoundCamera camera, Font font, Scene scene, GameObjectRegistry gor, final GameManager gm, final AudioManager am)
 	{
-		this.camera = camera;
+		this.bCamera = camera;
+		this.bCamera.setBoundsEnabled(true);
 		this.font = font;
 		this.activeScene = scene;
 		
@@ -116,7 +119,7 @@ public class SceneFactory {
 	}
 	
 	public Scene createStartScene(IOnMenuItemClickListener listener) {
-		MenuScene menuScene = new MenuScene(this.camera);
+		MenuScene menuScene = new MenuScene(this.bCamera);
 		menuScene.addMenuItem(new ColoredTextMenuItem(CodenameDutchess.MENU_MAIN_NEWGAME, this.font, "NEW GAME", 1.0f,0.7f,0.7f, 0.7f,0.7f,0.7f));
 		menuScene.addMenuItem(new ColoredTextMenuItem(CodenameDutchess.MENU_MAIN_QUIT, this.font, "QUIT", 1.0f,0.7f,0.7f, 0.7f,0.7f,0.7f));
 		menuScene.buildAnimations();
@@ -149,7 +152,7 @@ public class SceneFactory {
 		PhysicsWorld physicsWorld = new PhysicsWorld(new Vector2(0, SensorManager.GRAVITY_JUPITER), false);
 		scene.registerUpdateHandler(physicsWorld);
 		/* make the frame */
-		initBorders(scene, this.camera, physicsWorld);
+		initBorders(scene, this.bCamera, physicsWorld);
 		/* Spawn the agent. ACTHUNG: the agent will be objectified. This codeblock also shows how GameObjectRegistry is used */
 		agent = new AgentSprite(0, 0, this.gor.getAgentTextureRegion());
 		//agent.setScale(0.65f);
@@ -160,7 +163,7 @@ public class SceneFactory {
 		scene.getTopLayer().addEntity(agent);
 		//Camera follows agent body (need to adjust how)
 		//this.camera.setCenter(agent.getX(), agent.getY()-50);
-		this.camera.setChaseShape(agent);
+		this.bCamera.setChaseShape(agent);
 		
 		this.mScoreText = new ChangeableText(5, 5, this.font, gm.getmScore().toString());
 		this.mScoreText.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
@@ -168,7 +171,7 @@ public class SceneFactory {
 		HUD hud = new HUD();
 		hud.getTopLayer().addEntity(this.mScoreText);
 		//hud.centerShapeInCamera(agent);
-		this.camera.setHUD(hud);
+		this.bCamera.setHUD(hud);
 		
 		// Create the coins, must be randomized better
 		CoinSprite coin;
