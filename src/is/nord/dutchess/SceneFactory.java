@@ -59,6 +59,7 @@ public class SceneFactory {
 	private GameObjectRegistry gor;
 	private GameManager gm;
 	private AudioManager am;
+	private CodenameDutchess mcd;
 	
 	private ChangeableText mScoreText;
 	
@@ -76,13 +77,13 @@ public class SceneFactory {
 	 * Pre:		camera is of type Camera, font of type Font, and scene of type Scene, and all three have been set up
 	 * Post:	sf is a SceenFactory object based on the parameters
 	 */
-	public SceneFactory(BoundCamera camera, Font font, Scene scene, GameObjectRegistry gor, final GameManager gm, final AudioManager am)
+	public SceneFactory(BoundCamera camera, Font font, Scene scene, GameObjectRegistry gor, final GameManager gm, final AudioManager am, CodenameDutchess cd)
 	{
 		this.bCamera = camera;
 		this.bCamera.setBoundsEnabled(true);
 		this.font = font;
 		this.activeScene = scene;
-		
+		this.mcd = cd;
 		this.gor = gor;
 		this.gm = gm;
 		this.am = am;
@@ -106,8 +107,12 @@ public class SceneFactory {
 						//coins.remove(coins.indexOf(coin));		
 						am.getCoinSound().play();
 						gm.incmScore();
+						gm.decCoins();
 						mScoreText.setText(gm.getmScore().toString());
-						
+						if(gm.getCoins() == 0)
+						{
+							mcd.setScene(createLevelScene(gm.getmLevel()+1));
+						}
 					}
 				}
 			}
@@ -174,7 +179,7 @@ public class SceneFactory {
 		// Create the coins, must be randomized better
 		CoinSprite coin;
 		List<CoinSprite> xCoins = new ArrayList<CoinSprite>();
-		for(int i=0; i<10; i++)
+		for(int i=0; i<gm.getmLevel(); i++)
 		{
 			coin = new CoinSprite(SceneFactory.randomNumber(10, 480-20), 
 					SceneFactory.randomNumber(10, 320-20),
@@ -193,7 +198,7 @@ public class SceneFactory {
 		Sprite wallie;
 		List<WallSprite> xWalls = new ArrayList<WallSprite>();
 		Random rand = new Random();
-		for(int i=0; i<25; i++)
+		for(int i=0; i<gm.getmLevel()*10+gm.getmLevel(); i++)
 		{
 			wallie = new WallSprite(SceneFactory.randomNumber(10, 480*2-20), 
 					SceneFactory.randomNumber(10, 320*2-20), 

@@ -10,6 +10,7 @@ package is.nord.dutchess;
 public class GameManager {
 	private Integer mScore;
 	private Integer mLevel;
+	private Integer mCoins;
 	
 	public GameManager(Integer score, Integer level)
 	{
@@ -35,6 +36,15 @@ public class GameManager {
 		this.mLevel = mLevel;
 	}
 	
+	public Integer getCoins()
+	{
+		return mCoins;
+	}
+	
+	public void decCoins()
+	{
+		mCoins--;
+	}
 	
 
 }

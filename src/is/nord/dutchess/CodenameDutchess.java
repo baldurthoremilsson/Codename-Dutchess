@@ -203,7 +203,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 		this.scene = new Scene(1);
 
 		this.gor = new GameObjectRegistry(this.mPhysicsWorld);
-		this.gm = new GameManager(0, 0);
+		this.gm = new GameManager(0, 1);
 		this.am = new AudioManager(this.mCoinSound);
 		this.am.addToPlayList(mMusic);
 		this.am.addToPlayList(mZelda);
@@ -214,7 +214,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 		this.gor.setWallTextureRegion(this.mWoodTextureRegion);
 
 		sf = new SceneFactory(this.mBoundChaseCamera, this.mFont, this.scene, this.gor,
-				this.gm, this.am);
+				this.gm, this.am, this);
 		// return sf.createWelcomeScene();
 		return sf.createStartScene(this);
 	}
@@ -342,6 +342,11 @@ public class CodenameDutchess extends BaseGameActivity implements
 
 	public static int randomNumber(int min, int max) {
 		return min + (new Random()).nextInt(max - min);
+	}
+	
+	public void setScene(Scene s)
+	{
+		this.mEngine.setScene(s);
 	}
 
 	@Override
