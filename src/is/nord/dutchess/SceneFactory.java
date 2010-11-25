@@ -108,11 +108,17 @@ public class SceneFactory {
 						am.getCoinSound().play();
 						gm.incmScore();
 						gm.decCoins();
-						mScoreText.setText(gm.getmScore().toString());
+						//mScoreText.setText(gm.getmScore().toString());
+						mScoreText.setText(gm.getCoins().toString());
+
 						if(gm.getCoins() == 0)
 						{
 							mcd.setScene(createLevelScene(gm.getmLevel()+1));
 						}
+					}
+					if(gm.getCoins() <= 0)
+					{
+						mcd.setScene(createLevelScene(gm.getmLevel()+1));
 					}
 				}
 			}
@@ -168,7 +174,8 @@ public class SceneFactory {
 		//this.camera.setCenter(agent.getX(), agent.getY()-50);
 		this.bCamera.setChaseShape(agent);
 		
-		this.mScoreText = new ChangeableText(5, 5, this.font, gm.getmScore().toString());
+//		this.mScoreText = new ChangeableText(5, 5, this.font, gm.getmScore().toString());
+		this.mScoreText = new ChangeableText(5, 5, this.font, gm.getCoins().toString());
 		this.mScoreText.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		this.mScoreText.setAlpha(0.5f);
 		HUD hud = new HUD();
@@ -179,9 +186,9 @@ public class SceneFactory {
 		// Create the coins, must be randomized better
 		CoinSprite coin;
 		List<CoinSprite> xCoins = new ArrayList<CoinSprite>();
-		for(int i=0; i<gm.getmLevel(); i++)
+		for(int i=0; i<gm.getmLevel()*50; i++)
 		{
-			coin = new CoinSprite(SceneFactory.randomNumber(10, 480-20), 
+			coin = new CoinSprite(SceneFactory.randomNumber(5, 480-20), 
 					SceneFactory.randomNumber(10, 320-20),
 					20,
 					20,
@@ -262,21 +269,13 @@ public class SceneFactory {
 		//bottomLayer.addEntity(wallie);
 	}
 	
-	/*
-	public boolean onKeyDown(final int pKeyCode, final KeyEvent pEvent) {
-		if(pKeyCode == KeyEvent.KEYCODE_MENU && pEvent.getAction() == KeyEvent.ACTION_DOWN) {
-			if(this.activeScene.hasChildScene()) {
-				// Remove the menu and reset it.
-				this.activeScene.back();
-			} else {
-				// Attach the menu.
-				this.activeScene.setChildScene(this.createMenuScene(), false, true, true);
-			}
-			return true;
-		} else {
-			return false;//super.onKeyDown(pKeyCode, pEvent);
-		}
-	}*/
+	
+//	public boolean onKeyDown(final int pKeyCode, final KeyEvent pEvent) {
+//		if(pKeyCode == KeyEvent.KEYCODE_MENU && pEvent.getAction() == KeyEvent.ACTION_DOWN) {
+//			gm.decCoins();
+//		}
+//		return true;
+//	}
 	
 	
 	public static int randomNumber(int min, int max) { return min + (new Random()).nextInt(max-min); }

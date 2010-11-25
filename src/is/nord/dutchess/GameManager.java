@@ -16,6 +16,7 @@ public class GameManager {
 	{
 		this.mScore = score;
 		this.mLevel = level;
+		this.mCoins = level;
 	}
 	
 	public Integer getmScore() {
@@ -44,6 +45,11 @@ public class GameManager {
 	public void decCoins()
 	{
 		mCoins--;
+	}
+	
+	public void setCoins(int n)
+	{
+		mCoins = mCoins+n;
 	}
 	
 

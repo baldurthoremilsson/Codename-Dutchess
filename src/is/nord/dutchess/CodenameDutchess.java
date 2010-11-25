@@ -204,6 +204,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 
 		this.gor = new GameObjectRegistry(this.mPhysicsWorld);
 		this.gm = new GameManager(0, 1);
+		//gm.setCoins(1);
 		this.am = new AudioManager(this.mCoinSound);
 		this.am.addToPlayList(mMusic);
 		this.am.addToPlayList(mZelda);
@@ -212,7 +213,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 		this.gor.setAgentTextureRegion(this.mAgentTextureRegion);
 		this.gor.setCoinTextureRegion(this.mRewTextureRegion);
 		this.gor.setWallTextureRegion(this.mWoodTextureRegion);
-
+		
 		sf = new SceneFactory(this.mBoundChaseCamera, this.mFont, this.scene, this.gor,
 				this.gm, this.am, this);
 		// return sf.createWelcomeScene();
