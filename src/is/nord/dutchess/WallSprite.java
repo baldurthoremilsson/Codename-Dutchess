@@ -44,7 +44,7 @@ public class WallSprite extends GameObject
 	public void createBody(PhysicsWorld pPhysicsWorld) 
 	{
         final FixtureDef wallFixtureDef = PhysicsFactory.createFixtureDef(0, 0.5f, 0.5f);
-        PhysicsFactory.createBoxBody(pPhysicsWorld, this, BodyType.StaticBody, wallFixtureDef);		
+        PhysicsFactory.createBoxBody(pPhysicsWorld, this, BodyType.StaticBody, wallFixtureDef);
 	}
 	
 	

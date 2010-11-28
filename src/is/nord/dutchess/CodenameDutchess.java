@@ -204,7 +204,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 
 		this.gor = new GameObjectRegistry(this.mPhysicsWorld);
 		this.gm = new GameManager(0, 1);
-		this.mPhysicsWorld = new PhysicsWorld(new Vector2(0, SensorManager.GRAVITY_JUPITER), false);
+		this.mPhysicsWorld = new PhysicsWorld(new Vector2(0, SensorManager.GRAVITY_EARTH), false);
 		//gm.setCoins(1);
 		this.am = new AudioManager(this.mCoinSound);
 		this.am.addToPlayList(mMusic);
