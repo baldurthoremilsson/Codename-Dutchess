@@ -192,7 +192,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 		}
 
 		// Accelero-support
-		//this.enableAccelerometerSensor(this);
+		this.enableAccelerometerSensor(this);
 
 	}
 
@@ -204,6 +204,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 
 		this.gor = new GameObjectRegistry(this.mPhysicsWorld);
 		this.gm = new GameManager(0, 1);
+		this.mPhysicsWorld = new PhysicsWorld(new Vector2(0, SensorManager.GRAVITY_JUPITER), false);
 		//gm.setCoins(1);
 		this.am = new AudioManager(this.mCoinSound);
 		this.am.addToPlayList(mMusic);
@@ -215,7 +216,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 		this.gor.setWallTextureRegion(this.mWoodTextureRegion);
 		
 		sf = new SceneFactory(this.mBoundChaseCamera, this.mFont, this.scene, this.gor,
-				this.gm, this.am);
+				this.gm, this.am, this.mPhysicsWorld);
 		// return sf.createWelcomeScene();
 		return sf.createStartScene(this);
 	}

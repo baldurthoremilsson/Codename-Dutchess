@@ -59,6 +59,7 @@ public class SceneFactory {
 	private GameObjectRegistry gor;
 	private AudioManager am;
 	private CodenameDutchess mcd;
+	private PhysicsWorld mPhysicsWorld;
 	
 	private ChangeableText mScoreText;
 	
@@ -77,7 +78,7 @@ public class SceneFactory {
 	 * Pre:		camera is of type Camera, font of type Font, and scene of type Scene, and all three have been set up
 	 * Post:	sf is a SceenFactory object based on the parameters
 	 */
-	public SceneFactory(BoundCamera camera, Font font, Scene scene, GameObjectRegistry gor, final GameManager gm, final AudioManager am)
+	public SceneFactory(BoundCamera camera, Font font, Scene scene, GameObjectRegistry gor, final GameManager gm, final AudioManager am, PhysicsWorld physicsWorld)
 	{
 		this.bCamera = camera;
 		this.bCamera.setBoundsEnabled(true);
@@ -85,7 +86,9 @@ public class SceneFactory {
 		this.activeScene = scene;
 		this.gor = gor;
 		this.am = am;
+		this.mPhysicsWorld = physicsWorld;
 		gm.setmScore(0);
+		//this.mPhysicsWorld = physicsWorld;
 		//Text t = new Text(2, 2, this.font, "1234567890");
 		
 		this.activeScene.registerUpdateHandler(new IUpdateHandler() {
@@ -147,17 +150,17 @@ public class SceneFactory {
 		Log.d(CodenameDutchess.DEBUG_TAG, "fail");
 		Scene scene = new Scene(1);
 		scene.setBackground(new ColorBackground(0.09804f, 0.6274f, 0.8784f));
-		PhysicsWorld physicsWorld = new PhysicsWorld(new Vector2(0, SensorManager.GRAVITY_JUPITER), false);
-		scene.registerUpdateHandler(physicsWorld);
+		//PhysicsWorld physicsWorld = new PhysicsWorld(new Vector2(0, SensorManager.GRAVITY_JUPITER), false);
+		scene.registerUpdateHandler(this.mPhysicsWorld);
 		/* make the frame */
-		initBorders(scene, this.bCamera, physicsWorld);
+		initBorders(scene, this.bCamera, mPhysicsWorld);
 		/* Spawn the agent. ACTHUNG: the agent will be objectified. This codeblock also shows how GameObjectRegistry is used */
 		agent = new AgentSprite(0, 0, this.gor.getAgentTextureRegion());
 		//agent.setScale(0.65f);
 		// fixturedef for physics. Can hopefully be enhanced to make ball heavier. 
 		final FixtureDef carFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f);
-		agentBody = PhysicsFactory.createBoxBody(physicsWorld, agent, BodyType.DynamicBody, carFixtureDef);
-		physicsWorld.registerPhysicsConnector(new PhysicsConnector(agent, agentBody, true, false, true, false));
+		agentBody = PhysicsFactory.createBoxBody(mPhysicsWorld, agent, BodyType.DynamicBody, carFixtureDef);
+		mPhysicsWorld.registerPhysicsConnector(new PhysicsConnector(agent, agentBody, true, false, true, false));
 		scene.getTopLayer().addEntity(agent);
 		//Camera follows agent body (need to adjust how)
 		//this.camera.setCenter(agent.getX(), agent.getY()-50);
@@ -198,35 +201,11 @@ public class SceneFactory {
 			wallie = new WallSprite(SceneFactory.randomNumber(10, 480*2-20), 
 					SceneFactory.randomNumber(10, 320*2-20), 
 					this.gor.getWallTextureRegion(), 
-					physicsWorld);
-			//wallie.addShapeModifier(new RotationModifier(1, 90, rand.nextBoolean() ? 90 : 0));
+					mPhysicsWorld);
+			wallie.addShapeModifier(new RotationModifier(1, 90, rand.nextBoolean() ? 90 : 0));
 			scene.getTopLayer().addEntity(wallie);
 		}
-	
-		
 		return scene;
-
-	
-//		this.activeScene.reset();
-//		return this.activeScene;
-	}
-	
-	/*
-	 * Usage:	this.clearScene();
-	 * Pre:		this.activeScene is of type Scene and holds a scene
-	 * Post:	this.activeScene has been cleared of all objects, except background
-	 */
-	private void clearScene()
-	{
-		if (this.activeScene.hasChildScene())
-			this.activeScene.clearChildScene();
-		this.activeScene.getTopLayer().clear();	
-		this.coins.clear();
-		this.walls.clear();
-		this.gor.getPhysicsWorld().clearPhysicsConnectors();
-		this.activeScene.reset();
-		//this.activeScene = new Scene(1);
-		//this.agentBody = null;
 	}
 	
 	/*
@@ -255,6 +234,11 @@ public class SceneFactory {
 		//final WallSprite wallie = new WallSprite(10, 100, this.mWoodTextureRegion, this.gor.getPhysicsWorld());	
 		//PhysicsFactory.createBoxBody(this.gor.getPhysicsWorld(), wallie, BodyType.StaticBody, wallFixtureDef);
 		//bottomLayer.addEntity(wallie);
+	}
+	
+	public List<GameObject> getSceneObjects()
+	{
+		return this.sceneObjects;
 	}
 	
 	
