@@ -85,8 +85,6 @@ public class SceneFactory {
 		this.am = am;
 		this.mPhysicsWorld = physicsWorld;
 		gm.setmScore(0);
-		//this.mPhysicsWorld = physicsWorld;
-		//Text t = new Text(2, 2, this.font, "1234567890");
 		
 		//this.am.getPlayList().get(1).play();
 	}
@@ -122,23 +120,21 @@ public class SceneFactory {
 	{
 		Scene scene = new Scene(1);
 		scene.setBackground(new ColorBackground(0.09804f, 0.6274f, 0.8784f));
-		//PhysicsWorld physicsWorld = new PhysicsWorld(new Vector2(0, SensorManager.GRAVITY_JUPITER), false);
 		scene.registerUpdateHandler(this.mPhysicsWorld);
+		
 		/* make the frame */
 		initBorders(scene, this.bCamera, mPhysicsWorld);
-		/* Spawn the agent. ACTHUNG: the agent will be objectified. This codeblock also shows how GameObjectRegistry is used */
 		agent = new AgentSprite(0, 0, this.gor.getAgentTextureRegion());
-		//agent.setScale(0.65f);
-		// fixturedef for physics. Can hopefully be enhanced to make ball heavier. 
 		final FixtureDef carFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f);
 		agentBody = PhysicsFactory.createBoxBody(mPhysicsWorld, agent, BodyType.DynamicBody, carFixtureDef);
 		mPhysicsWorld.registerPhysicsConnector(new PhysicsConnector(agent, agentBody, true, false, true, false));
 		scene.getTopLayer().addEntity(agent);
-		//Camera follows agent body (need to adjust how)
-		//this.camera.setCenter(agent.getX(), agent.getY()-50);
+		
+		//make bounded camera chase the agent
 		this.bCamera.setChaseShape(agent);
 		
-//		this.mScoreText = new ChangeableText(5, 5, this.font, gm.getmScore().toString());
+
+		
 		this.mScoreText = new ChangeableText(5, 5, this.font, "0");
 		this.mScoreText.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		this.mScoreText.setAlpha(0.5f);
@@ -158,6 +154,7 @@ public class SceneFactory {
 					20,
 					this.gor.getCoinTextureRegion());
 			xCoins.add(coin);
+			mSceneObjects.add(coin);
 			
 		}
 		
@@ -167,7 +164,7 @@ public class SceneFactory {
 			scene.getTopLayer().addEntity(coinsprite);			
 		}
 		
-		Sprite wallie;
+		GameObject wallie;
 		Random rand = new Random();
 		for(int i=0; i!= 20; i++)
 		{
@@ -177,6 +174,7 @@ public class SceneFactory {
 					mPhysicsWorld);
 			wallie.addShapeModifier(new RotationModifier(1, 90, rand.nextBoolean() ? 90 : 0));
 			scene.getTopLayer().addEntity(wallie);
+			mSceneObjects.add(wallie);
 		}
 		return scene;
 	}
@@ -203,10 +201,6 @@ public class SceneFactory {
 		bottomLayer.addEntity(topOuter);
 		bottomLayer.addEntity(leftOuter);
 		bottomLayer.addEntity(rightOuter);	
-				
-		//final WallSprite wallie = new WallSprite(10, 100, this.mWoodTextureRegion, this.gor.getPhysicsWorld());	
-		//PhysicsFactory.createBoxBody(this.gor.getPhysicsWorld(), wallie, BodyType.StaticBody, wallFixtureDef);
-		//bottomLayer.addEntity(wallie);
 	}
 
 	
