@@ -64,7 +64,7 @@ import java.util.Random;
 import javax.microedition.khronos.opengles.GL10;
 
 /**
- * @author Hopur eitt FIXME: Repeating sprites for the wood bitte
+ * @author Hopur eitt
  */
 public class CodenameDutchess extends BaseGameActivity implements
 		IAccelerometerListener, IOnMenuItemClickListener {
@@ -111,9 +111,6 @@ public class CodenameDutchess extends BaseGameActivity implements
 	// Texture and region for the rewards to be collected
 	private Texture mRewTexture;
 	private TextureRegion mRewTextureRegion;
-
-	// Traps, lines and the endgoal, rewards
-	private Rectangle endRect;
 
 	SceneFactory sf;
 	GameObjectRegistry gor;
@@ -166,8 +163,10 @@ public class CodenameDutchess extends BaseGameActivity implements
 			// Last one seems to start? how about creating playlist?
 			this.mMusic = MusicFactory.createMusicFromAsset(
 					this.mEngine.getMusicManager(), this, "unreal.ogg");
+			mMusic.setLooping(true);
 			this.mZelda = MusicFactory.createMusicFromAsset(
 					this.mEngine.getMusicManager(), this, "zelda.ogg");
+			mZelda.setLooping(true);
 			this.mCoinSound = MusicFactory.createMusicFromAsset(
 					this.mEngine.getMusicManager(), this, "smb_coin.ogg");
 
@@ -199,7 +198,6 @@ public class CodenameDutchess extends BaseGameActivity implements
 		this.gor = new GameObjectRegistry(this.mPhysicsWorld);
 		this.gm = new GameManager(0, 1);
 		this.mPhysicsWorld = new PhysicsWorld(new Vector2(0, SensorManager.GRAVITY_EARTH), false);
-		//gm.setCoins(1);
 		this.am = new AudioManager(this.mCoinSound);
 		this.am.addToPlayList(mMusic);
 		this.am.addToPlayList(mZelda);

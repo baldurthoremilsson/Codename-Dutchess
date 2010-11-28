@@ -105,6 +105,16 @@ public class SceneFactory {
 	{
 		mScoreText.setText(score);
 	}
+	
+	public Body getAgentBody()
+	{
+		return agentBody;
+	}
+	
+	public Sprite getAgentSprite()
+	{
+		return agent;
+	}
 
 	public Scene createStartScene(IOnMenuItemClickListener listener) {
 		MenuScene menuScene = new MenuScene(this.bCamera);
@@ -168,8 +178,8 @@ public class SceneFactory {
 		List<CoinSprite> xCoins = new ArrayList<CoinSprite>();
 		for(int i=0; i!=level*5; i++)
 		{
-			coin = new CoinSprite(SceneFactory.randomNumber(5, 480-20), 
-					SceneFactory.randomNumber(10, 320-20),
+			coin = new CoinSprite(SceneFactory.randomNumber(5, 480*2-20), 
+					SceneFactory.randomNumber(10, 320*2-20),
 					20,
 					20,
 					this.gor.getCoinTextureRegion());
@@ -222,16 +232,6 @@ public class SceneFactory {
 		bottomLayer.addEntity(leftOuter);
 		bottomLayer.addEntity(rightOuter);	
 	}
-
-	
-	
-//	public boolean onKeyDown(final int pKeyCode, final KeyEvent pEvent) {
-//		if(pKeyCode == KeyEvent.KEYCODE_MENU && pEvent.getAction() == KeyEvent.ACTION_DOWN) {
-//			gm.decCoins();
-//		}
-//		return true;
-//	}
-	
 	
 	public static int randomNumber(int min, int max) { return min + (new Random()).nextInt(max-min); }
 
