@@ -85,7 +85,9 @@ public class SceneFactory {
 		this.am = am;
 		this.mPhysicsWorld = physicsWorld;
 		
-		//this.am.getPlayList().get(1).play();
+		//Play a random song
+		Random r = new Random();
+		this.am.getPlayList().get(r.nextInt(this.am.getPlayList().size()-1)).play();
 	}
 	
 	
