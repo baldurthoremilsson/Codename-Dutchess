@@ -209,7 +209,6 @@ public class CodenameDutchess extends BaseGameActivity implements
 		
 		sf = new SceneFactory(this.mBoundChaseCamera, this.mFont, this.scene, this.gor,
 				this.am, this.mPhysicsWorld);
-		// return sf.createWelcomeScene();
 		return sf.createStartScene(this);
 	}
 
