@@ -66,8 +66,8 @@ public class SceneFactory {
 	// Game objects
 	AgentSprite agent;
 	Body agentBody;
-	List<CoinSprite> coins = new ArrayList<CoinSprite>();
-	List<WallSprite> walls = new ArrayList<WallSprite>();
+	private List<CoinSprite> coins = new ArrayList<CoinSprite>();
+	private List<WallSprite> walls = new ArrayList<WallSprite>();
 	
 	private static String COINS = "coins concurrency exception";
 
@@ -127,6 +127,22 @@ public class SceneFactory {
 		this.am.getPlayList().get(1).play();
 	}
 	
+	public List<CoinSprite> getCoins() {
+		return coins;
+	}
+
+	public void setCoins(List<CoinSprite> coins) {
+		this.coins = coins;
+	}
+
+	public List<WallSprite> getWalls() {
+		return walls;
+	}
+
+	public void setWalls(List<WallSprite> walls) {
+		this.walls = walls;
+	}
+
 	public Scene createStartScene(IOnMenuItemClickListener listener) {
 		MenuScene menuScene = new MenuScene(this.bCamera);
 		menuScene.addMenuItem(new ColoredTextMenuItem(CodenameDutchess.MENU_MAIN_NEWGAME, this.font, "NEW GAME", 1.0f,0.7f,0.7f, 0.7f,0.7f,0.7f));
