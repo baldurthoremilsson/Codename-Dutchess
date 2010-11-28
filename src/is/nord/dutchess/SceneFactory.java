@@ -60,15 +60,12 @@ public class SceneFactory {
 	private AudioManager am;
 	private CodenameDutchess mcd;
 	private PhysicsWorld mPhysicsWorld;
-	
 	private ChangeableText mScoreText;
-	
-	// Game objects
 	AgentSprite agent;
 	Body agentBody;
 	private List<CoinSprite> coins = new ArrayList<CoinSprite>();
 	private List<WallSprite> walls = new ArrayList<WallSprite>();
-	private List<GameObject> sceneObjects = new ArrayList<GameObject>();
+	private List<GameObject> mSceneObjects = new ArrayList<GameObject>();
 	
 	private static String COINS = "coins concurrency exception";
 
@@ -91,32 +88,18 @@ public class SceneFactory {
 		//this.mPhysicsWorld = physicsWorld;
 		//Text t = new Text(2, 2, this.font, "1234567890");
 		
-		this.activeScene.registerUpdateHandler(new IUpdateHandler() {
-
-			@Override
-			public void reset() { }
-
-			@Override
-			public void onUpdate(final float pSecondsElapsed) {
-				// invoke onCollision() on game objects here
-				for(CoinSprite coin : coins)
-				{
-					if (coin.collidesWith(agent) && coin.isEnabled())
-					{
-						coin.disable();
-						activeScene.getTopLayer().removeEntity(coin);
-						//coins.remove(coins.indexOf(coin));		
-						am.getCoinSound().play();
-						gm.incmScore();
-						gm.decCoins();
-						//mScoreText.setText(gm.getmScore().toString());
-						mScoreText.setText("2");
-					}
-				}
-			}
-		});	
-		
 		//this.am.getPlayList().get(1).play();
+	}
+	
+	
+	public List<GameObject> getSceneObjects()
+	{
+		return this.mSceneObjects;
+	}
+	
+	public ChangeableText getScoreText()
+	{
+		return mScoreText;
 	}
 
 	public Scene createStartScene(IOnMenuItemClickListener listener) {
@@ -128,16 +111,6 @@ public class SceneFactory {
 		
 		return menuScene;
 	}
-
-	/*
-	 * Usage:	gameScene = sf.getGameScene();
-	 * Pre:		sf is a SceneFactory object
-	 * Post:	gameScene represents the latest scene manifactured for the game, that is the level.
-	 */
-	public Scene getGameScene()
-	{
-		return this.activeScene;
-	}
 	
 	/*
 	 * Usage:	sf.createDemoScene();
@@ -147,7 +120,6 @@ public class SceneFactory {
 	 */
 	public Scene createLevelScene(int n)
 	{
-		Log.d(CodenameDutchess.DEBUG_TAG, "fail");
 		Scene scene = new Scene(1);
 		scene.setBackground(new ColorBackground(0.09804f, 0.6274f, 0.8784f));
 		//PhysicsWorld physicsWorld = new PhysicsWorld(new Vector2(0, SensorManager.GRAVITY_JUPITER), false);
@@ -167,7 +139,7 @@ public class SceneFactory {
 		this.bCamera.setChaseShape(agent);
 		
 //		this.mScoreText = new ChangeableText(5, 5, this.font, gm.getmScore().toString());
-		this.mScoreText = new ChangeableText(5, 5, this.font, "temp");
+		this.mScoreText = new ChangeableText(5, 5, this.font, "0");
 		this.mScoreText.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		this.mScoreText.setAlpha(0.5f);
 		HUD hud = new HUD();
@@ -186,6 +158,7 @@ public class SceneFactory {
 					20,
 					this.gor.getCoinTextureRegion());
 			xCoins.add(coin);
+			
 		}
 		
 		// Spawn the coins
@@ -235,11 +208,7 @@ public class SceneFactory {
 		//PhysicsFactory.createBoxBody(this.gor.getPhysicsWorld(), wallie, BodyType.StaticBody, wallFixtureDef);
 		//bottomLayer.addEntity(wallie);
 	}
-	
-	public List<GameObject> getSceneObjects()
-	{
-		return this.sceneObjects;
-	}
+
 	
 	
 //	public boolean onKeyDown(final int pKeyCode, final KeyEvent pEvent) {
