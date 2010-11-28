@@ -192,7 +192,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 		}
 
 		// Accelero-support
-		this.enableAccelerometerSensor(this);
+		//this.enableAccelerometerSensor(this);
 
 	}
 
@@ -215,7 +215,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 		this.gor.setWallTextureRegion(this.mWoodTextureRegion);
 		
 		sf = new SceneFactory(this.mBoundChaseCamera, this.mFont, this.scene, this.gor,
-				this.gm, this.am, this);
+				this.gm, this.am);
 		// return sf.createWelcomeScene();
 		return sf.createStartScene(this);
 	}
@@ -230,116 +230,6 @@ public class CodenameDutchess extends BaseGameActivity implements
 		this.mPhysicsWorld.setGravity(new Vector2(pAccelerometerData.getY(),
 				pAccelerometerData.getX()));
 	}
-
-	/*
-	 * public boolean onKeyDown(final int pKeyCode, final KeyEvent pEvent) {
-	 * if(pKeyCode == KeyEvent.KEYCODE_MENU && pEvent.getAction() ==
-	 * KeyEvent.ACTION_DOWN) { if(this.scene.hasChildScene()) { // Remove the
-	 * menu and reset it. this.scene.back();
-	 * 
-	 * } else { // Attach the menu.
-	 * this.scene.setChildScene(this.sf.createMenuScene(), false, true, true);
-	 * 
-	 * } return true; } else { return false;//super.onKeyDown(pKeyCode, pEvent);
-	 * } }
-	 */
-
-	// ===========================================================
-	// Methods which should belong to some scene factory class
-	// ===========================================================
-
-	// private void initAgent(final Scene pScene) {
-	// this.mAgent = new Sprite(0, 0, this.mAgentTextureRegion);
-	// this.mAgent.setScale(0.65f);
-	// final FixtureDef carFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f,
-	// 0.5f);
-	// this.mAgentBody = PhysicsFactory.createBoxBody(this.mPhysicsWorld,
-	// this.mAgent, BodyType.DynamicBody, carFixtureDef);
-	// this.mPhysicsWorld.registerPhysicsConnector(new
-	// PhysicsConnector(this.mAgent, this.mAgentBody, true, false, true,
-	// false));
-	// pScene.getTopLayer().addEntity(this.mAgent);
-	// }
-
-	// private void initRandomLevel(final Scene pScene) {
-	// Random gaur = new Random();
-	//
-	// lines[0] = new Rectangle( 0,
-	// 0.15f*this.CAMERA_HEIGHT,0.8f*this.CAMERA_WIDTH, 3);
-	// lines[1] = new Rectangle( 0.5f*this.CAMERA_WIDTH,
-	// 0.3f*this.CAMERA_HEIGHT, 0.5f*this.CAMERA_WIDTH, 3);
-	// lines[2] = new Rectangle( 0.3f * this.CAMERA_WIDTH,
-	// 0.15f*this.CAMERA_HEIGHT, 3, 0.5f*this.CAMERA_HEIGHT);
-	// lines[3] = new Rectangle( 0, 0.4f*this.CAMERA_HEIGHT,
-	// 0.16f*this.CAMERA_WIDTH, 3 );
-	// lines[4] = new Rectangle( 0.4f*this.CAMERA_WIDTH,
-	// 0.5f*this.CAMERA_HEIGHT, 3,this.CAMERA_HEIGHT );
-	// lines[5] = new Rectangle( 0.65f*this.CAMERA_WIDTH,
-	// 0.3f*this.CAMERA_HEIGHT, 3, 0.4f*this.CAMERA_HEIGHT );
-	// lines[6] = new Rectangle( 0.75f*this.CAMERA_WIDTH,
-	// 0.6f*this.CAMERA_HEIGHT, 3, 0.4f*this.CAMERA_HEIGHT );
-	//
-	// // Moving guys
-	// lines[7] = new Rectangle( 0.85f*this.CAMERA_WIDTH,
-	// 0.15f*this.CAMERA_HEIGHT, 0.10f*this.CAMERA_WIDTH, 3 );
-	// lines[8] = new Rectangle( 0.81f*this.CAMERA_WIDTH,
-	// 0.55f*this.CAMERA_HEIGHT, 0.13f*this.CAMERA_WIDTH, 3 );
-	// lines[9] = new Rectangle( 0.11f*this.CAMERA_WIDTH,
-	// 0.65f*this.CAMERA_HEIGHT, 0.13f*this.CAMERA_WIDTH, 3 );
-	//
-	// // Let us create a box body for some of the lines, and connect them with
-	// our physics this.mPhysicsWorld. Others are traps.
-	// final FixtureDef wallFixtureDef = PhysicsFactory.createFixtureDef(0,
-	// 0.5f, 0.5f);
-	// for(int i=0; i<7; i++)
-	// {
-	// if(gaur.nextBoolean())
-	// {
-	// PhysicsFactory.createBoxBody(this.mPhysicsWorld, lines[i],
-	// BodyType.StaticBody, wallFixtureDef);
-	// } else {
-	// lines[i].setColor( 0.5f, 0.7f, 0.1f);
-	// //lines[i].setScaleX(1.5f);
-	// lines[i].setRotation(0.5f);
-	// }
-	// }
-	//
-	// // Rotation for the line-traps
-	// for(int i=7; i<10; i++)
-	// {
-	// lines[i].addShapeModifier(new LoopShapeModifier(new
-	// ParallelShapeModifier(new RotationModifier(6, 0, 360))));
-	// lines[i].setColor(0.5f, 0.7f, 0.1f);
-	// }
-	//
-	// for(int i=0;i<10;i++) { pScene.getTopLayer().addEntity(lines[i]); }
-	//
-	// // Let's prepare the end goal
-	// final int centerX = (CAMERA_WIDTH - 32);
-	// final int centerY = (CAMERA_HEIGHT - 32);
-	// endRect = new Rectangle(centerX, centerY, 32, 32);
-	// endRect.setColor(0, 0, 1);
-	// pScene.getTopLayer().addEntity(endRect);
-	//
-	// // Distribute rewards over the level
-	// for(int i=0; i<6; i++)
-	// {
-	// rewards[i] = new Sprite(CodenameDutchess.randomNumber(5,
-	// this.CAMERA_WIDTH),
-	// CodenameDutchess.randomNumber(5, this.CAMERA_HEIGHT),
-	// this.mRewTextureRegion);
-	//
-	// rewards[i].setScale(0.9f);
-	// pScene.getTopLayer().addEntity(rewards[i]);
-	// }
-	//
-	// // Let's spawn our test texture
-	// //WallSprite wallie = new WallSprite(0, 0, this.mWoodTextureRegion,
-	// this.mPhysicsWorld);
-	//
-	// // Collision has been outsourced to SceneFactory!
-	//
-	// }
 
 	public static int randomNumber(int min, int max) {
 		return min + (new Random()).nextInt(max - min);
@@ -358,7 +248,8 @@ public class CodenameDutchess extends BaseGameActivity implements
 			System.exit(0); // Should also be activity finish something
 			return true;
 		case MENU_MAIN_NEWGAME:
-			mEngine.setScene(this.sf.createLevelScene(2));
+			mEngine.setScene(this.sf.createLevelScene(1));
+
 
 			return true;
 		}

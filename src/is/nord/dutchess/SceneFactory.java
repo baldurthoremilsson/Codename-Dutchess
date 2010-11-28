@@ -57,7 +57,6 @@ public class SceneFactory {
 	private BoundCamera bCamera;
 	private Font font;
 	private GameObjectRegistry gor;
-	private GameManager gm;
 	private AudioManager am;
 	private CodenameDutchess mcd;
 	
@@ -68,6 +67,7 @@ public class SceneFactory {
 	Body agentBody;
 	private List<CoinSprite> coins = new ArrayList<CoinSprite>();
 	private List<WallSprite> walls = new ArrayList<WallSprite>();
+	private List<GameObject> sceneObjects = new ArrayList<GameObject>();
 	
 	private static String COINS = "coins concurrency exception";
 
@@ -77,15 +77,13 @@ public class SceneFactory {
 	 * Pre:		camera is of type Camera, font of type Font, and scene of type Scene, and all three have been set up
 	 * Post:	sf is a SceenFactory object based on the parameters
 	 */
-	public SceneFactory(BoundCamera camera, Font font, Scene scene, GameObjectRegistry gor, final GameManager gm, final AudioManager am, CodenameDutchess cd)
+	public SceneFactory(BoundCamera camera, Font font, Scene scene, GameObjectRegistry gor, final GameManager gm, final AudioManager am)
 	{
 		this.bCamera = camera;
 		this.bCamera.setBoundsEnabled(true);
 		this.font = font;
 		this.activeScene = scene;
-		this.mcd = cd;
 		this.gor = gor;
-		this.gm = gm;
 		this.am = am;
 		gm.setmScore(0);
 		//Text t = new Text(2, 2, this.font, "1234567890");
@@ -109,38 +107,13 @@ public class SceneFactory {
 						gm.incmScore();
 						gm.decCoins();
 						//mScoreText.setText(gm.getmScore().toString());
-						mScoreText.setText(gm.getCoins().toString());
-
-						if(gm.getCoins() == 0)
-						{
-							mcd.setScene(createLevelScene(gm.getmLevel()+1));
-						}
-					}
-					if(gm.getCoins() <= 0)
-					{
-						mcd.setScene(createLevelScene(gm.getmLevel()+1));
+						mScoreText.setText("2");
 					}
 				}
 			}
 		});	
 		
-		this.am.getPlayList().get(1).play();
-	}
-	
-	public List<CoinSprite> getCoins() {
-		return coins;
-	}
-
-	public void setCoins(List<CoinSprite> coins) {
-		this.coins = coins;
-	}
-
-	public List<WallSprite> getWalls() {
-		return walls;
-	}
-
-	public void setWalls(List<WallSprite> walls) {
-		this.walls = walls;
+		//this.am.getPlayList().get(1).play();
 	}
 
 	public Scene createStartScene(IOnMenuItemClickListener listener) {
@@ -191,7 +164,7 @@ public class SceneFactory {
 		this.bCamera.setChaseShape(agent);
 		
 //		this.mScoreText = new ChangeableText(5, 5, this.font, gm.getmScore().toString());
-		this.mScoreText = new ChangeableText(5, 5, this.font, gm.getCoins().toString());
+		this.mScoreText = new ChangeableText(5, 5, this.font, "temp");
 		this.mScoreText.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		this.mScoreText.setAlpha(0.5f);
 		HUD hud = new HUD();
@@ -202,7 +175,7 @@ public class SceneFactory {
 		// Create the coins, must be randomized better
 		CoinSprite coin;
 		List<CoinSprite> xCoins = new ArrayList<CoinSprite>();
-		for(int i=0; i<gm.getmLevel()*50; i++)
+		for(int i=0; i!=10; i++)
 		{
 			coin = new CoinSprite(SceneFactory.randomNumber(5, 480-20), 
 					SceneFactory.randomNumber(10, 320-20),
@@ -219,15 +192,14 @@ public class SceneFactory {
 		}
 		
 		Sprite wallie;
-		List<WallSprite> xWalls = new ArrayList<WallSprite>();
 		Random rand = new Random();
-		for(int i=0; i<gm.getmLevel()*10+gm.getmLevel(); i++)
+		for(int i=0; i!= 20; i++)
 		{
 			wallie = new WallSprite(SceneFactory.randomNumber(10, 480*2-20), 
 					SceneFactory.randomNumber(10, 320*2-20), 
 					this.gor.getWallTextureRegion(), 
 					physicsWorld);
-			wallie.addShapeModifier(new RotationModifier(1, 90, rand.nextBoolean() ? 90 : 0));
+			//wallie.addShapeModifier(new RotationModifier(1, 90, rand.nextBoolean() ? 90 : 0));
 			scene.getTopLayer().addEntity(wallie);
 		}
 	
