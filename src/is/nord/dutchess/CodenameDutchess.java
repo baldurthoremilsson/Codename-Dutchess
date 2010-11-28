@@ -76,6 +76,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 
 	public static final int MENU_MAIN_NEWGAME = 0;
 	public static final int MENU_MAIN_QUIT = 1;
+	public static final int MENU_PAUSE_CONTINUE = 2;
 
 	public static final String DEBUG_TAG = "SCENEDEBUG";
 	// ===========================================================
@@ -243,10 +244,25 @@ public class CodenameDutchess extends BaseGameActivity implements
 			return true;
 		case MENU_MAIN_NEWGAME:
 			mEngine.setScene(this.sf.createLevelScene(1));
+		case MENU_PAUSE_CONTINUE:
+			mEngine.getScene().back();
 
 
 			return true;
 		}
 		return false;
+	}
+	
+	public boolean onKeyDown(final int pKeyCode, final KeyEvent pEvent) {
+	if(pKeyCode == KeyEvent.KEYCODE_MENU && pEvent.getAction() == KeyEvent.ACTION_DOWN) {
+		if(this.mEngine.getScene().hasChildScene()) {
+			/* Remove the menu and reset it. */
+			this.mEngine.getScene().back();
+		} else {
+			/* Attach the menu. */
+			this.mEngine.getScene().setChildScene(sf.createPauseScene(this), false, true, true);
+		}
+	}
+	return true;
 	}
 }

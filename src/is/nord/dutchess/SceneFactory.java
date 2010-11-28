@@ -110,11 +110,25 @@ public class SceneFactory {
 		MenuScene menuScene = new MenuScene(this.bCamera);
 		menuScene.addMenuItem(new ColoredTextMenuItem(CodenameDutchess.MENU_MAIN_NEWGAME, this.font, "NEW GAME", 1.0f,0.7f,0.7f, 0.7f,0.7f,0.7f));
 		menuScene.addMenuItem(new ColoredTextMenuItem(CodenameDutchess.MENU_MAIN_QUIT, this.font, "QUIT", 1.0f,0.7f,0.7f, 0.7f,0.7f,0.7f));
+		//menuScene.setBackground(new ColorBackground(0.09804f, 0.6274f, 0.8784f));
 		menuScene.buildAnimations();
 		menuScene.setOnMenuItemClickListener(listener);
 		
 		return menuScene;
 	}
+	
+	public Scene createPauseScene(IOnMenuItemClickListener listener) {
+		MenuScene menuScene = new MenuScene(this.bCamera);
+		menuScene.addMenuItem(new ColoredTextMenuItem(CodenameDutchess.MENU_PAUSE_CONTINUE, this.font, "CONTINUE", 1.0f,0.7f,0.7f, 0.7f,0.7f,0.7f));
+		menuScene.addMenuItem(new ColoredTextMenuItem(CodenameDutchess.MENU_MAIN_QUIT, this.font, "QUIT", 1.0f,0.7f,0.7f, 0.7f,0.7f,0.7f));
+		//menuScene.setBackground(new ColorBackground(0.09804f, 0.6274f, 0.8784f));
+		menuScene.buildAnimations();
+		menuScene.setOnMenuItemClickListener(listener);
+		menuScene.centerShapeInCamera(agent);
+		
+		return menuScene;
+	}
+	
 	
 	/*
 	 * Usage:	sf.createDemoScene();
