@@ -112,8 +112,6 @@ public class CodenameDutchess extends BaseGameActivity implements
 	private TextureRegion mRewTextureRegion;
 
 	// Traps, lines and the endgoal, rewards
-	final Shape[] lines = new Rectangle[10];
-	private Sprite[] rewards = new Sprite[6];
 	private Rectangle endRect;
 
 	SceneFactory sf;
@@ -141,12 +139,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 		this.mFont = FontFactory.createFromAsset(this.mFontTexture, this,
 				"Plok.ttf", 48, true, Color.WHITE);
 		this.mEngine.getTextureManager().loadTexture(this.mFontTexture);
-		// this.altFont = FontFactory.createFromAsset(this.altFontTexture, this,
-		// "Plok.ttf", 20, true, Color.WHITE);
-		// this.mEngine.getTextureManager().loadTexture(this.altFontTexture);
-
 		this.mEngine.getFontManager().loadFont(this.mFont);
-		// this.mEngine.getFontManager().loadFont(this.altFont);
 
 		/* Load Sprite Textures */
 		TextureRegionFactory.setAssetBasePath("gfx/");

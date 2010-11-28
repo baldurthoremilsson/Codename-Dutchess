@@ -99,6 +99,11 @@ public class SceneFactory {
 	{
 		return mScoreText;
 	}
+	
+	public void setScoreText(String score)
+	{
+		mScoreText.setText(score);
+	}
 
 	public Scene createStartScene(IOnMenuItemClickListener listener) {
 		MenuScene menuScene = new MenuScene(this.bCamera);
@@ -116,7 +121,7 @@ public class SceneFactory {
 	 * Post:	the active scene is a demo scene, similar to the one from earlier vesions of the game.
 	 * 			Proof of concept but not a final or definite version of how game levels are constructed
 	 */
-	public Scene createLevelScene(int n)
+	public Scene createLevelScene(int level)
 	{
 		Scene scene = new Scene(1);
 		scene.setBackground(new ColorBackground(0.09804f, 0.6274f, 0.8784f));
@@ -146,7 +151,7 @@ public class SceneFactory {
 		// Create the coins, must be randomized better
 		CoinSprite coin;
 		List<CoinSprite> xCoins = new ArrayList<CoinSprite>();
-		for(int i=0; i!=10; i++)
+		for(int i=0; i!=level*5; i++)
 		{
 			coin = new CoinSprite(SceneFactory.randomNumber(5, 480-20), 
 					SceneFactory.randomNumber(10, 320-20),
@@ -166,7 +171,7 @@ public class SceneFactory {
 		
 		GameObject wallie;
 		Random rand = new Random();
-		for(int i=0; i!= 20; i++)
+		for(int i=0; i!= (20+level*2); i++)
 		{
 			wallie = new WallSprite(SceneFactory.randomNumber(10, 480*2-20), 
 					SceneFactory.randomNumber(10, 320*2-20), 
