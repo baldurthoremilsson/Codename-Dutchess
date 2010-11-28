@@ -209,7 +209,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 		this.gor.setWallTextureRegion(this.mWoodTextureRegion);
 		
 		sf = new SceneFactory(this.mBoundChaseCamera, this.mFont, this.scene, this.gor,
-				this.gm, this.am, this.mPhysicsWorld);
+				this.am, this.mPhysicsWorld);
 		// return sf.createWelcomeScene();
 		return sf.createStartScene(this);
 	}

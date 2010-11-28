@@ -75,7 +75,7 @@ public class SceneFactory {
 	 * Pre:		camera is of type Camera, font of type Font, and scene of type Scene, and all three have been set up
 	 * Post:	sf is a SceenFactory object based on the parameters
 	 */
-	public SceneFactory(BoundCamera camera, Font font, Scene scene, GameObjectRegistry gor, final GameManager gm, final AudioManager am, PhysicsWorld physicsWorld)
+	public SceneFactory(BoundCamera camera, Font font, Scene scene, GameObjectRegistry gor, final AudioManager am, PhysicsWorld physicsWorld)
 	{
 		this.bCamera = camera;
 		this.bCamera.setBoundsEnabled(true);
@@ -84,7 +84,6 @@ public class SceneFactory {
 		this.gor = gor;
 		this.am = am;
 		this.mPhysicsWorld = physicsWorld;
-		gm.setmScore(0);
 		
 		//this.am.getPlayList().get(1).play();
 	}
