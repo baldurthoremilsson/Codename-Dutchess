@@ -61,6 +61,7 @@ public class SceneFactory {
 	private CodenameDutchess mcd;
 	private PhysicsWorld mPhysicsWorld;
 	private ChangeableText mScoreText;
+	private ChangeableText mTime;
 	AgentSprite agent;
 	Body agentBody;
 	private List<CoinSprite> coins = new ArrayList<CoinSprite>();
@@ -114,6 +115,24 @@ public class SceneFactory {
 	public Sprite getAgentSprite()
 	{
 		return agent;
+	}
+	
+	/**
+	 * 
+	 * @return ChangeableText time
+	 */
+	public ChangeableText getTime()
+	{
+		return mTime;
+	}
+	
+	/**
+	 * 
+	 * @param String time
+	 */
+	public void setTime(String time)
+	{
+		mTime.setText(time);
 	}
 
 	public Scene createStartScene(IOnMenuItemClickListener listener) {
@@ -170,6 +189,12 @@ public class SceneFactory {
 		this.mScoreText.setAlpha(0.5f);
 		HUD hud = new HUD();
 		hud.getTopLayer().addEntity(this.mScoreText);
+		
+		this.mTime = new ChangeableText(480-60, 5, this.font, "0");
+		this.mTime.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+		this.mTime.setAlpha(0.5f);
+		this.mTime.setScale(0.9f);
+		hud.getTopLayer().addEntity(this.mTime);
 		//hud.centerShapeInCamera(agent);
 		this.bCamera.setHUD(hud);
 		
