@@ -26,10 +26,15 @@ public class MapPointList {
 		Integer px = p.getX();
 		Integer py = p.getY();
 		
-		MapPoint tempP = new MapPoint(px+1,py+1);
-		mMapPoints.add(tempP);
-		tempP = new MapPoint(px-1,py-1);
-		mMapPoints.add(tempP);
+		//populate the cells around the wall/coin/trap
+		for(int i = 0; i!=3; i++){
+			
+			MapPoint tempPp = new MapPoint(px+(i+1),py+(i+1));
+			MapPoint tempPm = new MapPoint(px-(i+1),py+(i-1));
+			mMapPoints.add(tempPp);
+			mMapPoints.add(tempPp);
+		}
+
 		}
 	}
 
