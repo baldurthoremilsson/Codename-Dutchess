@@ -316,8 +316,11 @@ public class CodenameDutchess extends BaseGameActivity implements
 						mEngine.setScene(sf.removeCoin(coin));
 						// manHandler();
 
-						if (coins <= 0) {
-							// mEngine.setScene(sf.createLevelScene(2));
+						if (coins <= 1) {
+							coins = 10;
+							 mEngine.setScene(sf.createLevelScene(2));
+							 mEngine.setScene(sf.setScoreText(coins.toString()));
+							 manHandler();
 						}
 
 					}
