@@ -1,5 +1,6 @@
 package is.nord.dutchess;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.anddev.andengine.engine.handler.IUpdateHandler;
@@ -19,15 +20,17 @@ public class SceneUpdateHandler implements IUpdateHandler, IAccelerometerListene
 	private ChangeableText timeText;
 	private ChangeableText coinsText;
 	private Scene scene;
+	private AgentSprite agent;
 	private List<GameObject> gameObjects;
 	
-	public SceneUpdateHandler(PhysicsWorld physicsWorld, ChangeableText timeText, ChangeableText coinsText, float levelTime, int coinsLeft, Scene scene) {
+	public SceneUpdateHandler(PhysicsWorld physicsWorld, ChangeableText timeText, ChangeableText coinsText, float levelTime, int coinsLeft, Scene scene, AgentSprite agent) {
 		this.physicsWorld = physicsWorld;
 		this.timeLeft = levelTime;
 		this.coinsLeft = coinsLeft;
 		this.timeText = timeText;
 		this.coinsText = coinsText;
 		this.scene = scene;
+		this.agent = agent;
 	}
 	
 	public void setGameObjects(List<GameObject> gameObjects) {
@@ -38,6 +41,11 @@ public class SceneUpdateHandler implements IUpdateHandler, IAccelerometerListene
 	public void onUpdate(float pSecondsElapsed) {
 		timeLeft -= pSecondsElapsed;
 		timeText.setText(timeLeft.toString());
+		
+		for(GameObject gameObject: gameObjects) {
+			if(agent.collidesWith(gameObject))
+				gameObject.onCollision();
+		}
 	}
 
 	@Override
@@ -47,10 +55,14 @@ public class SceneUpdateHandler implements IUpdateHandler, IAccelerometerListene
 	}
 	
 	public void coinCollision(CoinSprite coin) {
+		if(!coin.isEnabled())
+			return;
+		
 		this.coinsLeft--;
 		this.coinsText.setText(coinsLeft.toString());
 		this.scene.getTopLayer().removeEntity(coin);
-		gameObjects.remove(coin);
+		//gameObjects.remove(coin);
+		coin.disable();
 	}
 
 	@Override

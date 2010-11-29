@@ -139,19 +139,19 @@ public class SceneFactory {
 
 		physicsWorld = new PhysicsWorld(new Vector2(0, SensorManager.GRAVITY_EARTH), false); // FIXME: should be fixed parameters?
 		
-		sceneUpdateHandler = new SceneUpdateHandler(physicsWorld, timeLeft, coinsLeft, TIME, COINS, scene);
+		agent = new AgentSprite(0, 0, this.gor.getAgentTextureRegion());
+		agentBody = PhysicsFactory.createBoxBody(physicsWorld, agent, BodyType.DynamicBody, PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f));
+		physicsWorld.registerPhysicsConnector(new PhysicsConnector(agent, agentBody, true, false, true, false));
+		scene.getTopLayer().addEntity(agent);
+		this.bCamera.setChaseShape(agent);
+		
+		sceneUpdateHandler = new SceneUpdateHandler(physicsWorld, timeLeft, coinsLeft, TIME, COINS, scene, agent);
 		activity.setAccelerometerSensor(sceneUpdateHandler);
 		gameObjects = new ArrayList<GameObject>();
 
 		scene.setBackground(this.gor.getRepeatingBackground());
 		scene.registerUpdateHandler(physicsWorld);
 		initBorders(scene, this.bCamera, physicsWorld); // make the frame
-		
-		agent = new AgentSprite(0, 0, this.gor.getAgentTextureRegion());
-		agentBody = PhysicsFactory.createBoxBody(physicsWorld, agent, BodyType.DynamicBody, PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f));
-		physicsWorld.registerPhysicsConnector(new PhysicsConnector(agent, agentBody, true, false, true, false));
-		scene.getTopLayer().addEntity(agent);
-		this.bCamera.setChaseShape(agent);
 		
 		for(int i=0; i!=COINS; i++)
 		{
