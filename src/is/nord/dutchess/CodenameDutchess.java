@@ -273,15 +273,13 @@ public class CodenameDutchess extends BaseGameActivity implements
 	}
 
 	public boolean onKeyDown(final int pKeyCode, final KeyEvent pEvent) {
-		if (pKeyCode == KeyEvent.KEYCODE_MENU
-				&& pEvent.getAction() == KeyEvent.ACTION_DOWN) {
+		if (pKeyCode == KeyEvent.KEYCODE_MENU && pEvent.getAction() == KeyEvent.ACTION_DOWN) {
 			if (this.mEngine.getScene().hasChildScene()) {
 				/* Remove the menu and reset it. */
 				this.mEngine.getScene().back();
 			} else {
 				/* Attach the menu. */
-				this.mEngine.getScene().setChildScene(
-						sf.createPauseScene(this), false, true, true);
+				this.mEngine.getScene().setChildScene(sf.createPauseScene(this), false, true, true);
 			}
 		}
 		return true;

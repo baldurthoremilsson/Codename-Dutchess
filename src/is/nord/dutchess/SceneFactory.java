@@ -59,6 +59,7 @@ public class SceneFactory {
 	private Font font;
 	private GameObjectRegistry gor;
 	private AudioManager am;
+	private AgentSprite agent;
 
 	/*
 	 * Usage:	SceneFactory sf = new SceneFactory(camera, font, scene);
@@ -96,7 +97,8 @@ public class SceneFactory {
 		//menuScene.setBackground(new ColorBackground(0.09804f, 0.6274f, 0.8784f));
 		menuScene.buildAnimations();
 		menuScene.setOnMenuItemClickListener(listener);
-		//menuScene.centerShapeInCamera(agent); FIXME
+		menuScene.centerShapeInCamera(agent); // FIXME
+		
 		return menuScene;
 	}
 	
@@ -118,7 +120,7 @@ public class SceneFactory {
 		ChangeableText coinsLeft;
 		ChangeableText timeLeft;
 		List<GameObject> gameObjects;
-		AgentSprite agent;
+		//AgentSprite agent;
 		Body agentBody;
 		GameObject gameObject;
 		
