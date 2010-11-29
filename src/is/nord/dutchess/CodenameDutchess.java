@@ -324,7 +324,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 						}
 						if(coins <= 0)
 						{
-							mEngine.setScene(sf.createLevelScene(2));
+							//mEngine.setScene(sf.createLevelScene(2));
 						}
 						
 					}
