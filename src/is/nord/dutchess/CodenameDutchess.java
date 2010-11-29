@@ -186,14 +186,14 @@ public class CodenameDutchess extends BaseGameActivity implements
 
 		try {
 			// Last one seems to start? how about creating playlist?
-			this.mMusic = MusicFactory.createMusicFromAsset(this.mEngine
-					.getMusicManager(), this, "unreal.ogg");
+			this.mMusic = MusicFactory.createMusicFromAsset(
+					this.mEngine.getMusicManager(), this, "unreal.ogg");
 			mMusic.setLooping(true);
-			this.mZelda = MusicFactory.createMusicFromAsset(this.mEngine
-					.getMusicManager(), this, "zelda.ogg");
+			this.mZelda = MusicFactory.createMusicFromAsset(
+					this.mEngine.getMusicManager(), this, "zelda.ogg");
 			mZelda.setLooping(true);
-			this.mCoinSound = MusicFactory.createMusicFromAsset(this.mEngine
-					.getMusicManager(), this, "smb_coin.ogg");
+			this.mCoinSound = MusicFactory.createMusicFromAsset(
+					this.mEngine.getMusicManager(), this, "smb_coin.ogg");
 
 			// this.mCoinSound =
 			// SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(),
@@ -217,7 +217,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 	@Override
 	public Scene onLoadScene() {
 		this.mEngine.registerUpdateHandler(new FPSLogger());
-		//currScene = 1;
+		// currScene = 1;
 		this.scene = new Scene(1);
 
 		this.gor = new GameObjectRegistry(this.mPhysicsWorld);
@@ -296,38 +296,30 @@ public class CodenameDutchess extends BaseGameActivity implements
 
 			@Override
 			public void onUpdate(final float pSecondsElapsed) {
-				if (timeLeft < 1) {
-
-					for (Body b : mPhysicsWorld.getBodies()) {
-						mPhysicsWorld.destroyBody(b);
-					}
-					timeLeft = sf.getCoinsLeft() * 60;
-					
-					mEngine.setScene(sf.createLevelScene(1));
-					mEngine.setScene(sf.setScoreText(sf.getCoinsLeft().toString()));
-					manHandler();
-				}
-				for(CoinSprite coin : sf.getCoinList())
-				{
-					if(coin.collidesWith(sf.getAgentSprite()))
-					{
+				// if (timeLeft < 1) {
+				//
+				// for (Body b : mPhysicsWorld.getBodies()) {
+				// mPhysicsWorld.destroyBody(b);
+				// }
+				// timeLeft = sf.getCoinsLeft() * 60;
+				//
+				// mEngine.setScene(sf.createLevelScene(1));
+				// mEngine.setScene(sf.setScoreText(sf.getCoinsLeft().toString()));
+				// manHandler();
+				// }
+				for (CoinSprite coin : sf.getCoinList()) {
+					if (coin.collidesWith(sf.getAgentSprite())) {
 						coin.disable();
 						am.getCoinSound().play();
-						for(CoinSprite c : sf.getCoinList())
-						{
-							if(!c.isEnabled())
-							{
-								coins--;
-								sf.setScoreText(coins.toString());
-								mEngine.setScene(sf.removeCoin(coin));
-								manHandler();
-							}
+						coins--;
+						sf.setScoreText(coins.toString());
+						mEngine.setScene(sf.removeCoin(coin));
+						// manHandler();
+
+						if (coins <= 0) {
+							// mEngine.setScene(sf.createLevelScene(2));
 						}
-						if(coins <= 0)
-						{
-							//mEngine.setScene(sf.createLevelScene(2));
-						}
-						
+
 					}
 				}
 				timeLeft--;
