@@ -262,6 +262,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 			return true;
 		case MENU_MAIN_NEWGAME:
 			mEngine.setScene(this.sf.createLevelScene(1));
+			mEngine.setScene(this.sf.setScoreText("11"));
 		case MENU_PAUSE_CONTINUE:
 			mEngine.getScene().back();
 

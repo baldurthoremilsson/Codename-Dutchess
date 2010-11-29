@@ -91,6 +91,11 @@ public class SceneFactory {
 		this.am.getPlayList().get(r.nextInt(this.am.getPlayList().size()-1)).play();
 	}
 	
+	public Scene getActiveScene()
+	{
+		return activeScene;
+	}
+	
 	
 	public List<GameObject> getSceneObjects()
 	{
@@ -102,9 +107,10 @@ public class SceneFactory {
 		return mScoreText;
 	}
 	
-	public void setScoreText(String score)
+	public Scene setScoreText(String score)
 	{
 		mScoreText.setText(score);
+		return activeScene;
 	}
 	
 	public Body getAgentBody()
@@ -112,6 +118,10 @@ public class SceneFactory {
 		return agentBody;
 	}
 	
+	/**
+	 * 
+	 * @return agentSprite
+	 */
 	public Sprite getAgentSprite()
 	{
 		return agent;
@@ -130,9 +140,10 @@ public class SceneFactory {
 	 * 
 	 * @param String time
 	 */
-	public void setTime(String time)
+	public Scene setTime(String time)
 	{
 		mTime.setText(time);
+		return activeScene;
 	}
 
 	public Scene createStartScene(IOnMenuItemClickListener listener) {
@@ -142,7 +153,7 @@ public class SceneFactory {
 		//menuScene.setBackground(new ColorBackground(0.09804f, 0.6274f, 0.8784f));
 		menuScene.buildAnimations();
 		menuScene.setOnMenuItemClickListener(listener);
-		
+		activeScene = menuScene;
 		return menuScene;
 	}
 	
@@ -154,7 +165,7 @@ public class SceneFactory {
 		menuScene.buildAnimations();
 		menuScene.setOnMenuItemClickListener(listener);
 		menuScene.centerShapeInCamera(agent);
-		
+		activeScene = menuScene;
 		return menuScene;
 	}
 	
@@ -185,13 +196,13 @@ public class SceneFactory {
 		
 
 		
-		this.mScoreText = new ChangeableText(5, 5, this.font, "0");
+		this.mScoreText = new ChangeableText(5, 5, this.font, "0", 2);
 		this.mScoreText.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		this.mScoreText.setAlpha(0.5f);
 		HUD hud = new HUD();
 		hud.getTopLayer().addEntity(this.mScoreText);
 		
-		this.mTime = new ChangeableText(480-60, 5, this.font, "0");
+		this.mTime = new ChangeableText(480-60, 5, this.font, "0",2);
 		this.mTime.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		this.mTime.setAlpha(0.5f);
 		this.mTime.setScale(0.9f);
@@ -255,6 +266,7 @@ public class SceneFactory {
 			scene.getTopLayer().addEntity(wallie);
 			mSceneObjects.add(wallie);
 		}
+		activeScene = scene;
 		return scene;
 	}
 	
