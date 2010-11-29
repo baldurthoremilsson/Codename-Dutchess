@@ -23,6 +23,7 @@ import org.anddev.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener
 import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.background.ColorBackground;
+import org.anddev.andengine.entity.scene.background.RepeatingSpriteBackground;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.entity.shape.modifier.LoopShapeModifier;
 import org.anddev.andengine.entity.shape.modifier.ParallelShapeModifier;
@@ -40,6 +41,7 @@ import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
+import org.anddev.andengine.opengl.texture.source.AssetTextureSource;
 import org.anddev.andengine.ui.activity.BaseGameActivity;
 import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.MathUtils;
@@ -101,6 +103,10 @@ public class CodenameDutchess extends BaseGameActivity implements
 	// Test wood texture
 	private Texture mWoodTexture;
 	private TextureRegion mWoodTextureRegion;
+	
+	// Grenade Texture
+	private Texture mGrenadeTexture;
+	private TextureRegion mGrenadeTextureRegion;
 
 	// Font texture
 	private Texture mFontTexture;
@@ -111,6 +117,8 @@ public class CodenameDutchess extends BaseGameActivity implements
 	// Texture and region for the rewards to be collected
 	private Texture mRewTexture;
 	private TextureRegion mRewTextureRegion;
+	
+	private RepeatingSpriteBackground mGrassBackground;
 
 	SceneFactory sf;
 	GameObjectRegistry gor;
@@ -148,6 +156,11 @@ public class CodenameDutchess extends BaseGameActivity implements
 		this.mRewTexture = new Texture(64, 64, TextureOptions.BILINEAR);
 		this.mRewTextureRegion = TextureRegionFactory.createFromAsset(
 				this.mRewTexture, this, "coin.png", 0, 0);
+		
+		// Grenades
+		this.mGrenadeTexture = new Texture(64, 64, TextureOptions.BILINEAR);
+		this.mGrenadeTextureRegion = TextureRegionFactory.createFromAsset(
+				this.mGrenadeTexture, this, "gfx/gr.png", 0, 0);
 		// Wood
 		this.mWoodTexture = new Texture(64, 8, TextureOptions.REPEATING);
 		this.mWoodTextureRegion = TextureRegionFactory.createFromAsset(
@@ -155,6 +168,10 @@ public class CodenameDutchess extends BaseGameActivity implements
 
 		this.mEngine.getTextureManager().loadTextures(this.mAgentTexture,
 				this.mRewTexture, this.mWoodTexture);
+		
+		/* A Grass background */
+		this.mGrassBackground = new RepeatingSpriteBackground(CAMERA_WIDTH, CAMERA_HEIGHT, this.mEngine.getTextureManager(), new AssetTextureSource(this, "gfx/background_grass.png"));
+	
 
 		/* Game Music */
 		MusicFactory.setAssetBasePath("mfx/");
@@ -206,6 +223,9 @@ public class CodenameDutchess extends BaseGameActivity implements
 		this.gor.setAgentTextureRegion(this.mAgentTextureRegion);
 		this.gor.setCoinTextureRegion(this.mRewTextureRegion);
 		this.gor.setWallTextureRegion(this.mWoodTextureRegion);
+		this.gor.setTrapTextureRegion(this.mGrenadeTextureRegion);
+
+		this.gor.setRepeatingBackground(this.mGrassBackground);
 		
 		sf = new SceneFactory(this.mBoundChaseCamera, this.mFont, this.scene, this.gor,
 				this.am, this.mPhysicsWorld);

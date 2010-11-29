@@ -1,5 +1,6 @@
 package is.nord.dutchess;
 
+import org.anddev.andengine.entity.scene.background.RepeatingSpriteBackground;
 import org.anddev.andengine.extension.physics.box2d.PhysicsWorld;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 
@@ -17,6 +18,8 @@ public class GameObjectRegistry {
 	private TextureRegion agentTextureRegion;
 	private TextureRegion wallTextureRegion;
 	private TextureRegion coinTextureRegion;
+	private TextureRegion trapTextureRegion;
+	private RepeatingSpriteBackground mGrassBackground; 
 	
 	private Body agentBody;
 	
@@ -31,6 +34,16 @@ public class GameObjectRegistry {
 	}
 	
 	/* Setters */
+	public void setTrapTextureRegion(TextureRegion traptex)
+	{
+		this.trapTextureRegion = traptex;
+	}
+	
+	public void setRepeatingBackground(RepeatingSpriteBackground repback)
+	{
+		this.mGrassBackground = repback;
+	}
+	
 	public void setAgentTextureRegion(TextureRegion agentTextRegion)
 	{
 		this.agentTextureRegion = agentTextRegion;
@@ -52,6 +65,15 @@ public class GameObjectRegistry {
 	}
 	
 	/* Getters */
+	public RepeatingSpriteBackground getRepeatingBackground()
+	{
+		return this.mGrassBackground;
+	}
+	public TextureRegion getTrapTextureRegion()
+	{
+		return this.trapTextureRegion;
+	}
+	
 	public TextureRegion getAgentTextureRegion()
 	{
 		return this.agentTextureRegion;

@@ -168,7 +168,8 @@ public class SceneFactory {
 	public Scene createLevelScene(int level)
 	{
 		Scene scene = new Scene(1);
-		scene.setBackground(new ColorBackground(0.09804f, 0.6274f, 0.8784f));
+		//scene.setBackground(new ColorBackground(0.09804f, 0.6274f, 0.8784f));
+		scene.setBackground(this.gor.getRepeatingBackground());
 		scene.registerUpdateHandler(this.mPhysicsWorld);
 		
 		/* make the frame */
@@ -219,6 +220,25 @@ public class SceneFactory {
 			scene.getTopLayer().addEntity(coinsprite);			
 		}
 		
+		GrenadeSprite gren;
+		List<GrenadeSprite> xGrens = new ArrayList<GrenadeSprite>();
+		for(int i=0; i!=level*5; i++)
+		{
+			gren = new GrenadeSprite(SceneFactory.randomNumber(5, 480*2-20), 
+					SceneFactory.randomNumber(10, 320*2-20),
+					20,
+					20,
+					this.gor.getTrapTextureRegion());
+			xGrens.add(gren);
+			mSceneObjects.add(gren);	
+		}
+		
+		// Spawn the grenades
+		//for( GrenadeSprite grennie : xGrens)
+		//{
+		//	scene.getTopLayer().addEntity(grennie);			
+		//}
+		
 		GameObject wallie;
 		Random rand = new Random();
 		for(int i=0; i!= (20+level*2); i++)
@@ -227,7 +247,11 @@ public class SceneFactory {
 					SceneFactory.randomNumber(10, 320*2-20), 
 					this.gor.getWallTextureRegion(), 
 					mPhysicsWorld);
-			//wallie.addShapeModifier(new RotationModifier(1, 90, rand.nextBoolean() ? 90 : 0));
+			//wallie.addShapeModifier(new RotationModifier(0.001f, 90, rand.nextBoolean() ? 90 : 0));
+			if(rand.nextBoolean())
+			{
+				wallie.addShapeModifier(new RotationModifier(0.01f, 0, 90));
+			}
 			scene.getTopLayer().addEntity(wallie);
 			mSceneObjects.add(wallie);
 		}
