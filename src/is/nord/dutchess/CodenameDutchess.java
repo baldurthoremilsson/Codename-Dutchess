@@ -178,7 +178,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 				this.mWoodTextureHorizonal, this, "wood_small_v.png", 0, 0);
 
 		this.mEngine.getTextureManager().loadTextures(this.mAgentTexture,
-				this.mRewTexture, this.mWoodTextureVertical);
+				this.mRewTexture, this.mWoodTextureVertical,this.mWoodTextureHorizonal);
 
 		/* A Grass background */
 		this.mGrassBackground = new RepeatingSpriteBackground(CAMERA_WIDTH,
