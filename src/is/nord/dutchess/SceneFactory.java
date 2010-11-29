@@ -179,9 +179,19 @@ public class SceneFactory {
 		Random rand = new Random();
 		for(int i=0; i!= (20+level*2); i++)
 		{
-			gameObject = new WallSprite(SceneFactory.randomNumber(10, 480*2-20), 
-					SceneFactory.randomNumber(10, 320*2-20), 
+			gameObject = new WallSprite(SceneFactory.randomNumber(10, 480*2-60), 
+					SceneFactory.randomNumber(10, 320*2-60), 
 					this.gor.getWallTextureRegion(), 
+					physicsWorld);
+			gameObjects.add(gameObject);
+			scene.getTopLayer().addEntity(gameObject);
+		}
+		
+		for(int i=0; i!= (20+level*2); i++)
+		{
+			gameObject = new WallSprite(SceneFactory.randomNumber(10, 480*2-60), 
+					SceneFactory.randomNumber(10, 320*2-60), 
+					this.gor.getVerticalWallTextureRegion(), 
 					physicsWorld);
 			gameObjects.add(gameObject);
 			scene.getTopLayer().addEntity(gameObject);

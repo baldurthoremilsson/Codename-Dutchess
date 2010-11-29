@@ -236,7 +236,8 @@ public class CodenameDutchess extends BaseGameActivity implements
 		this.am = new AudioManager(this.mCoinSound);
 		this.am.addToPlayList(mMusic);
 		this.am.addToPlayList(mZelda);
-
+		
+		
 		// Append our textures and stuff to our game object registry
 		this.gor.setAgentTextureRegion(this.mAgentTextureRegion);
 		this.gor.setCoinTextureRegion(this.mRewTextureRegion);
@@ -246,9 +247,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 		this.gor.setRepeatingBackground(this.mGrassBackground);
 		this.gor.setWallTextureRegion(this.mWoodTextureHorizonalRegion);
 		
-
 		sf = new SceneFactory(this, this.mBoundChaseCamera, this.mFont, this.gor, this.am);
-		// this.scene = sf.createStartScene(this);
 
 		return sf.createStartScene(this);
 	}
