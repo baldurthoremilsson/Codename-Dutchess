@@ -300,10 +300,22 @@ public class CodenameDutchess extends BaseGameActivity implements
 					for (Body b : mPhysicsWorld.getBodies()) {
 						mPhysicsWorld.destroyBody(b);
 					}
+					timeLeft = sf.getCoinsLeft() * 60;
+					
 					mEngine.setScene(sf.createLevelScene(1));
-					timeLeft = coins * 60;
-
+					mEngine.setScene(sf.setScoreText(sf.getCoinsLeft().toString()));
 					manHandler();
+				}
+				for(CoinSprite coin : sf.getCoinList())
+				{
+					if(coin.collidesWith(sf.getAgentSprite()))
+					{
+						coin.disable();
+						am.getCoinSound().play();
+						coins--;
+						sf.setScoreText(coins.toString());
+						mEngine.setScene(sf.removeCoin(coin));
+					}
 				}
 				timeLeft--;
 				// mEngine.setScene(sf.setTime(timeLeft.toString()));

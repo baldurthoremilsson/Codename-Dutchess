@@ -218,7 +218,7 @@ public class SceneFactory {
 		
 		// Create the coins, must be randomized better
 		CoinSprite coin;
-		List<CoinSprite> xCoins = new ArrayList<CoinSprite>();
+		//List<CoinSprite> xCoins = new ArrayList<CoinSprite>();
 		for(int i=0; i!=level*5; i++)
 		{
 			coin = new CoinSprite(SceneFactory.randomNumber(5, 480*2-20), 
@@ -226,14 +226,14 @@ public class SceneFactory {
 					20,
 					20,
 					this.gor.getCoinTextureRegion());
-			xCoins.add(coin);
+			coins.add(coin);
 			mSceneObjects.add(coin);
 		}
 		//For counting the coins
-		coinsLeft = xCoins.size();
+		coinsLeft = coins.size();
 		
 		// Spawn the coins
-		for( CoinSprite coinsprite : xCoins)
+		for( CoinSprite coinsprite : coins)
 		{
 			scene.getTopLayer().addEntity(coinsprite);			
 		}
@@ -286,6 +286,16 @@ public class SceneFactory {
 	}
 	
 	public static int randomNumber(int min, int max) { return min + (new Random()).nextInt(max-min); }
+
+	public List<CoinSprite> getCoinList() {
+		return coins;
+	}
+	
+	public Scene removeCoin(CoinSprite coin)
+	{
+		this.activeScene.getTopLayer().removeEntity(coin);
+		return this.activeScene;
+	}
 
 
 }
