@@ -162,7 +162,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 		// Grenades
 		this.mGrenadeTexture = new Texture(64, 64, TextureOptions.BILINEAR);
 		this.mGrenadeTextureRegion = TextureRegionFactory.createFromAsset(
-				this.mGrenadeTexture, this, "gfx/gr.png", 0, 0);
+				this.mGrenadeTexture, this, "face_box.png", 0, 0);
 		// Wood
 		this.mWoodTextureVertical = new Texture(8, 64, TextureOptions.REPEATING);
 		this.mWoodTextureVerticalRegion = TextureRegionFactory.createFromAsset(

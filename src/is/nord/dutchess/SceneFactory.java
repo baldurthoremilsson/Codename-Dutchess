@@ -231,24 +231,8 @@ public class SceneFactory {
 			scene.getTopLayer().addEntity(coinsprite);			
 		}
 		
-		GrenadeSprite gren;
-		List<GrenadeSprite> xGrens = new ArrayList<GrenadeSprite>();
-		for(int i=0; i!=level*5; i++)
-		{
-			gren = new GrenadeSprite(SceneFactory.randomNumber(5, 480*2-20), 
-					SceneFactory.randomNumber(10, 320*2-20),
-					20,
-					20,
-					this.gor.getTrapTextureRegion());
-			xGrens.add(gren);
-			mSceneObjects.add(gren);	
-		}
-		
-		// Spawn the grenades
-		//for( GrenadeSprite grennie : xGrens)
-		//{
-		//	scene.getTopLayer().addEntity(grennie);			
-		//}
+		GrenadeSprite gren = new GrenadeSprite(100, 100, this.gor.getCoinTextureRegion());
+		scene.getTopLayer().addEntity(gren);
 		
 		GameObject wallie;
 		Random rand = new Random();
