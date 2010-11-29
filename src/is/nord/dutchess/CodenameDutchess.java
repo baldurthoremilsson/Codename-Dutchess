@@ -115,6 +115,10 @@ public class CodenameDutchess extends BaseGameActivity implements
 	private Font mFont;
 	private Texture altFontTexture;
 	private Font altFont;
+	
+	// Background Texture
+	private Texture mBackgroundSpriteTexture;
+	private TextureRegion mBackgroundSpriteTextureRegion;
 
 	// Texture and region for the rewards to be collected
 	private Texture mRewTexture;
@@ -177,13 +181,18 @@ public class CodenameDutchess extends BaseGameActivity implements
 		this.mWoodTextureHorizonalRegion = TextureRegionFactory.createFromAsset(
 				this.mWoodTextureHorizonal, this, "wood_small_v.png", 0, 0);
 
-		this.mEngine.getTextureManager().loadTextures(this.mAgentTexture,
-				this.mRewTexture, this.mWoodTextureVertical,this.mWoodTextureHorizonal);
-
 		/* A Grass background */
 		this.mGrassBackground = new RepeatingSpriteBackground(CAMERA_WIDTH,
 				CAMERA_HEIGHT, this.mEngine.getTextureManager(),
 				new AssetTextureSource(this, "gfx/background_grass.png"));
+		
+		/* Static sprite background */
+		this.mBackgroundSpriteTexture = new Texture(1024, 1024, TextureOptions.BILINEAR);
+		this.mBackgroundSpriteTextureRegion = TextureRegionFactory.createFromAsset(this.mBackgroundSpriteTexture, this, "stars.png",0 ,0);
+
+		/* Add textures to engine texture manager */
+		this.mEngine.getTextureManager().loadTextures(this.mAgentTexture,
+				this.mRewTexture, this.mWoodTextureVertical,this.mWoodTextureHorizonal, this.mBackgroundSpriteTexture);
 
 		/* Game Music */
 		MusicFactory.setAssetBasePath("mfx/");
@@ -233,8 +242,10 @@ public class CodenameDutchess extends BaseGameActivity implements
 		this.gor.setCoinTextureRegion(this.mRewTextureRegion);
 		this.gor.setVerticalWallTextureRegion(this.mWoodTextureVerticalRegion);
 		this.gor.setTrapTextureRegion(this.mGrenadeTextureRegion);
+		this.gor.setSpriteBackground(this.mBackgroundSpriteTextureRegion);
 		this.gor.setRepeatingBackground(this.mGrassBackground);
 		this.gor.setWallTextureRegion(this.mWoodTextureHorizonalRegion);
+		
 
 		sf = new SceneFactory(this, this.mBoundChaseCamera, this.mFont, this.gor, this.am);
 		// this.scene = sf.createStartScene(this);

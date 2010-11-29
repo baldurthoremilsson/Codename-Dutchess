@@ -16,6 +16,7 @@ import org.anddev.andengine.entity.layer.ILayer;
 import org.anddev.andengine.entity.primitive.Rectangle;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.background.ColorBackground;
+import org.anddev.andengine.entity.scene.background.SpriteBackground;
 import org.anddev.andengine.entity.scene.menu.MenuScene;
 import org.anddev.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
 import org.anddev.andengine.entity.scene.menu.item.ColoredTextMenuItem;
@@ -151,7 +152,12 @@ public class SceneFactory {
 		activity.setAccelerometerSensor(sceneUpdateHandler);
 		gameObjects = new ArrayList<GameObject>();
 
-		scene.setBackground(this.gor.getRepeatingBackground());
+		//scene.setBackground(this.gor.getRepeatingBackground());
+		//SpriteBackground backgroundsprite = new SpriteBackground(starbackground);
+		//SpriteBackground backgroundsprite = new SpriteBackground(new Sprite(0, 0, gor.getSpriteBackground()));
+		
+		scene.setBackground(new SpriteBackground(new Sprite(0, 0, gor.getSpriteBackground())));
+		
 		scene.registerUpdateHandler(physicsWorld);
 		initBorders(scene, this.bCamera, physicsWorld); // make the frame
 		
