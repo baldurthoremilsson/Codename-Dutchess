@@ -62,6 +62,7 @@ public class SceneFactory {
 	private PhysicsWorld mPhysicsWorld;
 	private ChangeableText mScoreText;
 	private ChangeableText mTime;
+	private Integer coinsLeft;
 	AgentSprite agent;
 	Body agentBody;
 	private List<CoinSprite> coins = new ArrayList<CoinSprite>();
@@ -145,6 +146,11 @@ public class SceneFactory {
 		mTime.setText(time);
 		return activeScene;
 	}
+	
+	public Integer getCoinsLeft()
+	{
+		return coinsLeft;
+	}
 
 	public Scene createStartScene(IOnMenuItemClickListener listener) {
 		MenuScene menuScene = new MenuScene(this.bCamera);
@@ -202,7 +208,7 @@ public class SceneFactory {
 		HUD hud = new HUD();
 		hud.getTopLayer().addEntity(this.mScoreText);
 		
-		this.mTime = new ChangeableText(480-60, 5, this.font, "0",2);
+		this.mTime = new ChangeableText(480-90, 5, this.font, "0",2);
 		this.mTime.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		this.mTime.setAlpha(0.5f);
 		this.mTime.setScale(0.9f);
@@ -222,8 +228,9 @@ public class SceneFactory {
 					this.gor.getCoinTextureRegion());
 			xCoins.add(coin);
 			mSceneObjects.add(coin);
-			
 		}
+		//For counting the coins
+		coinsLeft = xCoins.size();
 		
 		// Spawn the coins
 		for( CoinSprite coinsprite : xCoins)
