@@ -320,6 +320,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 								coins--;
 								sf.setScoreText(coins.toString());
 								mEngine.setScene(sf.removeCoin(coin));
+								manHandler();
 							}
 						}
 						if(coins <= 0)
