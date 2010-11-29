@@ -188,7 +188,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 		
 		/* Static sprite background */
 		this.mBackgroundSpriteTexture = new Texture(1024, 1024, TextureOptions.BILINEAR);
-		this.mBackgroundSpriteTextureRegion = TextureRegionFactory.createFromAsset(this.mBackgroundSpriteTexture, this, "stars.png",0 ,0);
+		this.mBackgroundSpriteTextureRegion = TextureRegionFactory.createFromAsset(this.mBackgroundSpriteTexture, this, "stars2.png",0 ,0);
 
 		/* Add textures to engine texture manager */
 		this.mEngine.getTextureManager().loadTextures(this.mAgentTexture,
