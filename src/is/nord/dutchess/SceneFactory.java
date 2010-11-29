@@ -163,8 +163,8 @@ public class SceneFactory {
 		
 		for(int i=0; i!=COINS; i++)
 		{
-			gameObject = new CoinSprite(SceneFactory.randomNumber(5, 480*2-20), 
-					SceneFactory.randomNumber(10, 320*2-20),
+			gameObject = new CoinSprite(SceneFactory.randomNumber(20, 480*2-20), 
+					SceneFactory.randomNumber(20, 320*2+40),
 					20,
 					20,
 					this.gor.getCoinTextureRegion(),
@@ -177,20 +177,20 @@ public class SceneFactory {
 		//scene.getTopLayer().addEntity(gren);
 		
 		Random rand = new Random();
-		for(int i=0; i!= (20+level*2); i++)
+		for(int i=0; i!= (20+level); i++)
 		{
-			gameObject = new WallSprite(SceneFactory.randomNumber(10, 480*2-60), 
-					SceneFactory.randomNumber(10, 320*2-60), 
+			gameObject = new WallSprite(SceneFactory.randomNumber(30, 480*2), 
+					SceneFactory.randomNumber(30, 320*2), 
 					this.gor.getWallTextureRegion(), 
 					physicsWorld);
 			gameObjects.add(gameObject);
 			scene.getTopLayer().addEntity(gameObject);
 		}
 		
-		for(int i=0; i!= (20+level*2); i++)
+		for(int i=0; i!= (20+level); i++)
 		{
-			gameObject = new WallSprite(SceneFactory.randomNumber(10, 480*2-60), 
-					SceneFactory.randomNumber(10, 320*2-60), 
+			gameObject = new WallSprite(SceneFactory.randomNumber(30, (480*2)), 
+					SceneFactory.randomNumber(30, (320*2)), 
 					this.gor.getVerticalWallTextureRegion(), 
 					physicsWorld);
 			gameObjects.add(gameObject);
