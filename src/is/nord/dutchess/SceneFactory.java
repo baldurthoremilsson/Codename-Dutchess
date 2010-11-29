@@ -248,10 +248,10 @@ public class SceneFactory {
 					this.gor.getWallTextureRegion(), 
 					mPhysicsWorld);
 			//wallie.addShapeModifier(new RotationModifier(0.001f, 90, rand.nextBoolean() ? 90 : 0));
-			if(rand.nextBoolean())
+			/*if(rand.nextBoolean())
 			{
 				wallie.addShapeModifier(new RotationModifier(0.01f, 0, 90));
-			}
+			}*/
 			scene.getTopLayer().addEntity(wallie);
 			mSceneObjects.add(wallie);
 		}

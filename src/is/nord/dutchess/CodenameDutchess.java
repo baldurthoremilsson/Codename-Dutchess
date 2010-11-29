@@ -101,8 +101,10 @@ public class CodenameDutchess extends BaseGameActivity implements
 	private Body mAgentBody;
 
 	// Test wood texture
-	private Texture mWoodTexture;
-	private TextureRegion mWoodTextureRegion;
+	private Texture mWoodTextureVertical;
+	private TextureRegion mWoodTextureVerticalRegion;
+	private Texture mWoodTextureHorizonal;
+	private TextureRegion mWoodTextureHorizonalRegion;
 	
 	// Grenade Texture
 	private Texture mGrenadeTexture;
@@ -162,12 +164,12 @@ public class CodenameDutchess extends BaseGameActivity implements
 		this.mGrenadeTextureRegion = TextureRegionFactory.createFromAsset(
 				this.mGrenadeTexture, this, "gfx/gr.png", 0, 0);
 		// Wood
-		this.mWoodTexture = new Texture(64, 8, TextureOptions.REPEATING);
-		this.mWoodTextureRegion = TextureRegionFactory.createFromAsset(
-				this.mWoodTexture, this, "wood_small_v.png", 0, 0);
+		this.mWoodTextureVertical = new Texture(8, 64, TextureOptions.REPEATING);
+		this.mWoodTextureVerticalRegion = TextureRegionFactory.createFromAsset(
+				this.mWoodTextureVertical, this, "wood_small.png", 0, 0);
 
 		this.mEngine.getTextureManager().loadTextures(this.mAgentTexture,
-				this.mRewTexture, this.mWoodTexture);
+				this.mRewTexture, this.mWoodTextureVertical);
 		
 		/* A Grass background */
 		this.mGrassBackground = new RepeatingSpriteBackground(CAMERA_WIDTH, CAMERA_HEIGHT, this.mEngine.getTextureManager(), new AssetTextureSource(this, "gfx/background_grass.png"));
@@ -222,9 +224,8 @@ public class CodenameDutchess extends BaseGameActivity implements
 		// Append our textures and stuff to our game object registry
 		this.gor.setAgentTextureRegion(this.mAgentTextureRegion);
 		this.gor.setCoinTextureRegion(this.mRewTextureRegion);
-		this.gor.setWallTextureRegion(this.mWoodTextureRegion);
+		this.gor.setWallTextureRegion(this.mWoodTextureVerticalRegion);
 		this.gor.setTrapTextureRegion(this.mGrenadeTextureRegion);
-
 		this.gor.setRepeatingBackground(this.mGrassBackground);
 		
 		sf = new SceneFactory(this.mBoundChaseCamera, this.mFont, this.scene, this.gor,
