@@ -173,7 +173,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 		this.mWoodTextureVerticalRegion = TextureRegionFactory.createFromAsset(
 				this.mWoodTextureVertical, this, "wood_small.png", 0, 0);
 		
-		this.mWoodTextureVertical = new Texture(64, 8, TextureOptions.REPEATING);
+		this.mWoodTextureHorizonal = new Texture(64, 8, TextureOptions.REPEATING);
 		this.mWoodTextureHorizonalRegion = TextureRegionFactory.createFromAsset(
 				this.mWoodTextureVertical, this, "wood_small_v.png", 0, 0);
 
