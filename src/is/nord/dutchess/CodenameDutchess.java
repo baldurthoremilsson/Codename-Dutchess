@@ -131,6 +131,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 	AudioManager am;
 
 	private ChangeableText mScoreText;
+	protected int currScene;
 
 	@Override
 	public Engine onLoadEngine() {
@@ -216,7 +217,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 	@Override
 	public Scene onLoadScene() {
 		this.mEngine.registerUpdateHandler(new FPSLogger());
-
+		//currScene = 1;
 		this.scene = new Scene(1);
 
 		this.gor = new GameObjectRegistry(this.mPhysicsWorld);
@@ -312,9 +313,20 @@ public class CodenameDutchess extends BaseGameActivity implements
 					{
 						coin.disable();
 						am.getCoinSound().play();
-						coins--;
-						sf.setScoreText(coins.toString());
-						mEngine.setScene(sf.removeCoin(coin));
+						for(CoinSprite c : sf.getCoinList())
+						{
+							if(!c.isEnabled())
+							{
+								coins--;
+								sf.setScoreText(coins.toString());
+								mEngine.setScene(sf.removeCoin(coin));
+							}
+						}
+						if(coins <= 0)
+						{
+							mEngine.setScene(sf.createLevelScene(2));
+						}
+						
 					}
 				}
 				timeLeft--;

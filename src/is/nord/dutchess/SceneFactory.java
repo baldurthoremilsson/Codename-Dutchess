@@ -185,6 +185,7 @@ public class SceneFactory {
 	public Scene createLevelScene(int level)
 	{
 		Scene scene = new Scene(1);
+		coins.clear();
 		//scene.setBackground(new ColorBackground(0.09804f, 0.6274f, 0.8784f));
 		scene.setBackground(this.gor.getRepeatingBackground());
 		scene.registerUpdateHandler(this.mPhysicsWorld);
@@ -212,7 +213,7 @@ public class SceneFactory {
 		this.mTime.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		this.mTime.setAlpha(0.5f);
 		this.mTime.setScale(0.9f);
-		hud.getTopLayer().addEntity(this.mTime);
+		//hud.getTopLayer().addEntity(this.mTime);
 		//hud.centerShapeInCamera(agent);
 		this.bCamera.setHUD(hud);
 		
