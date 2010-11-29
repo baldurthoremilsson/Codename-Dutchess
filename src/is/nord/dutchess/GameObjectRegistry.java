@@ -19,6 +19,7 @@ public class GameObjectRegistry {
 	private TextureRegion wallTextureRegion;
 	private TextureRegion coinTextureRegion;
 	private TextureRegion trapTextureRegion;
+	private TextureRegion verticalWallTextureRegion;
 	private RepeatingSpriteBackground mGrassBackground; 
 	
 	private Body agentBody;
@@ -54,6 +55,11 @@ public class GameObjectRegistry {
 		this.wallTextureRegion = wallTextRegion;
 	}
 	
+	public void setVerticalWallTextureRegion(TextureRegion wallTextRegion)
+	{
+		this.verticalWallTextureRegion = wallTextRegion;
+	}
+	
 	public void setCoinTextureRegion(TextureRegion coinTextRegion)
 	{
 		this.coinTextureRegion = coinTextRegion;
@@ -82,6 +88,11 @@ public class GameObjectRegistry {
 	public TextureRegion getWallTextureRegion()
 	{
 		return this.wallTextureRegion;
+	}
+	
+	public TextureRegion getVerticalWallTextureRegion()
+	{
+		return this.verticalWallTextureRegion;
 	}
 	
 	public TextureRegion getCoinTextureRegion()

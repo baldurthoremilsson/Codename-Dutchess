@@ -172,6 +172,10 @@ public class CodenameDutchess extends BaseGameActivity implements
 		this.mWoodTextureVertical = new Texture(8, 64, TextureOptions.REPEATING);
 		this.mWoodTextureVerticalRegion = TextureRegionFactory.createFromAsset(
 				this.mWoodTextureVertical, this, "wood_small.png", 0, 0);
+		
+		this.mWoodTextureVertical = new Texture(64, 8, TextureOptions.REPEATING);
+		this.mWoodTextureHorizonalRegion = TextureRegionFactory.createFromAsset(
+				this.mWoodTextureVertical, this, "wood_small_v.png", 0, 0);
 
 		this.mEngine.getTextureManager().loadTextures(this.mAgentTexture,
 				this.mRewTexture, this.mWoodTextureVertical);
@@ -227,9 +231,10 @@ public class CodenameDutchess extends BaseGameActivity implements
 		// Append our textures and stuff to our game object registry
 		this.gor.setAgentTextureRegion(this.mAgentTextureRegion);
 		this.gor.setCoinTextureRegion(this.mRewTextureRegion);
-		this.gor.setWallTextureRegion(this.mWoodTextureVerticalRegion);
+		this.gor.setVerticalWallTextureRegion(this.mWoodTextureVerticalRegion);
 		this.gor.setTrapTextureRegion(this.mGrenadeTextureRegion);
 		this.gor.setRepeatingBackground(this.mGrassBackground);
+		this.gor.setWallTextureRegion(this.mWoodTextureHorizonalRegion);
 
 		sf = new SceneFactory(this, this.mBoundChaseCamera, this.mFont, this.gor, this.am);
 		// this.scene = sf.createStartScene(this);

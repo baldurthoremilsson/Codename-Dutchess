@@ -180,6 +180,16 @@ public class SceneFactory {
 			gameObjects.add(gameObject);
 			scene.getTopLayer().addEntity(gameObject);
 		}
+		
+		for(int i = 0; i!=(20+level*2); i++)
+		{
+			gameObject = new WallSprite(SceneFactory.randomNumber(10, 480*2-20), 
+					SceneFactory.randomNumber(10, 320*2-20), 
+					this.gor.getVerticalWallTextureRegion(), 
+					physicsWorld);
+			gameObjects.add(gameObject);
+			scene.getTopLayer().addEntity(gameObject);
+		}
 		sceneUpdateHandler.setGameObjects(gameObjects);
 		scene.registerUpdateHandler(sceneUpdateHandler);
 		
