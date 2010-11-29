@@ -121,6 +121,9 @@ public class CodenameDutchess extends BaseGameActivity implements
 	private TextureRegion mRewTextureRegion;
 	
 	private RepeatingSpriteBackground mGrassBackground;
+	
+	private Integer coins;
+	private Integer timeLeft;
 
 	SceneFactory sf;
 	GameObjectRegistry gor;
@@ -262,7 +265,11 @@ public class CodenameDutchess extends BaseGameActivity implements
 			return true;
 		case MENU_MAIN_NEWGAME:
 			mEngine.setScene(this.sf.createLevelScene(1));
-			mEngine.setScene(this.sf.setScoreText("11"));
+			coins = sf.getCoinsLeft();
+			this.sf.setScoreText(coins.toString());
+			Integer tempTime = coins*6;
+			this.sf.setTime(tempTime.toString());
+			mEngine.setScene(sf.getActiveScene());
 		case MENU_PAUSE_CONTINUE:
 			mEngine.getScene().back();
 
