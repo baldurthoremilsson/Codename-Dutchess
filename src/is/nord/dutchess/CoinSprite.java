@@ -5,6 +5,7 @@ import org.anddev.andengine.opengl.texture.region.TextureRegion;
 public class CoinSprite extends GameObject
 {
 	private boolean isEnabled;
+	private SceneUpdateHandler sceneUpdateHandler;
 	
 	// Let there be two constructors! In case we want to play around with the sprite's height and width.
 	public CoinSprite(final float pX, final float pY, final TextureRegion pTextureRegion) 
@@ -13,11 +14,11 @@ public class CoinSprite extends GameObject
 		this.isEnabled = true;
 	}
 	
-	public CoinSprite(final float pX, final float pY, final float pWidth, final float pHeight, final TextureRegion pTextureRegion) 
+	public CoinSprite(final float pX, final float pY, final float pWidth, final float pHeight, final TextureRegion pTextureRegion, SceneUpdateHandler sceneUpdateHandler) 
 	{
 		super(pX, pY, pWidth, pHeight, pTextureRegion);
 		this.isEnabled = true;
-
+		this.sceneUpdateHandler = sceneUpdateHandler;
 	}
 	
 	/*
@@ -28,7 +29,7 @@ public class CoinSprite extends GameObject
 	@Override
 	public void onCollision()
 	{
-		
+		sceneUpdateHandler.coinCollision(this);
 	}
 	
 	public void disable()

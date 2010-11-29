@@ -69,7 +69,7 @@ import javax.microedition.khronos.opengles.GL10;
  * @author Hopur eitt
  */
 public class CodenameDutchess extends BaseGameActivity implements
-		IAccelerometerListener, IOnMenuItemClickListener {
+		IOnMenuItemClickListener {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -150,7 +150,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 
 		FontFactory.setAssetBasePath("font/");
 		this.mFont = FontFactory.createFromAsset(this.mFontTexture, this,
-				"Plok.ttf", 48, true, Color.WHITE);
+				"Droid.ttf", 48, true, Color.WHITE);
 		this.mEngine.getTextureManager().loadTexture(this.mFontTexture);
 		this.mEngine.getFontManager().loadFont(this.mFont);
 
@@ -209,16 +209,12 @@ public class CodenameDutchess extends BaseGameActivity implements
 			e.printStackTrace();
 		}
 
-		// Accelero-support
-		this.enableAccelerometerSensor(this);
-
 	}
 
 	@Override
 	public Scene onLoadScene() {
 		this.mEngine.registerUpdateHandler(new FPSLogger());
 		// currScene = 1;
-		this.scene = new Scene(1);
 
 		this.gor = new GameObjectRegistry(this.mPhysicsWorld);
 		this.gm = new GameManager(0, 1);
@@ -235,8 +231,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 		this.gor.setTrapTextureRegion(this.mGrenadeTextureRegion);
 		this.gor.setRepeatingBackground(this.mGrassBackground);
 
-		sf = new SceneFactory(this.mBoundChaseCamera, this.mFont, this.scene,
-				this.gor, this.am, this.mPhysicsWorld);
+		sf = new SceneFactory(this, this.mBoundChaseCamera, this.mFont, this.gor, this.am);
 		// this.scene = sf.createStartScene(this);
 
 		return sf.createStartScene(this);
@@ -246,11 +241,9 @@ public class CodenameDutchess extends BaseGameActivity implements
 	public void onLoadComplete() {
 
 	}
-
-	@Override
-	public void onAccelerometerChanged(AccelerometerData pAccelerometerData) {
-		this.mPhysicsWorld.setGravity(new Vector2(pAccelerometerData.getY(),
-				pAccelerometerData.getX()));
+	
+	public void setAccelerometerSensor(IAccelerometerListener accelerometerListener) {
+		this.enableAccelerometerSensor(accelerometerListener);
 	}
 
 	public static int randomNumber(int min, int max) {
@@ -270,66 +263,13 @@ public class CodenameDutchess extends BaseGameActivity implements
 			return true;
 		case MENU_MAIN_NEWGAME:
 			mEngine.setScene(this.sf.createLevelScene(1));
-			coins = sf.getCoinsLeft();
-			this.sf.setScoreText(coins.toString());
-			// Integer tempTime = coins*6;
-			timeLeft = coins * 60;
-			this.sf.setTime(timeLeft.toString());
-			mEngine.setScene(sf.getActiveScene());
-
-			manHandler();
-
+			break;
 		case MENU_PAUSE_CONTINUE:
 			mEngine.getScene().back();
 
 			return true;
 		}
 		return false;
-	}
-
-	public void manHandler() {
-		mEngine.getScene().registerUpdateHandler(new IUpdateHandler() {
-
-			@Override
-			public void reset() {
-			}
-
-			@Override
-			public void onUpdate(final float pSecondsElapsed) {
-				// if (timeLeft < 1) {
-				//
-				// for (Body b : mPhysicsWorld.getBodies()) {
-				// mPhysicsWorld.destroyBody(b);
-				// }
-				// timeLeft = sf.getCoinsLeft() * 60;
-				//
-				// mEngine.setScene(sf.createLevelScene(1));
-				// mEngine.setScene(sf.setScoreText(sf.getCoinsLeft().toString()));
-				// manHandler();
-				// }
-				for (CoinSprite coin : sf.getCoinList()) {
-					if (coin.collidesWith(sf.getAgentSprite())) {
-						coin.disable();
-						am.getCoinSound().play();
-						coins--;
-						sf.setScoreText(coins.toString());
-						mEngine.setScene(sf.removeCoin(coin));
-						// manHandler();
-
-						if (coins <= 1) {
-							coins = 10;
-							 mEngine.setScene(sf.createLevelScene(2));
-							 mEngine.setScene(sf.setScoreText(coins.toString()));
-							 manHandler();
-						}
-
-					}
-				}
-				timeLeft--;
-				// mEngine.setScene(sf.setTime(timeLeft.toString()));
-
-			}
-		});
 	}
 
 	public boolean onKeyDown(final int pKeyCode, final KeyEvent pEvent) {

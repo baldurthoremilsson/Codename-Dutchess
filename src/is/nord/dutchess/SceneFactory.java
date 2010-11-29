@@ -29,6 +29,8 @@ import org.anddev.andengine.extension.physics.box2d.PhysicsConnector;
 import org.anddev.andengine.extension.physics.box2d.PhysicsFactory;
 import org.anddev.andengine.extension.physics.box2d.PhysicsWorld;
 import org.anddev.andengine.opengl.font.Font;
+import org.anddev.andengine.ui.activity.BaseGameActivity;
+import org.anddev.andengine.util.HorizontalAlign;
 
 import android.hardware.SensorManager;
 import android.util.Log;
@@ -52,104 +54,29 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 public class SceneFactory {
 
 	// Local variables
-	private Scene activeScene;
-	private Camera camera;
+	private CodenameDutchess activity;
 	private BoundCamera bCamera;
 	private Font font;
 	private GameObjectRegistry gor;
 	private AudioManager am;
-	private CodenameDutchess mcd;
-	private PhysicsWorld mPhysicsWorld;
-	private ChangeableText mScoreText;
-	private ChangeableText mTime;
-	private Integer coinsLeft;
-	AgentSprite agent;
-	Body agentBody;
-	private List<CoinSprite> coins = new ArrayList<CoinSprite>();
-	private List<WallSprite> walls = new ArrayList<WallSprite>();
-	private List<GameObject> mSceneObjects = new ArrayList<GameObject>();
-	
-	private static String COINS = "coins concurrency exception";
 
-	
 	/*
 	 * Usage:	SceneFactory sf = new SceneFactory(camera, font, scene);
 	 * Pre:		camera is of type Camera, font of type Font, and scene of type Scene, and all three have been set up
 	 * Post:	sf is a SceenFactory object based on the parameters
 	 */
-	public SceneFactory(BoundCamera camera, Font font, Scene scene, GameObjectRegistry gor, final AudioManager am, PhysicsWorld physicsWorld)
+	public SceneFactory(CodenameDutchess activity, BoundCamera camera, Font font, GameObjectRegistry gor, final AudioManager am)
 	{
+		this.activity = activity;
 		this.bCamera = camera;
 		this.bCamera.setBoundsEnabled(true);
 		this.font = font;
-		this.activeScene = scene;
 		this.gor = gor;
 		this.am = am;
-		this.mPhysicsWorld = physicsWorld;
 		
 		//Play a random song
 		Random r = new Random();
 		this.am.getPlayList().get(r.nextInt(this.am.getPlayList().size()-1)).play();
-	}
-	
-	public Scene getActiveScene()
-	{
-		return activeScene;
-	}
-	
-	
-	public List<GameObject> getSceneObjects()
-	{
-		return this.mSceneObjects;
-	}
-	
-	public ChangeableText getScoreText()
-	{
-		return mScoreText;
-	}
-	
-	public Scene setScoreText(String score)
-	{
-		mScoreText.setText(score);
-		return activeScene;
-	}
-	
-	public Body getAgentBody()
-	{
-		return agentBody;
-	}
-	
-	/**
-	 * 
-	 * @return agentSprite
-	 */
-	public Sprite getAgentSprite()
-	{
-		return agent;
-	}
-	
-	/**
-	 * 
-	 * @return ChangeableText time
-	 */
-	public ChangeableText getTime()
-	{
-		return mTime;
-	}
-	
-	/**
-	 * 
-	 * @param String time
-	 */
-	public Scene setTime(String time)
-	{
-		mTime.setText(time);
-		return activeScene;
-	}
-	
-	public Integer getCoinsLeft()
-	{
-		return coinsLeft;
 	}
 
 	public Scene createStartScene(IOnMenuItemClickListener listener) {
@@ -159,7 +86,6 @@ public class SceneFactory {
 		//menuScene.setBackground(new ColorBackground(0.09804f, 0.6274f, 0.8784f));
 		menuScene.buildAnimations();
 		menuScene.setOnMenuItemClickListener(listener);
-		activeScene = menuScene;
 		return menuScene;
 	}
 	
@@ -170,8 +96,7 @@ public class SceneFactory {
 		//menuScene.setBackground(new ColorBackground(0.09804f, 0.6274f, 0.8784f));
 		menuScene.buildAnimations();
 		menuScene.setOnMenuItemClickListener(listener);
-		menuScene.centerShapeInCamera(agent);
-		activeScene = menuScene;
+		//menuScene.centerShapeInCamera(agent); FIXME
 		return menuScene;
 	}
 	
@@ -184,81 +109,78 @@ public class SceneFactory {
 	 */
 	public Scene createLevelScene(int level)
 	{
-		Scene scene = new Scene(1);
-		coins.clear();
-		//scene.setBackground(new ColorBackground(0.09804f, 0.6274f, 0.8784f));
-		scene.setBackground(this.gor.getRepeatingBackground());
-		scene.registerUpdateHandler(this.mPhysicsWorld);
+		final int COINS = level*5;
+		final int TIME = level*100;
+		Scene scene;
+		SceneUpdateHandler sceneUpdateHandler;
+		HUD hud;
+		PhysicsWorld physicsWorld;
+		ChangeableText coinsLeft;
+		ChangeableText timeLeft;
+		List<GameObject> gameObjects;
+		AgentSprite agent;
+		Body agentBody;
+		GameObject gameObject;
 		
-		/* make the frame */
-		initBorders(scene, this.bCamera, mPhysicsWorld);
-		agent = new AgentSprite(0, 0, this.gor.getAgentTextureRegion());
-		final FixtureDef carFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f);
-		agentBody = PhysicsFactory.createBoxBody(mPhysicsWorld, agent, BodyType.DynamicBody, carFixtureDef);
-		mPhysicsWorld.registerPhysicsConnector(new PhysicsConnector(agent, agentBody, true, false, true, false));
-		scene.getTopLayer().addEntity(agent);
-		
-		//make bounded camera chase the agent
-		this.bCamera.setChaseShape(agent);
-		
-
-		
-		this.mScoreText = new ChangeableText(5, 5, this.font, "0", 2);
-		this.mScoreText.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-		this.mScoreText.setAlpha(0.5f);
-		HUD hud = new HUD();
-		hud.getTopLayer().addEntity(this.mScoreText);
-		
-		this.mTime = new ChangeableText(480-90, 5, this.font, "0",2);
-		this.mTime.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-		this.mTime.setAlpha(0.5f);
-		this.mTime.setScale(0.9f);
-		//hud.getTopLayer().addEntity(this.mTime);
-		//hud.centerShapeInCamera(agent);
+		scene = new Scene(1);
+		hud = new HUD();
 		this.bCamera.setHUD(hud);
 		
-		// Create the coins, must be randomized better
-		CoinSprite coin;
-		//List<CoinSprite> xCoins = new ArrayList<CoinSprite>();
-		for(int i=0; i!=level*5; i++)
+		coinsLeft = new ChangeableText(5, 5, this.font, String.valueOf(COINS), 2);
+		coinsLeft.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+		coinsLeft.setAlpha(0.5f);
+		hud.getTopLayer().addEntity(coinsLeft);
+		
+		timeLeft = new ChangeableText(480-100, 5, this.font, String.valueOf(TIME), HorizontalAlign.RIGHT, 4);
+		timeLeft.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+		timeLeft.setAlpha(0.5f);
+		timeLeft.setScale(0.9f);
+		hud.getTopLayer().addEntity(timeLeft);
+
+		physicsWorld = new PhysicsWorld(new Vector2(0, SensorManager.GRAVITY_EARTH), false); // FIXME: should be fixed parameters?
+		
+		sceneUpdateHandler = new SceneUpdateHandler(physicsWorld, timeLeft, coinsLeft, TIME, COINS, scene);
+		activity.setAccelerometerSensor(sceneUpdateHandler);
+		gameObjects = new ArrayList<GameObject>();
+
+		scene.setBackground(this.gor.getRepeatingBackground());
+		scene.registerUpdateHandler(physicsWorld);
+		initBorders(scene, this.bCamera, physicsWorld); // make the frame
+		
+		agent = new AgentSprite(0, 0, this.gor.getAgentTextureRegion());
+		agentBody = PhysicsFactory.createBoxBody(physicsWorld, agent, BodyType.DynamicBody, PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f));
+		physicsWorld.registerPhysicsConnector(new PhysicsConnector(agent, agentBody, true, false, true, false));
+		scene.getTopLayer().addEntity(agent);
+		this.bCamera.setChaseShape(agent);
+		
+		for(int i=0; i!=COINS; i++)
 		{
-			coin = new CoinSprite(SceneFactory.randomNumber(5, 480*2-20), 
+			gameObject = new CoinSprite(SceneFactory.randomNumber(5, 480*2-20), 
 					SceneFactory.randomNumber(10, 320*2-20),
 					20,
 					20,
-					this.gor.getCoinTextureRegion());
-			coins.add(coin);
-			mSceneObjects.add(coin);
-		}
-		//For counting the coins
-		coinsLeft = coins.size();
-		
-		// Spawn the coins
-		for( CoinSprite coinsprite : coins)
-		{
-			scene.getTopLayer().addEntity(coinsprite);			
+					this.gor.getCoinTextureRegion(),
+					sceneUpdateHandler);
+			gameObjects.add(gameObject);
+			scene.getTopLayer().addEntity(gameObject);	
 		}
 		
-		GrenadeSprite gren = new GrenadeSprite(100, 100, this.gor.getCoinTextureRegion());
+		//GrenadeSprite gren = new GrenadeSprite(100, 100, this.gor.getCoinTextureRegion());
 		//scene.getTopLayer().addEntity(gren);
 		
-		GameObject wallie;
 		Random rand = new Random();
 		for(int i=0; i!= (20+level*2); i++)
 		{
-			wallie = new WallSprite(SceneFactory.randomNumber(10, 480*2-20), 
+			gameObject = new WallSprite(SceneFactory.randomNumber(10, 480*2-20), 
 					SceneFactory.randomNumber(10, 320*2-20), 
 					this.gor.getWallTextureRegion(), 
-					mPhysicsWorld);
-			//wallie.addShapeModifier(new RotationModifier(0.001f, 90, rand.nextBoolean() ? 90 : 0));
-			/*if(rand.nextBoolean())
-			{
-				wallie.addShapeModifier(new RotationModifier(0.01f, 0, 90));
-			}*/
-			scene.getTopLayer().addEntity(wallie);
-			mSceneObjects.add(wallie);
+					physicsWorld);
+			gameObjects.add(gameObject);
+			scene.getTopLayer().addEntity(gameObject);
 		}
-		activeScene = scene;
+		sceneUpdateHandler.setGameObjects(gameObjects);
+		scene.registerUpdateHandler(sceneUpdateHandler);
+		
 		return scene;
 	}
 	
@@ -287,16 +209,4 @@ public class SceneFactory {
 	}
 	
 	public static int randomNumber(int min, int max) { return min + (new Random()).nextInt(max-min); }
-
-	public List<CoinSprite> getCoinList() {
-		return coins;
-	}
-	
-	public Scene removeCoin(CoinSprite coin)
-	{
-		this.activeScene.getTopLayer().removeEntity(coin);
-		return this.activeScene;
-	}
-
-
 }
