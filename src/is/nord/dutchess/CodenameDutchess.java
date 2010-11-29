@@ -105,7 +105,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 	private TextureRegion mWoodTextureVerticalRegion;
 	private Texture mWoodTextureHorizonal;
 	private TextureRegion mWoodTextureHorizonalRegion;
-	
+
 	// Grenade Texture
 	private Texture mGrenadeTexture;
 	private TextureRegion mGrenadeTextureRegion;
@@ -119,9 +119,9 @@ public class CodenameDutchess extends BaseGameActivity implements
 	// Texture and region for the rewards to be collected
 	private Texture mRewTexture;
 	private TextureRegion mRewTextureRegion;
-	
+
 	private RepeatingSpriteBackground mGrassBackground;
-	
+
 	private Integer coins;
 	private Integer timeLeft;
 
@@ -135,7 +135,8 @@ public class CodenameDutchess extends BaseGameActivity implements
 	@Override
 	public Engine onLoadEngine() {
 		this.mCamera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
-		this.mBoundChaseCamera = new BoundCamera(0,0,CAMERA_WIDTH,CAMERA_HEIGHT,0,CAMERA_WIDTH*2,0,CAMERA_HEIGHT*2);
+		this.mBoundChaseCamera = new BoundCamera(0, 0, CAMERA_WIDTH,
+				CAMERA_HEIGHT, 0, CAMERA_WIDTH * 2, 0, CAMERA_HEIGHT * 2);
 		return new Engine(new EngineOptions(true, ScreenOrientation.LANDSCAPE,
 				new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT),
 				this.mBoundChaseCamera).setNeedsMusic(true));
@@ -161,7 +162,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 		this.mRewTexture = new Texture(64, 64, TextureOptions.BILINEAR);
 		this.mRewTextureRegion = TextureRegionFactory.createFromAsset(
 				this.mRewTexture, this, "coin.png", 0, 0);
-		
+
 		// Grenades
 		this.mGrenadeTexture = new Texture(64, 64, TextureOptions.BILINEAR);
 		this.mGrenadeTextureRegion = TextureRegionFactory.createFromAsset(
@@ -173,24 +174,25 @@ public class CodenameDutchess extends BaseGameActivity implements
 
 		this.mEngine.getTextureManager().loadTextures(this.mAgentTexture,
 				this.mRewTexture, this.mWoodTextureVertical);
-		
+
 		/* A Grass background */
-		this.mGrassBackground = new RepeatingSpriteBackground(CAMERA_WIDTH, CAMERA_HEIGHT, this.mEngine.getTextureManager(), new AssetTextureSource(this, "gfx/background_grass.png"));
-	
+		this.mGrassBackground = new RepeatingSpriteBackground(CAMERA_WIDTH,
+				CAMERA_HEIGHT, this.mEngine.getTextureManager(),
+				new AssetTextureSource(this, "gfx/background_grass.png"));
 
 		/* Game Music */
 		MusicFactory.setAssetBasePath("mfx/");
 
 		try {
 			// Last one seems to start? how about creating playlist?
-			this.mMusic = MusicFactory.createMusicFromAsset(
-					this.mEngine.getMusicManager(), this, "unreal.ogg");
+			this.mMusic = MusicFactory.createMusicFromAsset(this.mEngine
+					.getMusicManager(), this, "unreal.ogg");
 			mMusic.setLooping(true);
-			this.mZelda = MusicFactory.createMusicFromAsset(
-					this.mEngine.getMusicManager(), this, "zelda.ogg");
+			this.mZelda = MusicFactory.createMusicFromAsset(this.mEngine
+					.getMusicManager(), this, "zelda.ogg");
 			mZelda.setLooping(true);
-			this.mCoinSound = MusicFactory.createMusicFromAsset(
-					this.mEngine.getMusicManager(), this, "smb_coin.ogg");
+			this.mCoinSound = MusicFactory.createMusicFromAsset(this.mEngine
+					.getMusicManager(), this, "smb_coin.ogg");
 
 			// this.mCoinSound =
 			// SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(),
@@ -219,7 +221,8 @@ public class CodenameDutchess extends BaseGameActivity implements
 
 		this.gor = new GameObjectRegistry(this.mPhysicsWorld);
 		this.gm = new GameManager(0, 1);
-		this.mPhysicsWorld = new PhysicsWorld(new Vector2(0, SensorManager.GRAVITY_EARTH), false);
+		this.mPhysicsWorld = new PhysicsWorld(new Vector2(0,
+				SensorManager.GRAVITY_EARTH), false);
 		this.am = new AudioManager(this.mCoinSound);
 		this.am.addToPlayList(mMusic);
 		this.am.addToPlayList(mZelda);
@@ -230,9 +233,11 @@ public class CodenameDutchess extends BaseGameActivity implements
 		this.gor.setWallTextureRegion(this.mWoodTextureVerticalRegion);
 		this.gor.setTrapTextureRegion(this.mGrenadeTextureRegion);
 		this.gor.setRepeatingBackground(this.mGrassBackground);
-		
-		sf = new SceneFactory(this.mBoundChaseCamera, this.mFont, this.scene, this.gor,
-				this.am, this.mPhysicsWorld);
+
+		sf = new SceneFactory(this.mBoundChaseCamera, this.mFont, this.scene,
+				this.gor, this.am, this.mPhysicsWorld);
+		// this.scene = sf.createStartScene(this);
+
 		return sf.createStartScene(this);
 	}
 
@@ -250,9 +255,8 @@ public class CodenameDutchess extends BaseGameActivity implements
 	public static int randomNumber(int min, int max) {
 		return min + (new Random()).nextInt(max - min);
 	}
-	
-	public void setScene(Scene s)
-	{
+
+	public void setScene(Scene s) {
 		this.mEngine.setScene(s);
 	}
 
@@ -267,28 +271,59 @@ public class CodenameDutchess extends BaseGameActivity implements
 			mEngine.setScene(this.sf.createLevelScene(1));
 			coins = sf.getCoinsLeft();
 			this.sf.setScoreText(coins.toString());
-			Integer tempTime = coins*6;
-			this.sf.setTime(tempTime.toString());
+			// Integer tempTime = coins*6;
+			timeLeft = coins * 60;
+			this.sf.setTime(timeLeft.toString());
 			mEngine.setScene(sf.getActiveScene());
+
+			manHandler();
+
 		case MENU_PAUSE_CONTINUE:
 			mEngine.getScene().back();
-
 
 			return true;
 		}
 		return false;
 	}
-	
-	public boolean onKeyDown(final int pKeyCode, final KeyEvent pEvent) {
-	if(pKeyCode == KeyEvent.KEYCODE_MENU && pEvent.getAction() == KeyEvent.ACTION_DOWN) {
-		if(this.mEngine.getScene().hasChildScene()) {
-			/* Remove the menu and reset it. */
-			this.mEngine.getScene().back();
-		} else {
-			/* Attach the menu. */
-			this.mEngine.getScene().setChildScene(sf.createPauseScene(this), false, true, true);
-		}
+
+	public void manHandler() {
+		mEngine.getScene().registerUpdateHandler(new IUpdateHandler() {
+
+			@Override
+			public void reset() {
+			}
+
+			@Override
+			public void onUpdate(final float pSecondsElapsed) {
+				if (timeLeft < 1) {
+
+					for (Body b : mPhysicsWorld.getBodies()) {
+						mPhysicsWorld.destroyBody(b);
+					}
+					mEngine.setScene(sf.createLevelScene(1));
+					timeLeft = coins * 60;
+
+					manHandler();
+				}
+				timeLeft--;
+				// mEngine.setScene(sf.setTime(timeLeft.toString()));
+
+			}
+		});
 	}
-	return true;
+
+	public boolean onKeyDown(final int pKeyCode, final KeyEvent pEvent) {
+		if (pKeyCode == KeyEvent.KEYCODE_MENU
+				&& pEvent.getAction() == KeyEvent.ACTION_DOWN) {
+			if (this.mEngine.getScene().hasChildScene()) {
+				/* Remove the menu and reset it. */
+				this.mEngine.getScene().back();
+			} else {
+				/* Attach the menu. */
+				this.mEngine.getScene().setChildScene(
+						sf.createPauseScene(this), false, true, true);
+			}
+		}
+		return true;
 	}
 }

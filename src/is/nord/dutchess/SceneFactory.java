@@ -239,7 +239,7 @@ public class SceneFactory {
 		}
 		
 		GrenadeSprite gren = new GrenadeSprite(100, 100, this.gor.getCoinTextureRegion());
-		scene.getTopLayer().addEntity(gren);
+		//scene.getTopLayer().addEntity(gren);
 		
 		GameObject wallie;
 		Random rand = new Random();
