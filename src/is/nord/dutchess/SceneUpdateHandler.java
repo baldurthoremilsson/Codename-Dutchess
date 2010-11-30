@@ -36,6 +36,7 @@ public class SceneUpdateHandler implements IUpdateHandler, IAccelerometerListene
 		this.coinsText = coinsText;
 		this.scene = scene;
 		this.agent = agent;
+		
 	}
 	
 	public void setGameObjects(List<GameObject> gameObjects) {

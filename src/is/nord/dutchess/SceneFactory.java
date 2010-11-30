@@ -203,11 +203,12 @@ public class SceneFactory {
 		
 		scene.registerUpdateHandler(physicsWorld);
 		initBorders(scene, this.bCamera, physicsWorld); // make the frame
+		Random rand = new Random();
 		
 		for(int i=0; i!=COINS; i++)
 		{
 			gameObject = new CoinSprite(SceneFactory.randomNumber(20, 480*2-20), 
-					SceneFactory.randomNumber(20, 360*2-20),
+					SceneFactory.randomNumber(20, 320*2-20),
 					20,
 					20,
 					this.gor.getCoinTextureRegion(),
@@ -219,11 +220,11 @@ public class SceneFactory {
 		//GrenadeSprite gren = new GrenadeSprite(100, 100, this.gor.getCoinTextureRegion());
 		//scene.getTopLayer().addEntity(gren);
 		
-		Random rand = new Random();
+		//Random rand = new Random();
 		for(int i=0; i!= (20+level); i++)
 		{
 			gameObject = new WallSprite(SceneFactory.randomNumber(30, 480*2), 
-					SceneFactory.randomNumber(30, 360*2), 
+					SceneFactory.randomNumber(30, 320*2), 
 					this.gor.getWallTextureRegion(), 
 					physicsWorld);
 			gameObjects.add(gameObject);
@@ -233,7 +234,7 @@ public class SceneFactory {
 		for(int i=0; i!= (20+level); i++)
 		{
 			gameObject = new WallSprite(SceneFactory.randomNumber(30, (480*2)), 
-					SceneFactory.randomNumber(30, (360*2)), 
+					SceneFactory.randomNumber(30, (320*2)), 
 					this.gor.getVerticalWallTextureRegion(), 
 					physicsWorld);
 			gameObjects.add(gameObject);
