@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class SceneUpdateHandler implements IUpdateHandler, IAccelerometerListener {
 
+	private CodenameDutchess activity;
 	private PhysicsWorld physicsWorld;
 	private Float timeLeft;
 	private Integer coinsLeft;
@@ -23,7 +24,8 @@ public class SceneUpdateHandler implements IUpdateHandler, IAccelerometerListene
 	private AgentSprite agent;
 	private List<GameObject> gameObjects;
 	
-	public SceneUpdateHandler(PhysicsWorld physicsWorld, ChangeableText timeText, ChangeableText coinsText, float levelTime, int coinsLeft, Scene scene, AgentSprite agent) {
+	public SceneUpdateHandler(CodenameDutchess activity, PhysicsWorld physicsWorld, ChangeableText timeText, ChangeableText coinsText, float levelTime, int coinsLeft, Scene scene, AgentSprite agent) {
+		this.activity = activity;
 		this.physicsWorld = physicsWorld;
 		this.timeLeft = levelTime;
 		this.coinsLeft = coinsLeft;
@@ -40,6 +42,10 @@ public class SceneUpdateHandler implements IUpdateHandler, IAccelerometerListene
 	@Override
 	public void onUpdate(float pSecondsElapsed) {
 		timeLeft -= pSecondsElapsed;
+		if(timeLeft < 0.0) {
+			this.activity.gameOver();
+			return;
+		}
 		timeText.setText(timeLeft.toString());
 		
 		for(GameObject gameObject: gameObjects) {
@@ -61,7 +67,6 @@ public class SceneUpdateHandler implements IUpdateHandler, IAccelerometerListene
 		this.coinsLeft--;
 		this.coinsText.setText(coinsLeft.toString());
 		this.scene.getTopLayer().removeEntity(coin);
-		//gameObjects.remove(coin);
 		coin.disable();
 	}
 

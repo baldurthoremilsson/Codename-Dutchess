@@ -97,7 +97,29 @@ public class SceneFactory {
 		//menuScene.setBackground(new ColorBackground(0.09804f, 0.6274f, 0.8784f));
 		menuScene.buildAnimations();
 		menuScene.setOnMenuItemClickListener(listener);
-		menuScene.centerShapeInCamera(agent); // FIXME
+		menuScene.centerShapeInCamera(agent); // FIXME?
+		
+		return menuScene;
+	}
+	
+	public Scene createGameOverScene(IOnMenuItemClickListener listener) {
+		MenuScene menuScene = new MenuScene(this.bCamera);
+		menuScene.addMenuItem(new ColoredTextMenuItem(CodenameDutchess.MENU_UNHANDLED, this.font, "GAME OVER\n", 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f));
+		menuScene.addMenuItem(new ColoredTextMenuItem(CodenameDutchess.MENU_GAMEOVER_CONTINUE, this.font, "CONTINUE", 1.0f, 0.7f, 1.0f, 0.7f, 0.7f, 0.7f));
+		menuScene.addMenuItem(new ColoredTextMenuItem(CodenameDutchess.MENU_GAMEOVER_QUIT, this.font, "QUIT", 1.0f, 0.7f, 1.0f, 0.7f, 0.7f, 0.7f));
+		menuScene.buildAnimations();
+		menuScene.setOnMenuItemClickListener(listener);
+		
+		return menuScene;
+	}
+	
+	public Scene createWinningScene(IOnMenuItemClickListener listener) {
+		MenuScene menuScene = new MenuScene(this.bCamera);
+		menuScene.addMenuItem(new ColoredTextMenuItem(CodenameDutchess.MENU_UNHANDLED, this.font, "YOU WON!\n", 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f));
+		menuScene.addMenuItem(new ColoredTextMenuItem(CodenameDutchess.MENU_WINNING_NEXT_LEVEL, this.font, "NEXT LEVEL", 1.0f, 0.7f, 1.0f, 0.7f, 0.7f, 0.7f));
+		menuScene.addMenuItem(new ColoredTextMenuItem(CodenameDutchess.MENU_WINNING_QUIT, this.font, "QUIT", 1.0f, 0.7f, 1.0f, 0.7f, 0.7f, 0.7f));
+		menuScene.buildAnimations();
+		menuScene.setOnMenuItemClickListener(listener);
 		
 		return menuScene;
 	}
@@ -147,7 +169,7 @@ public class SceneFactory {
 		scene.getTopLayer().addEntity(agent);
 		this.bCamera.setChaseShape(agent);
 		
-		sceneUpdateHandler = new SceneUpdateHandler(physicsWorld, timeLeft, coinsLeft, TIME, COINS, scene, agent);
+		sceneUpdateHandler = new SceneUpdateHandler(activity, physicsWorld, timeLeft, coinsLeft, TIME, COINS, scene, agent);
 		activity.setAccelerometerSensor(sceneUpdateHandler);
 		gameObjects = new ArrayList<GameObject>();
 
@@ -177,7 +199,7 @@ public class SceneFactory {
 					SceneFactory.randomNumber(10, 320*2-20), 
 					this.gor.getWallTextureRegion(), 
 					physicsWorld);
-			gameObjects.add(gameObject);
+			//gameObjects.add(gameObject);
 			scene.getTopLayer().addEntity(gameObject);
 		}
 		sceneUpdateHandler.setGameObjects(gameObjects);

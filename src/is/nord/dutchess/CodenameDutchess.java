@@ -76,9 +76,15 @@ public class CodenameDutchess extends BaseGameActivity implements
 	private static final int CAMERA_WIDTH = 480;
 	private static final int CAMERA_HEIGHT = 320;
 
-	public static final int MENU_MAIN_NEWGAME = 0;
-	public static final int MENU_MAIN_QUIT = 1;
-	public static final int MENU_PAUSE_CONTINUE = 2;
+	public static final int MENU_UNHANDLED = 0;
+	public static final int MENU_MAIN_NEWGAME = 1;
+	public static final int MENU_MAIN_QUIT = 2;
+	public static final int MENU_PAUSE_CONTINUE = 3;
+	public static final int MENU_PAUSE_QUIT = 4;
+	public static final int MENU_GAMEOVER_CONTINUE = 5;
+	public static final int MENU_GAMEOVER_QUIT = 6;
+	public static final int MENU_WINNING_NEXT_LEVEL = 7;
+	public static final int MENU_WINNING_QUIT = 8;
 
 	public static final String DEBUG_TAG = "SCENEDEBUG";
 	// ===========================================================
@@ -249,9 +255,13 @@ public class CodenameDutchess extends BaseGameActivity implements
 	public static int randomNumber(int min, int max) {
 		return min + (new Random()).nextInt(max - min);
 	}
-
-	public void setScene(Scene s) {
-		this.mEngine.setScene(s);
+	
+	public void gameOver() {
+		mEngine.setScene(this.sf.createGameOverScene(this));
+	}
+	
+	public void gameWon() {
+		mEngine.setScene(this.sf.createWinningScene(this));
 	}
 
 	@Override
@@ -259,15 +269,25 @@ public class CodenameDutchess extends BaseGameActivity implements
 			float pMenuItemLocalX, float pMenuItemLocalY) {
 		switch (pMenuItem.getID()) {
 		case MENU_MAIN_QUIT:
+		case MENU_PAUSE_QUIT:
+		case MENU_GAMEOVER_QUIT:
+		case MENU_WINNING_QUIT:
 			System.exit(0); // Should also be activity finish something
-			return true;
+			break;
 		case MENU_MAIN_NEWGAME:
 			mEngine.setScene(this.sf.createLevelScene(1));
 			break;
 		case MENU_PAUSE_CONTINUE:
 			mEngine.getScene().back();
-
-			return true;
+			break;
+		case MENU_GAMEOVER_CONTINUE:
+			mEngine.setScene(this.sf.createLevelScene(1));
+			break;
+		case MENU_WINNING_NEXT_LEVEL:
+			mEngine.setScene(this.sf.createLevelScene(2));
+			break;
+		case MENU_UNHANDLED:
+			break;
 		}
 		return false;
 	}
