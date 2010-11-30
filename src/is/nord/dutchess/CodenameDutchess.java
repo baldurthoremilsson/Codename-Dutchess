@@ -137,7 +137,6 @@ public class CodenameDutchess extends BaseGameActivity implements
 	private Integer coins;
 	private Integer timeLeft;
 
-	SceneFactory sf;
 	GameObjectRegistry gor;
 	GameManager gm;
 	AudioManager am;
@@ -257,9 +256,14 @@ public class CodenameDutchess extends BaseGameActivity implements
 		this.gor.setRepeatingBackground(this.mGrassBackground);
 		this.gor.setWallTextureRegion(this.mWoodTextureHorizonalRegion);
 		
-		sf = new SceneFactory(this, this.mBoundChaseCamera, this.mFont, this.gor, this.am);
+		SceneFactory.getInstance()
+			.setActivity(this)
+			.setCamera(this.mBoundChaseCamera)
+			.setFont(this.mFont)
+			.setGameObjectRegistry(this.gor)
+			.setAudioManager(this.am);
 
-		return sf.createStartScene(this);
+		return SceneFactory.getInstance().createStartScene(this);
 	}
 
 	@Override
@@ -276,12 +280,12 @@ public class CodenameDutchess extends BaseGameActivity implements
 	}
 	
 	public void gameOver() {
-		mEngine.setScene(this.sf.createGameOverScene(this));
+		mEngine.setScene(SceneFactory.getInstance().createGameOverScene(this));
 	}
 	
 	public void gameWon() {
 		currLevel++;
-		mEngine.setScene(this.sf.createWinningScene(this));
+		mEngine.setScene(SceneFactory.getInstance().createWinningScene(this));
 	}
 
 	@Override
@@ -295,16 +299,16 @@ public class CodenameDutchess extends BaseGameActivity implements
 			System.exit(0); // Should also be activity finish something
 			break;
 		case MENU_MAIN_NEWGAME:
-			mEngine.setScene(this.sf.createLevelScene(currLevel));
+			mEngine.setScene(SceneFactory.getInstance().createLevelScene(currLevel));
 			break;
 		case MENU_PAUSE_CONTINUE:
 			mEngine.getScene().back();
 			break;
 		case MENU_GAMEOVER_CONTINUE:
-			mEngine.setScene(this.sf.createLevelScene(currLevel));
+			mEngine.setScene(SceneFactory.getInstance().createLevelScene(currLevel));
 			break;
 		case MENU_WINNING_NEXT_LEVEL:
-			mEngine.setScene(this.sf.createLevelScene(currLevel));
+			mEngine.setScene(SceneFactory.getInstance().createLevelScene(currLevel));
 			break;
 		case MENU_UNHANDLED:
 			break;
@@ -319,7 +323,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 				this.mEngine.getScene().back();
 			} else {
 				/* Attach the menu. */
-				this.mEngine.getScene().setChildScene(sf.createPauseScene(this), false, true, true);
+				this.mEngine.getScene().setChildScene(SceneFactory.getInstance().createPauseScene(this), false, true, true);
 			}
 		}
 		return true;

@@ -54,6 +54,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class SceneFactory {
 
+	private static SceneFactory sf;
 	// Local variables
 	private CodenameDutchess activity;
 	private BoundCamera bCamera;
@@ -62,23 +63,41 @@ public class SceneFactory {
 	private AudioManager am;
 	private AgentSprite agent;
 
-	/*
-	 * Usage:	SceneFactory sf = new SceneFactory(camera, font, scene);
-	 * Pre:		camera is of type Camera, font of type Font, and scene of type Scene, and all three have been set up
-	 * Post:	sf is a SceenFactory object based on the parameters
-	 */
-	public SceneFactory(CodenameDutchess activity, BoundCamera camera, Font font, GameObjectRegistry gor, final AudioManager am)
-	{
+	private SceneFactory() {
+	}
+	
+	public static SceneFactory getInstance() {
+		if(sf == null)
+			sf = new SceneFactory();
+		return sf;
+	}
+	
+	public SceneFactory setActivity(CodenameDutchess activity) {
 		this.activity = activity;
+		return this;
+	}
+	
+	public SceneFactory setCamera(BoundCamera camera) {
 		this.bCamera = camera;
 		this.bCamera.setBoundsEnabled(true);
+		return this;
+	}
+	
+	public SceneFactory setFont(Font font) {
 		this.font = font;
+		return this;
+	}
+	
+	public SceneFactory setGameObjectRegistry(GameObjectRegistry gor) {
 		this.gor = gor;
+		return this;
+	}
+	
+	public SceneFactory setAudioManager(final AudioManager am) {
 		this.am = am;
-		
-		//Play a random song
 		Random r = new Random();
 		this.am.getPlayList().get(r.nextInt(this.am.getPlayList().size()-1)).play();
+		return this;
 	}
 
 	public Scene createStartScene(IOnMenuItemClickListener listener) {
