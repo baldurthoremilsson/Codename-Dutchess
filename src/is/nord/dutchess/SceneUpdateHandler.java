@@ -2,6 +2,7 @@ package is.nord.dutchess;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.entity.scene.Scene;
@@ -9,6 +10,8 @@ import org.anddev.andengine.entity.text.ChangeableText;
 import org.anddev.andengine.extension.physics.box2d.PhysicsWorld;
 import org.anddev.andengine.sensor.accelerometer.AccelerometerData;
 import org.anddev.andengine.sensor.accelerometer.IAccelerometerListener;
+
+import android.util.Log;
 
 import com.badlogic.gdx.math.Vector2;
 
@@ -46,7 +49,7 @@ public class SceneUpdateHandler implements IUpdateHandler, IAccelerometerListene
 			this.activity.gameOver();
 			return;
 		}
-		timeText.setText(timeLeft.toString());
+		timeText.setText(String.valueOf(timeLeft.intValue()));
 		
 		for(GameObject gameObject: gameObjects) {
 			if(agent.collidesWith(gameObject))

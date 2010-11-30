@@ -110,6 +110,7 @@ public class SceneFactory {
 		menuScene.addMenuItem(new ColoredTextMenuItem(CodenameDutchess.MENU_GAMEOVER_QUIT, this.font, "QUIT", 1.0f, 0.7f, 1.0f, 0.7f, 0.7f, 0.7f));
 		menuScene.buildAnimations();
 		menuScene.setOnMenuItemClickListener(listener);
+		menuScene.centerShapeInCamera(agent); // FIXME?
 		
 		return menuScene;
 	}
@@ -121,6 +122,8 @@ public class SceneFactory {
 		menuScene.addMenuItem(new ColoredTextMenuItem(CodenameDutchess.MENU_WINNING_QUIT, this.font, "QUIT", 1.0f, 0.7f, 1.0f, 0.7f, 0.7f, 0.7f));
 		menuScene.buildAnimations();
 		menuScene.setOnMenuItemClickListener(listener);
+		menuScene.centerShapeInCamera(agent); // FIXME?
+		this.bCamera.setCenter(0.0f, 0.0f);
 		
 		return menuScene;
 	}
@@ -135,7 +138,7 @@ public class SceneFactory {
 	public Scene createLevelScene(int level)
 	{
 		final int COINS = level*5;
-		final int TIME = level*100;
+		final int TIME = level*20;
 		Scene scene;
 		SceneUpdateHandler sceneUpdateHandler;
 		HUD hud;
@@ -178,7 +181,7 @@ public class SceneFactory {
 		//SpriteBackground backgroundsprite = new SpriteBackground(starbackground);
 		//SpriteBackground backgroundsprite = new SpriteBackground(new Sprite(0, 0, gor.getSpriteBackground()));
 		
-		scene.setBackground(new SpriteBackground(new Sprite(0, 0, gor.getSpriteBackground())));
+		//scene.setBackground(new SpriteBackground(new Sprite(0, 0, gor.getSpriteBackground())));
 		
 		scene.registerUpdateHandler(physicsWorld);
 		initBorders(scene, this.bCamera, physicsWorld); // make the frame
@@ -205,7 +208,7 @@ public class SceneFactory {
 					SceneFactory.randomNumber(30, 480*2), 
 					this.gor.getWallTextureRegion(), 
 					physicsWorld);
-			//gameObjects.add(gameObject);
+			gameObjects.add(gameObject);
 			scene.getTopLayer().addEntity(gameObject);
 		}
 		

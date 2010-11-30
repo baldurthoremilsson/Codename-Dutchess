@@ -87,6 +87,8 @@ public class CodenameDutchess extends BaseGameActivity implements
 	public static final int MENU_WINNING_QUIT = 8;
 
 	public static final String DEBUG_TAG = "SCENEDEBUG";
+	
+	private static Random rand = new Random();
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -268,7 +270,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 	}
 
 	public static int randomNumber(int min, int max) {
-		return min + (new Random()).nextInt(max - min);
+		return min + rand.nextInt(max - min);
 	}
 	
 	public void gameOver() {
