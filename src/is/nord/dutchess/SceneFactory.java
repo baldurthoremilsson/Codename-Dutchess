@@ -123,7 +123,6 @@ public class SceneFactory {
 		menuScene.buildAnimations();
 		menuScene.setOnMenuItemClickListener(listener);
 		menuScene.centerShapeInCamera(agent); // FIXME?
-		this.bCamera.setCenter(0.0f, 0.0f);
 		
 		return menuScene;
 	}
@@ -138,7 +137,7 @@ public class SceneFactory {
 	public Scene createLevelScene(int level)
 	{
 		final int COINS = level*5;
-		final int TIME = level*20;
+		final int TIME = level*100;
 		Scene scene;
 		SceneUpdateHandler sceneUpdateHandler;
 		HUD hud;
@@ -189,7 +188,7 @@ public class SceneFactory {
 		for(int i=0; i!=COINS; i++)
 		{
 			gameObject = new CoinSprite(SceneFactory.randomNumber(20, 480*2-20), 
-					SceneFactory.randomNumber(20, 480*2+40),
+					SceneFactory.randomNumber(20, 360*2-20),
 					20,
 					20,
 					this.gor.getCoinTextureRegion(),
@@ -205,7 +204,7 @@ public class SceneFactory {
 		for(int i=0; i!= (20+level); i++)
 		{
 			gameObject = new WallSprite(SceneFactory.randomNumber(30, 480*2), 
-					SceneFactory.randomNumber(30, 480*2), 
+					SceneFactory.randomNumber(30, 360*2), 
 					this.gor.getWallTextureRegion(), 
 					physicsWorld);
 			gameObjects.add(gameObject);
@@ -215,7 +214,7 @@ public class SceneFactory {
 		for(int i=0; i!= (20+level); i++)
 		{
 			gameObject = new WallSprite(SceneFactory.randomNumber(30, (480*2)), 
-					SceneFactory.randomNumber(30, (480*2)), 
+					SceneFactory.randomNumber(30, (360*2)), 
 					this.gor.getVerticalWallTextureRegion(), 
 					physicsWorld);
 			gameObjects.add(gameObject);

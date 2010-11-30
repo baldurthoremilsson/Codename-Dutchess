@@ -49,6 +49,10 @@ public class SceneUpdateHandler implements IUpdateHandler, IAccelerometerListene
 			this.activity.gameOver();
 			return;
 		}
+		if(coinsLeft == 0) {
+			this.activity.gameWon();
+			return;
+		}
 		timeText.setText(String.valueOf(timeLeft.intValue()));
 		
 		for(GameObject gameObject: gameObjects) {

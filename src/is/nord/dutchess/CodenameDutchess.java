@@ -144,6 +144,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 
 	private ChangeableText mScoreText;
 	protected int currScene;
+	private int currLevel;
 
 	@Override
 	public Engine onLoadEngine() {
@@ -234,6 +235,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 
 	@Override
 	public Scene onLoadScene() {
+		currLevel = 1;
 		this.mEngine.registerUpdateHandler(new FPSLogger());
 		// currScene = 1;
 
@@ -278,6 +280,7 @@ public class CodenameDutchess extends BaseGameActivity implements
 	}
 	
 	public void gameWon() {
+		currLevel++;
 		mEngine.setScene(this.sf.createWinningScene(this));
 	}
 
@@ -292,16 +295,16 @@ public class CodenameDutchess extends BaseGameActivity implements
 			System.exit(0); // Should also be activity finish something
 			break;
 		case MENU_MAIN_NEWGAME:
-			mEngine.setScene(this.sf.createLevelScene(1));
+			mEngine.setScene(this.sf.createLevelScene(currLevel));
 			break;
 		case MENU_PAUSE_CONTINUE:
 			mEngine.getScene().back();
 			break;
 		case MENU_GAMEOVER_CONTINUE:
-			mEngine.setScene(this.sf.createLevelScene(1));
+			mEngine.setScene(this.sf.createLevelScene(currLevel));
 			break;
 		case MENU_WINNING_NEXT_LEVEL:
-			mEngine.setScene(this.sf.createLevelScene(2));
+			mEngine.setScene(this.sf.createLevelScene(currLevel));
 			break;
 		case MENU_UNHANDLED:
 			break;
