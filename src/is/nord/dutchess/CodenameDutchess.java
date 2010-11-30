@@ -121,6 +121,10 @@ public class CodenameDutchess extends BaseGameActivity implements
 	private Font mFont;
 	private Texture altFontTexture;
 	private Font altFont;
+	
+	// Background Texture
+	private Texture mBackgroundSpriteTexture;
+	private TextureRegion mBackgroundSpriteTextureRegion;
 
 	// Texture and region for the rewards to be collected
 	private Texture mRewTexture;
@@ -178,14 +182,23 @@ public class CodenameDutchess extends BaseGameActivity implements
 		this.mWoodTextureVertical = new Texture(8, 64, TextureOptions.REPEATING);
 		this.mWoodTextureVerticalRegion = TextureRegionFactory.createFromAsset(
 				this.mWoodTextureVertical, this, "wood_small.png", 0, 0);
-
-		this.mEngine.getTextureManager().loadTextures(this.mAgentTexture,
-				this.mRewTexture, this.mWoodTextureVertical);
+		
+		this.mWoodTextureHorizonal = new Texture(64, 8, TextureOptions.REPEATING);
+		this.mWoodTextureHorizonalRegion = TextureRegionFactory.createFromAsset(
+				this.mWoodTextureHorizonal, this, "wood_small_v.png", 0, 0);
 
 		/* A Grass background */
 		this.mGrassBackground = new RepeatingSpriteBackground(CAMERA_WIDTH,
 				CAMERA_HEIGHT, this.mEngine.getTextureManager(),
 				new AssetTextureSource(this, "gfx/background_grass.png"));
+		
+		/* Static sprite background */
+		this.mBackgroundSpriteTexture = new Texture(1024, 1024, TextureOptions.BILINEAR);
+		this.mBackgroundSpriteTextureRegion = TextureRegionFactory.createFromAsset(this.mBackgroundSpriteTexture, this, "stars2.png",0 ,0);
+
+		/* Add textures to engine texture manager */
+		this.mEngine.getTextureManager().loadTextures(this.mAgentTexture,
+				this.mRewTexture, this.mWoodTextureVertical,this.mWoodTextureHorizonal, this.mBackgroundSpriteTexture);
 
 		/* Game Music */
 		MusicFactory.setAssetBasePath("mfx/");
@@ -229,16 +242,18 @@ public class CodenameDutchess extends BaseGameActivity implements
 		this.am = new AudioManager(this.mCoinSound);
 		this.am.addToPlayList(mMusic);
 		this.am.addToPlayList(mZelda);
-
+		
+		
 		// Append our textures and stuff to our game object registry
 		this.gor.setAgentTextureRegion(this.mAgentTextureRegion);
 		this.gor.setCoinTextureRegion(this.mRewTextureRegion);
-		this.gor.setWallTextureRegion(this.mWoodTextureVerticalRegion);
+		this.gor.setVerticalWallTextureRegion(this.mWoodTextureVerticalRegion);
 		this.gor.setTrapTextureRegion(this.mGrenadeTextureRegion);
+		this.gor.setSpriteBackground(this.mBackgroundSpriteTextureRegion);
 		this.gor.setRepeatingBackground(this.mGrassBackground);
-
+		this.gor.setWallTextureRegion(this.mWoodTextureHorizonalRegion);
+		
 		sf = new SceneFactory(this, this.mBoundChaseCamera, this.mFont, this.gor, this.am);
-		// this.scene = sf.createStartScene(this);
 
 		return sf.createStartScene(this);
 	}

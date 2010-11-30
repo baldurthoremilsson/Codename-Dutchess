@@ -16,6 +16,7 @@ import org.anddev.andengine.entity.layer.ILayer;
 import org.anddev.andengine.entity.primitive.Rectangle;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.background.ColorBackground;
+import org.anddev.andengine.entity.scene.background.SpriteBackground;
 import org.anddev.andengine.entity.scene.menu.MenuScene;
 import org.anddev.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
 import org.anddev.andengine.entity.scene.menu.item.ColoredTextMenuItem;
@@ -173,14 +174,19 @@ public class SceneFactory {
 		activity.setAccelerometerSensor(sceneUpdateHandler);
 		gameObjects = new ArrayList<GameObject>();
 
-		scene.setBackground(this.gor.getRepeatingBackground());
+		//scene.setBackground(this.gor.getRepeatingBackground());
+		//SpriteBackground backgroundsprite = new SpriteBackground(starbackground);
+		//SpriteBackground backgroundsprite = new SpriteBackground(new Sprite(0, 0, gor.getSpriteBackground()));
+		
+		scene.setBackground(new SpriteBackground(new Sprite(0, 0, gor.getSpriteBackground())));
+		
 		scene.registerUpdateHandler(physicsWorld);
 		initBorders(scene, this.bCamera, physicsWorld); // make the frame
 		
 		for(int i=0; i!=COINS; i++)
 		{
-			gameObject = new CoinSprite(SceneFactory.randomNumber(5, 480*2-20), 
-					SceneFactory.randomNumber(10, 320*2-20),
+			gameObject = new CoinSprite(SceneFactory.randomNumber(20, 480*2-20), 
+					SceneFactory.randomNumber(20, 480*2+40),
 					20,
 					20,
 					this.gor.getCoinTextureRegion(),
@@ -193,13 +199,23 @@ public class SceneFactory {
 		//scene.getTopLayer().addEntity(gren);
 		
 		Random rand = new Random();
-		for(int i=0; i!= (20+level*2); i++)
+		for(int i=0; i!= (20+level); i++)
 		{
-			gameObject = new WallSprite(SceneFactory.randomNumber(10, 480*2-20), 
-					SceneFactory.randomNumber(10, 320*2-20), 
+			gameObject = new WallSprite(SceneFactory.randomNumber(30, 480*2), 
+					SceneFactory.randomNumber(30, 480*2), 
 					this.gor.getWallTextureRegion(), 
 					physicsWorld);
 			//gameObjects.add(gameObject);
+			scene.getTopLayer().addEntity(gameObject);
+		}
+		
+		for(int i=0; i!= (20+level); i++)
+		{
+			gameObject = new WallSprite(SceneFactory.randomNumber(30, (480*2)), 
+					SceneFactory.randomNumber(30, (480*2)), 
+					this.gor.getVerticalWallTextureRegion(), 
+					physicsWorld);
+			gameObjects.add(gameObject);
 			scene.getTopLayer().addEntity(gameObject);
 		}
 		sceneUpdateHandler.setGameObjects(gameObjects);
